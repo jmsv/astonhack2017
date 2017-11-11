@@ -9,6 +9,6 @@ API_KEY = os.environ[api_key_name]
 print("%s: %s" % (api_key_name, API_KEY))
 
 
-@app.route("/")
+@app.route("/hello")
 def hello():
     return "Hello World!"
