@@ -1,6 +1,6 @@
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
-		if( request.message === "clicked_browser_action" ) {
+		if( request.message === "giveURL" ) {
 			var firstHref = $("a[href^='http']").eq(0).attr("href");
 			$.getJSON("http://faktnews/", {url: firstHref}, function(data) {
 				console.log(data);

@@ -1,0 +1,29 @@
+body{
+	background:#eee;
+}
+.popup{
+	background:#fff;
+	border-radius: 5px;
+	border:1px solid #ddd;
+	padding:1rem;
+}
+h3{
+	margin:0;
+	text-decoration:underline;
+	white-space:nowrap;
+}
+
+#circles{
+	position:relative;
+	left:0;
+	display:grid;
+    grid-template-columns: 200px 200px;
+    box-sizing: border-box;
+}
+.circle{margin:.5rem;}
+.page{
+	position:absolute;
+	top: 0;
+    transform: translateX(-100%);
+    right: 1rem;
+}

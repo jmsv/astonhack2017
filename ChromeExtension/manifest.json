@@ -1,20 +1,27 @@
 {
 	"manifest_version": 2,
 	"name": "FaktNews",
-	"version": "0.1",
+	"description": "Detects fake news",
+	"version": "0.2",
 	"content_scripts": [
 	  {
-		"matches": [
-		  "<all_urls>"
-		],
-		"js": ["jquery-3.2.1.slim.min.js", "content.js"]
+		"matches": ["<all_urls>"],
+		"js": ["jquery-3.2.1.min.js", "content.js"],
+		"run_at": "document_end"
 	  }
 	],
 	"background": {
-		"scripts": ["background.js"]
+		"scripts": ["background.js"],
+		"persistent": false
 	},
 	"browser_action": {
-		"default_icon": "icon.png"
+		"default_title": "FaktNews",
+		"default_popup": "index.html"
+	},
+	"icons": { 	
+		"16": "img/icon16.png",
+		"48": "img/icon48.png",
+		"128": "img/icon128.png"
 	},
 	"permissions": ["tabs"]
 }
