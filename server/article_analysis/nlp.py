@@ -163,8 +163,8 @@ def article_stats(url):
     gd_sorted = sorted(gram_dict.items(), key=operator.itemgetter(1), reverse=True)
     article_stats['Grammar'] = dict_from_list(gd_sorted)
     article_no_quotes = remove_quotes(article)
-    article_stats['Polarity'] = get_polarity(article_no_quotes)
-    article_stats['Subjectivity'] = get_subjectivity(article_no_quotes)
+    article_stats['Polarity'] = round(get_polarity(article_no_quotes), 2)
+    article_stats['Subjectivity'] = round(get_subjectivity(article_no_quotes), 2)
     article_stats['Betteridge_legal'] = Betteridge_legal(url)
 
     ContentVeracityCoefficient = 100 - (article_stats['Subjectivity'] / 2) - (article_stats['Polarity'] / 4)
