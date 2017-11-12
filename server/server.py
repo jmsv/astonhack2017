@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import os
+from article_analysis import nlp
 
 import majestic
 
@@ -17,7 +18,7 @@ def hello():
 
 
 @app.route("/v1")
-def get_stats():
+def get_stats_v1():
     search = request.args.get('search')
     if not search:
         return 'Error', 400
