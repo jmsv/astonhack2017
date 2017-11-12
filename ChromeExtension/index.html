@@ -6,10 +6,12 @@
 		<link href="jquery.circliful.css" rel="stylesheet" type="text/css" />
 		<link href="index.css" rel="stylesheet" type="text/css" />
 		<link href="piechart.css" rel="stylesheet" type="text/css" />
+		<link href="barfiller.css" rel="stylesheet" type="text/css" />
 		<script src="jquery-3.2.1.min.js"></script>
 		<script src="jquery-ui.min.js"></script>
 		<script src="jquery.circliful.min.js"></script>
 		<script src="piechart.js"></script>
+		<script src="jquery.barfiller.js"></script>
 	</head>
 	<body>
 		<div id="circles"> 
@@ -37,6 +39,14 @@
 		<div class="page popup" id="content"> 
 			<p>Our assessment of a web page's trustworthiness comes from an analysis of the content of the page. We check for poor grammar, too many adverts, the sources of the facts, and the headlines themselves.</p>
 			<div class="example" id="demo"></div>
+			<div id="polarity" class="barfiller">
+				<div class="tipWrap"><span class="tip"></span></div>
+				<span class="fill" data-percentage="50"></span>
+			</div>
+			<div id="subjectivity" class="barfiller">
+				<div class="tipWrap"><span class="tip"></span></div>
+				<span class="fill" data-percentage="50"></span>
+			</div>
 			<a href="#">Back&gt;&gt;</a>
 		</div>
 

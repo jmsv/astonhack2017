@@ -6,6 +6,7 @@ body{
 	border-radius: 5px;
 	border:1px solid #ddd;
 	padding:1rem;
+	box-sizing: content-box;
 }
 h3{
 	margin:0;

@@ -7,7 +7,7 @@ var ci = -1;
     	e.splice(0,1);
     	var pieHole = $('<div class="piehole"></div>');
     	pieHole.css({background: this.getBackground()});
-    	pieHole.append('<div class="piehole-text"><p class="flatmin-title"></p><p class="flatmin-percentage"></p><p class="flatmin-value"></p></div>')
+    	pieHole.append('<div class="piehole-text"><p class="flatmin-percentage"></p><p class="flatmin-title"></p></div>')
     	ele.append('<div class="ratio"></div>').append(pieHole);
     	this.append(ele);
     	var w = ele.width();
@@ -79,7 +79,6 @@ function clickState() {
 	var pieHole = sector.parents('.piechart-flatmin').find('.piehole').find('.piehole-text');
 	var value = sector.parents('.piechart-flatmin').data('value');
 	var key = sector.parents('.piechart-flatmin').data('key');
-	pieHole.find('.flatmin-value').text(sector.data('val')+' '+value);
 	pieHole.find('.flatmin-percentage').text(Math.round(sector.data('per')*100)/100);
 	pieHole.find('.flatmin-title').text(sector.data('title'));
 	pieHole.fadeIn();
