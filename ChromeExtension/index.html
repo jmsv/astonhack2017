@@ -5,7 +5,8 @@
 		<meta charset="utf-8">
 		<link href="jquery.circliful.css" rel="stylesheet" type="text/css" />
 		<link href="index.css" rel="stylesheet" type="text/css" />
-		<script src="jquery-3.2.1.slim.min.js"></script>
+		<script src="jquery-3.2.1.min.js"></script>
+		<script src="jquery-ui.min.js"></script>
 		<script src="jquery.circliful.min.js"></script>
 	</head>
 	<body>
@@ -26,19 +27,21 @@
 				<a href="#">&lt;&lt;View more info</a>
 			</div>		
 			<div class="circle popup">
-				<h3>Overall (Average)</h3>
-				<div id="assessmentOverall" class="animate" ata-animation='1' data-animationStep='5' data-percent='72'></div>
+				<h3>Overall Grade</h3>
+				<h1>A</h1>
 			</div>	
 		</div>
 		
 		<div class="page popup" id="content"> 
 			<p>Our assessment of a web page's trustworthiness comes from an analysis of the content of the page. We check for poor grammar, too many adverts, the sources of the facts, and the headlines themselves.</p>
+			<a href="#">Back&gt;&gt;</a>
 		</div>
 
 		<div class="page popup" id="majestic"> 
 			<p>Majestic's assessment analyises the traffic flow of the webpage: if no trusted sites link to a specific page and there's a lot of traffic to it, then the site is probably fake.</p>
-			<div id="assessmentTrust" ata-animation='1' data-animationStep='5' data-percent='58'></div>
-			<div id="assessmentCitations" ata-animation='1' data-animationStep='5' data-percent='58'></div>
+			<div><div><div id="assessmentTrust" class="animate" ata-animation='1' data-animationStep='5' data-percent='58'></div></div>
+			<div><div id="assessmentCitations" class="animate" ata-animation='1' data-animationStep='5' data-percent='58'></div></div></div>
+			<a href="#">Back&gt;&gt;</a>
 		</div>
 				
 		<div class="page popup" id="people"> 
@@ -47,6 +50,7 @@
 				<input type="submit" value="Yes">
 				<input type="submit" value="No">
 			</form>
+			<a href="#">Back&gt;&gt;</a>
 		</div>
 		
 		<script src="index.js"></script>
