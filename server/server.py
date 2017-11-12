@@ -31,19 +31,19 @@ def grade_from_values(values):
     avg = int(sum(values) / float(len(values)))
     if type(avg) != int:
         return 'N/A'
-    if 90 < avg <= 100:
+    if 85 < avg <= 100:
         return 'A'
-    if 80 < avg <= 90:
+    if 70 < avg <= 85:
         return 'B'
-    if 70 < avg <= 80:
+    if 55 < avg <= 70:
         return 'C'
-    if 60 < avg <= 70:
+    if 40 < avg <= 55:
         return 'D'
-    if 50 < avg <= 60:
+    if 25 < avg <= 40:
         return 'E'
-    if 0 <= avg <= 50:
+    if 10 <= avg <= 25:
         return 'F'
-    return 'N/A'
+    return 'U'
 
 
 @app.route("/hello")
