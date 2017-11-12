@@ -6,14 +6,19 @@
 #Grammar
 #More sentiment (emotive language)
 #Recent articles have smaller maximums.
+#BERTRIDGES LAW If headline is a question it's fake news.
 
+#Using re now too, and another nlp library
+##$ pip install -U textblob
+##$ python -m textblob.download_corpora
 
-#MADE WITH BBC IN MIND, should be fairly generic/adaptable.
 import requests
 import urllib
 import nltk
 import operator
 import sys
+import re
+from textblob import TextBlob
 from bs4 import BeautifulSoup
 
 def get_article(url):
@@ -104,7 +109,6 @@ def get_grammar_census(url):
             basic_grammar['Other'] += grammar[word_type]
 
     grammar_total = sum(basic_grammar.values())
-    print(grammar_total)
     #Turn primitive grammar into percentages.
     for word_type in basic_grammar:
         basic_grammar[word_type] *= (100/grammar_total)
@@ -112,11 +116,51 @@ def get_grammar_census(url):
 
     return basic_grammar
 
-if __name__ == '__main__':
+def remove_quotes(article):
+    #Seems fair to remove quotes from an article before measureing for polarity or subjectivty.
+    #Reporting on polarizing language might make their reporting seem polarizing otherwise.
+    single_quotes = r'\[.*?\]'
+    double_quotes = r'\(.*?\)'
+    article = re.sub(single_quotes,'',article)
+    article = re.sub(double_quotes,'',article)
+    return article
+    
+def get_polarity(article):
+    #Returns score between 0 and 100, information is lost in that it doesn't express in which direction the text is polarised.
+    article_blob = TextBlob(article)
+    polarity = abs(article_blob.sentiment.polarity)*100
+    return polarity
+
+def get_subjectivity(article):
+    article_blob = TextBlob(article)
+    subjectivity = abs(article_blob.sentiment.subjectivity)*100
+    return subjectivity
+
+def Betteridge_legal(url):
+    article = requests.get(url)
+    article.raise_for_status()
+    soup = BeautifulSoup(article.text, 'lxml')
+    header = soup.find('h1')
+    if header.text[-1] == '?':
+        return False
+    return True
+
+def article_stats(url):
+    article_stats = {}
+    article = get_article(url)
     gram_dict = get_grammar_census(BBC_chatbot_love)
     gd_sorted = sorted(gram_dict.items(), key = operator.itemgetter(1), reverse = True)
-    print(gd_sorted)
-    #print(get_article(sys.argv[1]))
+    article_stats['Grammar'] = gd_sorted
+    article_no_quotes = remove_quotes(article)
+    article_stats['Polarity'] = get_polarity(article_no_quotes)
+    article_stats['Subjectivity'] = get_subjectivity(article_no_quotes)
+    article_stats['Betteridge_legal'] = Betteridge_legal(url)
+    
+    return article_stats
+
+if __name__ == '__main__':
+    print(article_stats(str(sys.argv[1])))
+
 
             
 
