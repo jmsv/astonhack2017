@@ -27,20 +27,21 @@ def domain_from_url(url):
     return domain
 
 
-def grade_from_trust_flow(trust_flow):
-    if type(trust_flow) != int:
+def grade_from_values(values):
+    avg = int(sum(values) / float(len(values)))
+    if type(avg) != int:
         return 'N/A'
-    if 90 < trust_flow <= 100:
+    if 90 < avg <= 100:
         return 'A'
-    if 80 < trust_flow <= 90:
+    if 80 < avg <= 90:
         return 'B'
-    if 70 < trust_flow <= 80:
+    if 70 < avg <= 80:
         return 'C'
-    if 60 < trust_flow <= 70:
+    if 60 < avg <= 70:
         return 'D'
-    if 50 < trust_flow <= 60:
+    if 50 < avg <= 60:
         return 'E'
-    if 0 <= trust_flow <= 50:
+    if 0 <= avg <= 50:
         return 'F'
     return 'N/A'
 
@@ -105,11 +106,17 @@ def get_stats_v4():
         response = {**maj_res, **aa_res}
     except ValueError:
         response = maj_res
-    response['Grade'] = grade_from_trust_flow(maj_res['TrustFlow'])
+
     try:
         response['VoteStat'] = get_vote_stats(domain_from_url(search.replace('www.', '')))
     except:
         response['VoteStat'] = 0
+
+    score_vals = [maj_res['TrustFlow'], response['CVC']]
+    if response['VoteStat'] > 0:
+        score_vals.append(response['VoteStat'])
+    response['Grade'] = grade_from_values(score_vals)
+
     return jsonify(response)
 
 
