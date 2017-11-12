@@ -68,4 +68,16 @@ $(document).ready(function(){
 			$('.page').animate({ marginLeft: "-100%", easing: "swing"} , 500,  function(){$(".page").hide();resizeEvent();animate();busy = false;});
 		}
 	});
+	$('.voteyes').click(function(event){
+  var action="http://faktnews.org/5000/vote/v1?url=http://www.jamesvickery.net/&trusted=y";
+  $.getJSON(url, function(){});
+   event.preventDefault();
+   });
+
+
+$('.voteno').click(function(event){
+   var action="http://faktnews.org/5000/vote/v1?url=http://www.jamesvickery.net/&trusted=n";
+  $.getJSON(url, function(){});
+   event.preventDefault();
+   });
 });
