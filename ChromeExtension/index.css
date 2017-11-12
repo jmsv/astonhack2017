@@ -12,6 +12,7 @@ h3{
 	margin:0;
 	text-decoration:underline;
 	white-space:nowrap;
+	text-align:center;
 }
 h1{
 	text-align: center;
@@ -23,7 +24,7 @@ h1{
 #circles{
 	margin-left:0%;
 	display:grid;
-    grid-template-columns: 200px 200px;
+    grid-template-columns: 220px 220px;
     box-sizing: border-box;
 }
 .circle{margin:.5rem;}
@@ -48,3 +49,4 @@ h1{
 	display:inline-block;
 	width:150px;
 }
+.percent{width:0;}
