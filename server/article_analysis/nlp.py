@@ -171,7 +171,7 @@ def article_stats(url):
     if not article_stats['Betteridge_legal']:
         ContentVeracityCoefficient /= 4
 
-    article_stats['CVC'] = ContentVeracityCoefficient
+    article_stats['CVC'] = round(ContentVeracityCoefficient, 2)
     return article_stats
 
 
