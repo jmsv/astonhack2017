@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import os
+import json
 from article_analysis.nlp import article_stats
 
 import majestic
@@ -39,7 +40,7 @@ def grade_from_trust_flow(trust_flow):
         return 'D'
     if 50 < trust_flow <= 60:
         return 'E'
-    if 40 < trust_flow <= 50:
+    if 0 <= trust_flow <= 50:
         return 'F'
     return 'N/A'
 
@@ -106,3 +107,54 @@ def get_stats_v4():
         response = maj_res
     response['Grade'] = grade_from_trust_flow(maj_res['TrustFlow'])
     return jsonify(response)
+
+
+def edit_votes(domain, trusted):
+    with open("votes.json", "r") as jsonFile:
+        data = json.load(jsonFile)
+
+    try:
+        json_domain = data[domain]
+    except Exception:
+        data[domain] = {
+            'y': 0,
+            'n': 0
+        }
+    data[domain][trusted] = int(data[domain][trusted] + 1)
+
+    with open("votes.json", "w") as jsonFile:
+        json.dump(data, jsonFile)
+
+
+@app.route("/vote/v1")
+def accept_vote():
+    url = request.args.get('url')
+    trusted_param = request.args.get('trusted').lower()[0]
+    trusted = -1
+
+    if trusted_param == 'y':
+        trusted = 1
+    if trusted_param == 'n':
+        trusted = 0
+
+    if trusted == -1:
+        return 'Error', 400
+
+    domain = domain_from_url(url).replace('www.', '')
+
+    edit_votes(domain, trusted_param)
+    return "OK", 200
+
+
+@app.route("/vote-stats")
+def get_vote_stats():
+    domain = domain_from_url(request.args.get('url'))
+    with open("votes.json", "r") as jsonFile:
+        data = json.load(jsonFile)
+    try:
+        js_d = data[domain]
+    except:
+        return str(0), 400
+    score = js_d['y'] * 100.0 / (js_d['y'] + js_d['n'])
+    score = int(score)
+    return str(score), 200
