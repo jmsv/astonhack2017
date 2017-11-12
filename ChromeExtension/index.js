@@ -7,11 +7,13 @@ function setDOMInfo(info) {
 	$("#assessmentTrust").attr("data-percent", info.TrustFlow||initial);
 	$("#assessmentCitations").attr("data-percent", info.CitationFlow||initial);
 	
+	$("#grade").text(info.Grade);
+	
 	var grammar = info.Grammar;
 	console.log(grammar);
 	$("#assessmentContent").attr("data-percent", info.CVC);
 	$("#subjectivity .fill").attr("data-percentage", info.Subjectivity);
-	$("#Polarity .fill").attr("data-percentage", info.Polarity);
+	$("#polarity .fill").attr("data-percentage", info.Polarity);
 	$(".example").piechart([
 		["", ""],
 		["Verb", grammar.Verb],
@@ -36,15 +38,14 @@ function animate(){
 		multiPercentage: 0,
 		progressColor: { 0: '#FF0000', 50: '#FFA500', 90: '#00DD00'}
 	});
-	$('.barfiller .tipWrap').removeAttr("style");
-	$('.barfiller .fill').removeAttr("style");
-	$('.barfiller').barfiller();
+	$('#subjectivity').barfiller();
+	$('#polarity').barfiller();
 }
 var busy = false;
 $(document).ready(function(){
 	chrome.tabs.query({ active: true, currentWindow: true }, function callback(tabs) {
 		console.log(tabs[0].url);
-		var url = "http://faktnews.org:5000/v3?search=" + tabs[0].url;
+		var url = "http://faktnews.org:5000/v4?search=" + tabs[0].url;
 		console.log(url);
 		$.getJSON(url, function(data) {
 			setDOMInfo(data);
