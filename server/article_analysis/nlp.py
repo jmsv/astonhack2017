@@ -149,12 +149,19 @@ def Betteridge_legal(url):
     return True
 
 
+def dict_from_list(iterable):
+    result = {}
+    for value in iterable:
+        result[value[0]] = value[1]
+    return result
+
+
 def article_stats(url):
     article_stats = {}
     article = get_article(url)
     gram_dict = get_grammar_census(BBC_chatbot_love)
     gd_sorted = sorted(gram_dict.items(), key=operator.itemgetter(1), reverse=True)
-    article_stats['Grammar'] = gd_sorted
+    article_stats['Grammar'] = dict_from_list(gd_sorted)
     article_no_quotes = remove_quotes(article)
     article_stats['Polarity'] = get_polarity(article_no_quotes)
     article_stats['Subjectivity'] = get_subjectivity(article_no_quotes)
