@@ -28,7 +28,10 @@ def get_article(url):
     Probably a better way.
     """
 
-    html = urllib.request.urlopen(url).read()
+    try:
+        html = urllib.request.urlopen(url).read()
+    except:
+        return ""
     soup = BeautifulSoup(html, 'lxml')
 
     # SCRUB script and style elements
