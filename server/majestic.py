@@ -16,15 +16,23 @@ def get_json(url):
     return r_json
 
 
-def get_stats(key):
+def get_stats(key, search):
     url = "https://developer.majestic.com/api/json" +\
           "?app_api_key=%s" +\
           "&cmd=GetIndexItemInfo" +\
           "&items=1" +\
-          "&item0=coventry.ac.uk" +\
+          "&item0=%s" +\
           "&datasource=fresh"
-    url = url % key
+    url = url % (key, search)
 
-    majestic_data = get_json(url)
+    majestic_data = get_json(url)['DataTables']['Results']['Data'][0]
     print(majestic_data)
-    return majestic_data
+
+    response_data = {
+        'CitationFlow': majestic_data['CitationFlow'],
+        'TrustFlow': majestic_data['TrustFlow'],
+        'Topic': majestic_data['TopicalTrustFlow_Topic_0'],
+        'TopicValue': majestic_data['TopicalTrustFlow_Value_0']
+    }
+
+    return response_data

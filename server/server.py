@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 import os
 
 import majestic
@@ -16,4 +16,7 @@ def hello():
     return "Hello World!"
 
 
-na = majestic.get_stats(API_KEY)
+@app.route("/stats")
+def get_stats():
+    search = request.args.get('search')
+    return jsonify(majestic.get_stats(API_KEY, search))
