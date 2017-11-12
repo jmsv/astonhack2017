@@ -107,7 +107,7 @@ def get_stats_v4():
         response = maj_res
     response['Grade'] = grade_from_trust_flow(maj_res['TrustFlow'])
     try:
-        response['VoteStat'] = get_vote_stats(domain_from_url(search))
+        response['VoteStat'] = get_vote_stats(domain_from_url(search.replace('www.', '')))
     except:
         response['VoteStat'] = 0
     return jsonify(response)
