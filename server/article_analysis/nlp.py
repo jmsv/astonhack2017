@@ -144,7 +144,10 @@ def get_subjectivity(article):
 
 def Betteridge_legal(url):
     article = requests.get(url)
-    article.raise_for_status()
+    try:
+        article.raise_for_status()
+    except:
+        return False
     soup = BeautifulSoup(article.text, 'lxml')
     header = soup.find('h1')
     try:
