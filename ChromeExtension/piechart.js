@@ -33,7 +33,6 @@ var ci = -1;
     $.fn.getBackground = function() {
 		var bgcolor = '#FFF';
 		$.each(this.parents(), function(v,k) {
-			console.log(k);
 			var rgb = $(k).css('background-color');
 			var rgba = rgb.indexOf('rgba');
 			if(rgba == -1) {
@@ -44,7 +43,6 @@ var ci = -1;
 		return bgcolor;
 	}
 }( jQuery ));
-
 function resp(w,ele) {
 	if(w>360) ele.removeClass('m').removeClass('s');
 	else if(w > 250 && w<360) ele.addClass('m').removeClass('s');
@@ -180,8 +178,6 @@ function percentToPie(s,h) {
 	}
 	return o;
 }
-
-
 function totalValue(a) {
 	var u = 0;
 	$.each(a, function(v,k) {
@@ -189,7 +185,6 @@ function totalValue(a) {
 	});
 	return u;
 }
-
 function get_random_color() {
 	var color = [
 	"#2ecc71",
@@ -204,6 +199,5 @@ function get_random_color() {
 	if(ci>color.length-1) {
 		ci = 0;
 	}
-	console.log(ci);
 	return color[ci];
 }

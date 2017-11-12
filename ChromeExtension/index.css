@@ -17,6 +17,8 @@ h1{
 	text-align: center;
     font-size: 76pt;
     margin: 0;
+	position: relative;
+    top: 10%;
 }
 #circles{
 	margin-left:0%;

@@ -2,15 +2,14 @@ function setDOMInfo(info) {
 	console.log(info);
 	var initial = 0;
 	
-	$("#assessmentMajestic").attr("data-percent", info.majestic||initial);
+	$("#assessmentMajestic").attr("data-percent", info.TrustFlow||initial);
 	$("#assessmentPeople").attr("data-percent", info.people||initial);
-	$("#assessmentTrust").attr("data-percent", info.TrustFlow||initial);
 	$("#assessmentCitations").attr("data-percent", info.CitationFlow||initial);
 	
 	$("#grade").text(info.Grade);
+	$("#topic").text(info.Topic);
 	
 	var grammar = info.Grammar;
-	console.log(grammar);
 	$("#assessmentContent").attr("data-percent", info.CVC);
 	$("#subjectivity .fill").attr("data-percentage", info.Subjectivity);
 	$("#polarity .fill").attr("data-percentage", info.Polarity);
@@ -44,14 +43,10 @@ function animate(){
 var busy = false;
 $(document).ready(function(){
 	chrome.tabs.query({ active: true, currentWindow: true }, function callback(tabs) {
-		console.log(tabs[0].url);
 		var url = "http://faktnews.org:5000/v4?search=" + tabs[0].url;
-		console.log(url);
 		$.getJSON(url, function(data) {
 			setDOMInfo(data);
-		})
-		.done(function(data, textStatus, jqXHR) {console.log( "Finalised" );})
-		.fail(function(jqXHR, textStatus, errorThrown) { console.log( "Error" ); });
+		}).fail(function(jqXHR, textStatus, errorThrown) { console.log( "JSON Error" ); });
 	});
 
 	$('#circles a').click(function(){

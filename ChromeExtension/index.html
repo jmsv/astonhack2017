@@ -53,8 +53,14 @@
 		<div class="page popup" id="majestic"> 
 			<p>Majestic's assessment analyises the traffic flow of the webpage: if no trusted sites link to a specific page and there's a lot of traffic to it, then the site is probably fake.</p>
 			<div>
-				<div><div id="assessmentTrust" class="animate"></div></div>
-				<div><div id="assessmentCitations" class="animate"></div></div>
+				<div>
+					<h3>Topic/Genre:</h3>
+					<p id="topic">Could not decide</p>
+				</div>
+				<div>
+					<h3>Citations</h3>
+					<div id="assessmentCitations" class="animate"></div>
+				</div>
 			</div>
 			<a href="#">Back&gt;&gt;</a>
 		</div>
@@ -62,8 +68,8 @@
 		<div class="page popup" id="people"> 
 			<p>This score comes from the average of people's opinion on whether the page is to be trusted or not. You can vote too, do you trust this page?</p>
 			<form>
-				<input type="submit" value="Yes">
-				<input type="submit" value="No">
+				<input type="submit" id="yes" value="Yes">
+				<input type="submit" id="no" value="No">
 			</form>
 			<a href="#">Back&gt;&gt;</a>
 		</div>
