@@ -4,7 +4,6 @@ import json
 
 def get_json(url):
     r = requests.get(url)
-    print(r.status_code)
     if r.status_code != 200:
         raise Exception('Error getting JSON from URL')
     try:
@@ -26,7 +25,6 @@ def get_stats(key, search):
     url = url % (key, search)
 
     majestic_data = get_json(url)['DataTables']['Results']['Data'][0]
-    print(majestic_data)
 
     response_data = {
         'CitationFlow': majestic_data['CitationFlow'],

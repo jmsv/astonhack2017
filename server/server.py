@@ -16,7 +16,9 @@ def hello():
     return "Hello World!"
 
 
-@app.route("/stats")
+@app.route("/v1")
 def get_stats():
     search = request.args.get('search')
+    if not search:
+        return 'Error', 400
     return jsonify(majestic.get_stats(API_KEY, search))
