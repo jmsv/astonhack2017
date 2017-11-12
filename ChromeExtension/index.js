@@ -7,9 +7,10 @@ function setDOMInfo(info) {
 	$("#assessmentCitations").attr("data-percent", info.CitationFlow||initial);
 	
 	$("#grade").text(info.Grade);
-	$("#topic").text(info.Topic);
+	$("#topic").text(info.Topic||"Could not decide");
 	
 	$("#betteridge").css("color",(info.Betteridge_legal==true)?"green":"red");
+	$("#betteridge").text((info.Betteridge_legal==true)?"Betteridge legal":"Betteridge illegal");
 	
 	var grammar = info.Grammar;
 	$("#assessmentContent").attr("data-percent", info.CVC);
@@ -33,11 +34,17 @@ function setDOMInfo(info) {
 $(".page").hide();
 function animate(){
 	$(".animate").empty();
-	$(".animate").circliful({
+	$(".animate:not(#assessmentPeople)").circliful({
 		animation: 1,
 		animationStep: 5,
 		multiPercentage: 0,
 		progressColor: { 0: '#FF0000', 50: '#FFA500', 90: '#00DD00'}
+	});
+	$("#assessmentPeople").circliful({
+		animation: 1,
+		animationStep: 5,
+		backgroundColor: "#FF0000",
+		foregroundColor: "#00FF00"
 	});
 	$('#subjectivity').barfiller();
 	$('#polarity').barfiller();
