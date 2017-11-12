@@ -21,6 +21,9 @@ import re
 from textblob import TextBlob
 from bs4 import BeautifulSoup
 
+nltk.download('averaged_perceptron_tagger')
+nltk.download('punkt')
+
 def get_article(url):
     """
     Takes URL argument, returns the article body by picking longest visible text blocks.
