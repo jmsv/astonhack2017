@@ -1,16 +1,16 @@
 function setDOMInfo(info) {
 	console.log(info);
-	$("#assessmentContent").attr("data-percent", info.content);
-	$("#assessmentMajestic").attr("data-percent", info.majestic);
-	$("#assessmentPeople").attr("data-percent", info.people);
-	$("#assessmentTrust").attr("data-percent", info.TrustFlow);
-	$("#assessmentCitations").attr("data-percent", info.CitationFlow);
+	$("#assessmentContent").attr("data-percent", info.content||10);
+	$("#assessmentMajestic").attr("data-percent", info.majestic||10);
+	$("#assessmentPeople").attr("data-percent", info.people||10);
+	$("#assessmentTrust").attr("data-percent", info.TrustFlow||10);
+	$("#assessmentCitations").attr("data-percent", info.CitationFlow||10);
 	$(".example").piechart([
 		["Word Type", "% of words"],
-		["Verb", info.verbs],
-		["Adjective", info.adjectives],
-		["Noun", info.nouns],
-		["Other", info.other]
+		["Verb", info.verbs||10],
+		["Adjective", info.adjectives||10],
+		["Noun", info.nouns||10],
+		["Other", info.other||10]
 	]);
 	$(".piechart-flatmin").on('mouseenter','.sector-s',hoverState);
 	$(".piechart-flatmin").on('mouseleave','.sector-s',hoverState);
@@ -30,6 +30,17 @@ function animate(){
 }
 var busy = false;
 $(document).ready(function(){
+	chrome.tabs.query({ active: true, currentWindow: true }, function callback(tabs) {
+		console.log(tabs[0].url);
+		var url = "http://faktnews.org:5000/v1?search=" + tabs[0].url.replace(/^https?\:\/\//i, "");;
+		console.log(url);
+		$.getJSON(url, function(data) {
+			setDOMInfo(data);
+		})
+		.done(function(data, textStatus, jqXHR) {console.log( "Finalised" );})
+		.fail(function(jqXHR, textStatus, errorThrown) { console.log( "Error" ); });
+	});
+
 	$('#circles a').click(function(){
 		if(busy == false){
 			busy = true;
@@ -52,15 +63,5 @@ $(document).ready(function(){
 			$(".animate").empty();
 			animate();
 		}
-	});
-	chrome.tabs.query({ active: true, currentWindow: true }, function callback(tabs) {
-		console.log(tabs[0].url);
-		var url = "http://178.62.59.222:5000/v1?search=" + tabs[0].url;
-		console.log(url);
-		$.getJSON(url, function(data) {
-			setDOMInfo(data);
-		})
-		.done(function(data, textStatus, jqXHR) {console.log( "Finalised" );})
-		.fail(function(jqXHR, textStatus, errorThrown) { console.log( "Error" ); });
 	});
 });
