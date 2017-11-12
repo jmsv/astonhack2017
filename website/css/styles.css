@@ -1,4 +1,63 @@
-h1 {
-    text-align: center;
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
 }
 
+html {
+    box-sizing: border-box;
+    font-family: 'Roboto Slab', serif;
+}
+
+body {
+    font-size: 1em;
+    line-height: 1.5;
+    margin: 0 auto;
+    padding: 0;
+}
+
+p {
+    font-size: 1.2em;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+.container {
+    margin: auto;
+    width: 1100px;
+    background-color: inherit;
+}
+
+.block {
+    padding-top: 3em;
+    padding-bottom: 3em;
+}
+
+.red-bg {
+    background-color: #d40000;
+}
+
+.green-bg {
+    background-color: #4caf50;
+}
+
+.black-bg {
+    background-color: #000;
+}
+
+.black-bg {
+    background-color: #fff;
+}
+
+.white-fg {
+    color: #fff;
+}
