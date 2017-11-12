@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 import os
-from article_analysis import nlp
+from article_analysis.nlp import article_stats
 
 import majestic
 
@@ -23,3 +23,17 @@ def get_stats_v1():
     if not search:
         return 'Error', 400
     return jsonify(majestic.get_stats(API_KEY, search))
+
+
+@app.route("/v2")
+def get_stats_v2():
+    search = request.args.get('search')
+    if not search:
+        return 'Error', 400
+    maj_res = majestic.get_stats(API_KEY, search)
+    try:
+        aa_res = article_stats(search)
+        response = {**maj_res, **aa_res}
+    except ValueError:
+        response = maj_res
+    return jsonify(response)
