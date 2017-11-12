@@ -9,6 +9,8 @@ function setDOMInfo(info) {
 	$("#grade").text(info.Grade);
 	$("#topic").text(info.Topic);
 	
+	$("#betteridge").css("color",(info.Betteridge_legal==true)?"green":"red");
+	
 	var grammar = info.Grammar;
 	$("#assessmentContent").attr("data-percent", info.CVC);
 	$("#subjectivity .fill").attr("data-percentage", info.Subjectivity);
@@ -43,7 +45,7 @@ function animate(){
 var busy = false;
 $(document).ready(function(){
 	chrome.tabs.query({ active: true, currentWindow: true }, function callback(tabs) {
-		var url = "http://faktnews.org:5000/v4?search=" + tabs[0].url;
+		var url = "http://www.faktnews.org:5000/v4?search=" + tabs[0].url;
 		$.getJSON(url, function(data) {
 			setDOMInfo(data);
 		}).fail(function(jqXHR, textStatus, errorThrown) { console.log( "JSON Error" ); });
@@ -68,16 +70,18 @@ $(document).ready(function(){
 			$('.page').animate({ marginLeft: "-100%", easing: "swing"} , 500,  function(){$(".page").hide();resizeEvent();animate();busy = false;});
 		}
 	});
-	$('.voteyes').click(function(event){
-  var action="http://faktnews.org/5000/vote/v1?url=http://www.jamesvickery.net/&trusted=y";
-  $.getJSON(url, function(){});
-   event.preventDefault();
-   });
-
-
-$('.voteno').click(function(event){
-   var action="http://faktnews.org/5000/vote/v1?url=http://www.jamesvickery.net/&trusted=n";
-  $.getJSON(url, function(){});
-   event.preventDefault();
-   });
+	$('#yes').click(function(event){
+		event.preventDefault();
+		chrome.tabs.query({ active: true, currentWindow: true }, function callback(tabs) {
+			var url = "http://www.faktnews.org:5000/vote/v1?url=" + tabs[0].url + "&trusted=y";
+			$.getJSON(url, function(data) {}).fail(function(jqXHR, textStatus, errorThrown) { console.log( "JSON Error" ); });
+		});
+	});
+	$('#no').click(function(event){
+		event.preventDefault();
+		chrome.tabs.query({ active: true, currentWindow: true }, function callback(tabs) {
+			var url = "http://www.faktnews.org:5000/vote/v1?url=" + tabs[0].url + "&trusted=n";
+			$.getJSON(url, function(data) {}).fail(function(jqXHR, textStatus, errorThrown) { console.log( "JSON Error" ); });
+		});
+	});
 });
