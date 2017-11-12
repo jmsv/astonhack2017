@@ -1,16 +1,35 @@
+function setDOMInfo(info) {
+	console.log(info);
+	$("#assessmentContent").attr("data-percent", info.content);
+	$("#assessmentMajestic").attr("data-percent", info.majestic);
+	$("#assessmentPeople").attr("data-percent", info.people);
+	$("#assessmentTrust").attr("data-percent", info.TrustFlow);
+	$("#assessmentCitations").attr("data-percent", info.CitationFlow);
+	$(".example").piechart([
+		["Word Type", "% of words"],
+		["Verb", info.verbs],
+		["Adjective", info.adjectives],
+		["Noun", info.nouns],
+		["Other", info.other]
+	]);
+	$(".piechart-flatmin").on('mouseenter','.sector-s',hoverState);
+	$(".piechart-flatmin").on('mouseleave','.sector-s',hoverState);
+	$(".piechart-flatmin").on('click','.sector-s',clickState);
+	$(window).resize(resizeEvent);
+	animate();
+}
+
 $(".page").hide();
 function animate(){
 	$(".animate").circliful({
 		animation: 1,
 		animationStep: 5,
 		multiPercentage: 0,
-		progressColor: { 0: '#FF0000', 50: '#FFA500', 90: '#00DD00'},
-	
+		progressColor: { 0: '#FF0000', 50: '#FFA500', 90: '#00DD00'}
 	});
 }
 var busy = false;
 $(document).ready(function(){
-	animate();
 	$('#circles a').click(function(){
 		if(busy == false){
 			busy = true;
@@ -34,16 +53,14 @@ $(document).ready(function(){
 			animate();
 		}
 	});
-	
-	$(".example").piechart([
-		["Word Type", "% of words"],
-		["Verb", 35],
-		["Adjective", 25],
-		["Noun", 15],
-		["Other", 25]
-	]);
-	$(".piechart-flatmin").on('mouseenter','.sector-s',hoverState);
-	$(".piechart-flatmin").on('mouseleave','.sector-s',hoverState);
-	$(".piechart-flatmin").on('click','.sector-s',clickState);
-	$(window).resize(resizeEvent);
+	chrome.tabs.query({ active: true, currentWindow: true }, function callback(tabs) {
+		console.log(tabs[0].url);
+		var url = "http://178.62.59.222:5000/v1?search=" + tabs[0].url;
+		console.log(url);
+		$.getJSON(url, function(data) {
+			setDOMInfo(data);
+		})
+		.done(function(data, textStatus, jqXHR) {console.log( "Finalised" );})
+		.fail(function(jqXHR, textStatus, errorThrown) { console.log( "Error" ); });
+	});
 });
