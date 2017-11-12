@@ -3,7 +3,7 @@ function setDOMInfo(info) {
 	var initial = 0;
 	
 	$("#assessmentMajestic").attr("data-percent", info.TrustFlow||initial);
-	$("#assessmentPeople").attr("data-percent", info.people||initial);
+	$("#assessmentPeople").attr("data-percent", info.VoteStat||initial);
 	$("#assessmentCitations").attr("data-percent", info.CitationFlow||initial);
 	
 	$("#grade").text(info.Grade);
