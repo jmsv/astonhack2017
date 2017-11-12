@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import os
 import json
-from article_analysis.nlp import article_stats
+from article_analysis import nlp
 
 import majestic
 
@@ -65,7 +65,7 @@ def get_stats_v2():
         return 'Error', 400
     maj_res = majestic.get_stats(API_KEY, search)
     try:
-        aa_res = article_stats(search)
+        aa_res = nlp.article_stats(search)
         response = {**maj_res, **aa_res}
     except ValueError:
         response = maj_res
@@ -83,7 +83,7 @@ def get_stats_v3():
         maj_search = domain_from_url(maj_search)
         maj_res = majestic.get_stats(API_KEY, maj_search)
     try:
-        aa_res = article_stats(search)
+        aa_res = nlp.article_stats(search)
         response = {**maj_res, **aa_res}
     except ValueError:
         response = maj_res
@@ -101,11 +101,15 @@ def get_stats_v4():
         maj_search = domain_from_url(maj_search)
         maj_res = majestic.get_stats(API_KEY, maj_search)
     try:
-        aa_res = article_stats(search)
+        aa_res = nlp.article_stats(search)
         response = {**maj_res, **aa_res}
     except ValueError:
         response = maj_res
     response['Grade'] = grade_from_trust_flow(maj_res['TrustFlow'])
+    try:
+        response['VoteStat'] = get_vote_stats(domain_from_url(search))
+    except:
+        response['VoteStat'] = 0
     return jsonify(response)
 
 
@@ -146,15 +150,12 @@ def accept_vote():
     return "OK", 200
 
 
-@app.route("/vote-stats")
-def get_vote_stats():
-    domain = domain_from_url(request.args.get('url'))
+def get_vote_stats(domain):
     with open("votes.json", "r") as jsonFile:
         data = json.load(jsonFile)
     try:
         js_d = data[domain]
     except:
-        return str(0), 400
+        return 0
     score = js_d['y'] * 100.0 / (js_d['y'] + js_d['n'])
-    score = int(score)
-    return str(score), 200
+    return int(score)

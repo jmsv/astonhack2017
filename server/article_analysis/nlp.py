@@ -144,7 +144,10 @@ def Betteridge_legal(url):
     article.raise_for_status()
     soup = BeautifulSoup(article.text, 'lxml')
     header = soup.find('h1')
-    if header.text[-1] == '?':
+    try:
+        if header.text[-1] == '?':
+            return False
+    except:
         return False
     return True
 
