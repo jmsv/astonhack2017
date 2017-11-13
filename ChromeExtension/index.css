@@ -1,5 +1,22 @@
 body{
 	background:#eee;
+	
+}
+.page{
+	width:500px;
+	height:600px;
+	font-family: 'Open Sans', sans-serif;
+}
+.page h3{
+	margin:0;
+	text-decoration:underline;
+	white-space:nowrap;
+	text-align:center;
+}
+.wrapper{
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
 }
 .popup{
 	background:#fff;
@@ -8,45 +25,51 @@ body{
 	padding:1rem;
 	box-sizing: content-box;
 }
-h3{
-	margin:0;
-	text-decoration:underline;
-	white-space:nowrap;
-	text-align:center;
-}
-h1{
+
+#grade{
 	text-align: center;
     font-size: 76pt;
     margin: 0;
 	position: relative;
     top: 10%;
 }
-#circles{
-	margin-left:0%;
-	display:grid;
-    grid-template-columns: 220px 220px;
-    box-sizing: border-box;
+.circle{
+	width: 200px;
+	height: 250px;
+    margin: .5rem;
+    float: left;
 }
-.circle{margin:.5rem;}
-.page{
-	margin-left:-100%;
-	position:absolute;
-	top:50%;
-	transform:translateY(-50%);
-	box-sizing: border-box;
-	width:calc(100% - 1rem);
+.percent{
+	width:0;
 }
-.page a{
-    position: absolute;
-    bottom: .5rem;
-    right: .5rem;
+
+.bar{
+	width: 100%;
+	height:1rem;
+	background: #fcfcfc;
+	border: 1px solid #ccc;
+	position: relative;
+	box-shadow: inset 1px 4px 9px -6px rgba(0,0,0,.5);
+	-moz-box-shadow: inset 1px 4px 9px -6px rgba(0,0,0,.5);
 }
-#majestic div{
-	margin:auto;
-	display:flex;
+
+.bar .fill {
+	display: block;
+	position: relative;
+	width: 0px;
+	height: 100%;
+	background: rgb(22, 181, 151);
+	z-index: 1;
+    transition: width 1s ease-in-out;
 }
-#majestic div div{
-	display:inline-block;
-	width:150px;
+
+.bar .tip {
+	padding: 2px 4px;
+	color: #fff;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%,-50%);
+	z-index: 2;
+	background: #333;
+	transition: left 1s ease-in-out;
 }
-.percent{width:0;}
