@@ -108,7 +108,7 @@ def get_stats_v4():
         response = maj_res
 
     try:
-        response['VoteStat'] = get_vote_stats(domain_from_url(search.replace('www.', '')))
+        response['VoteStat'] = vote_stats(domain_from_url(search.replace('www.', '')))
     except:
         response['VoteStat'] = 0
 
@@ -160,7 +160,7 @@ def accept_vote():
     return "OK", 200
 
 
-def get_vote_stats(domain):
+def vote_stats(domain):
     with open("votes.json", "r") as jsonFile:
         data = json.load(jsonFile)
     try:
@@ -169,3 +169,16 @@ def get_vote_stats(domain):
         return 0
     score = js_d['y'] * 100.0 / (js_d['y'] + js_d['n'])
     return int(score)
+
+
+@app.route("/vote-stats")
+def get_vote_stats():
+    try:
+        search = request.args.get('url')
+    except:
+        return "Error, endpoint requires URL param: 'url'", 400
+    try:
+        result = vote_stats(domain_from_url(search.replace('www.', '')))
+    except:
+        result = 0
+    return str(result), 200
