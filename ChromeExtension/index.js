@@ -78,11 +78,13 @@ $(document).ready(function(){
 	else $("#error").show(); 
 	$('a').click(function(){show($(this).attr("data-show"))});
 	$('input').click(function(event){
-		console.log('click '+viewing);
 		if(viewing){
 			var url = "http://www.faktnews.org:5000/vote/v1?url=" + viewing + "&trusted=" + ($(this).is("#yes")==true?'y':'n');
-			console.log(url);
-			$.getJSON(url, function(data) {}).fail(function(jqXHR, textStatus, errorThrown) { $("#error").show(); });
+			$.getJSON(url, function(data) {
+				$('#assessmentPeople').empty();
+				$("#assessmentPeople").attr("data-percent", data.VoteStat);
+				show('circles');
+			}).fail(function(jqXHR, textStatus, errorThrown) { $("#error").show(); });
 		}
 	});
 });
