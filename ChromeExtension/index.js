@@ -81,7 +81,9 @@ $(document).ready(function(){
 		if(viewing){
 			var url = "http://www.faktnews.org:5000/vote/v2?url=" + viewing + "&trusted=" + ($(this).is("#yes")==true?'y':'n');
 			$.getJSON(url, function(data) {
-				$('#assessmentPeople').empty();
+				var container = $('#assessmentPeople').parent();
+				$('#assessmentPeople').remove();
+				container.append('<div id="assessmentPeople" class="animate"></div>');
 				$("#assessmentPeople").attr("data-percent", data.VoteStat);
 				show('circles');
 			}).fail(function(jqXHR, textStatus, errorThrown) { $("#error").show(); });
