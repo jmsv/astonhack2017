@@ -9,17 +9,18 @@
 # BERTRIDGES LAW If headline is a question it's fake news.
 
 # Using re now too, and another nlp library
-##$ pip install -U textblob
-##$ python -m textblob.download_corpora
+# $ pip install -U textblob
+# $ python -m textblob.download_corpora
 
-import requests
-import urllib
-import nltk
 import operator
-import sys
 import re
-from textblob import TextBlob
+import sys
+import urllib
+
+import nltk
+import requests
 from bs4 import BeautifulSoup
+from textblob import TextBlob
 
 
 def get_article(url):
@@ -130,7 +131,8 @@ def remove_quotes(article):
 
 
 def get_polarity(article):
-    # Returns score between 0 and 100, information is lost in that it doesn't express in which direction the text is polarised.
+    # Returns score between 0 and 100, information is lost in that
+    # it doesn't express in which direction the text is polarised.
     article_blob = TextBlob(article)
     polarity = abs(article_blob.sentiment.polarity) * 100
     return polarity
@@ -142,7 +144,7 @@ def get_subjectivity(article):
     return subjectivity
 
 
-def Betteridge_legal(url):
+def betteridge_legal(url):
     article = requests.get(url)
     try:
         article.raise_for_status()
@@ -174,13 +176,13 @@ def article_stats(url):
     article_no_quotes = remove_quotes(article)
     article_stats['Polarity'] = round(get_polarity(article_no_quotes), 2)
     article_stats['Subjectivity'] = round(get_subjectivity(article_no_quotes), 2)
-    article_stats['Betteridge_legal'] = Betteridge_legal(url)
+    article_stats['Betteridge_legal'] = betteridge_legal(url)
 
-    ContentVeracityCoefficient = 100 - (article_stats['Subjectivity'] / 2) - (article_stats['Polarity'] / 4)
+    content_veracity_coefficient = 100 - (article_stats['Subjectivity'] / 2) - (article_stats['Polarity'] / 4)
     if not article_stats['Betteridge_legal']:
-        ContentVeracityCoefficient /= 4
+        content_veracity_coefficient /= 4
 
-    article_stats['CVC'] = round(ContentVeracityCoefficient, 2)
+    article_stats['CVC'] = round(content_veracity_coefficient, 2)
     return article_stats
 
 
