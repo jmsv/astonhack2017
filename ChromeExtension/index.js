@@ -7,15 +7,15 @@ function setDOMInfo(info) {
 	$("#assessmentCitations").attr("data-percent", info.CitationFlow||initial);
 	
 	$("#grade").text(info.Grade);
-	$("#topic").text(info.Topic||"Could not decide");
+	$("#topic").text(info.Topic);
 	
 	$("#betteridge").css("color",(info.Betteridge_legal==true)?"green":"red");
 	$("#betteridge").text((info.Betteridge_legal==true)?"Betteridge legal":"Betteridge illegal");
 	
 	var grammar = info.Grammar;
 	$("#assessmentContent").attr("data-percent", info.CVC);
-	$("#subjectivity .fill").attr("data-percentage", info.Subjectivity);
-	$("#polarity .fill").attr("data-percentage", info.Polarity);
+	$("#subjectivity").attr("data-percent", info.Subjectivity);
+	$("#polarity").attr("data-percent", info.Polarity);
 	$(".example").piechart([
 		["", ""],
 		["Verb", grammar.Verb],
@@ -28,67 +28,61 @@ function setDOMInfo(info) {
 	$(".piechart-flatmin").on('mouseleave','.sector-s',hoverState);
 	$(".piechart-flatmin").on('click','.sector-s',clickState);
 	$(window).resize(resizeEvent);	
-	animate();
+	
+	$("#loading").hide();
+	show('circles');
 }
-
-$(".page").hide();
-function animate(){
-	$(".animate").empty();
-	$(".animate:not(#assessmentPeople)").circliful({
-		animation: 1,
-		animationStep: 5,
-		multiPercentage: 0,
-		progressColor: { 0: '#FF0000', 50: '#FFA500', 90: '#00DD00'}
+(function ($) {
+    $.fn.bar = function (options) {
+		var object = $(this);
+        var fill = object.find('.fill');
+        var tip = object.find('.tip');
+        var percentage = (object.attr('data-percent')) + "%";
+		fill.css("width", percentage);
+		tip.css("left", percentage);
+		tip.text(percentage);
+		return this;
+	};
+})(jQuery);
+function show(id){
+	var object = $('#'+id);
+	$('#move').css("left","-"+object.css("left"));
+	$('#move').css("top","-"+object.css("top"));
+	
+	$('#'+id+" .animate").each(function(){
+		if( $(this).is(':empty') )
+			if ($(this).is("#assessmentPeople"))
+				$(this).circliful({
+					animation: 1,
+					animationStep: 5,
+					backgroundColor: "#FF0000",
+					foregroundColor: "#00FF00"
+				});
+			else 
+				$(this).circliful({
+					animation: 1,
+					animationStep: 5,
+					multiPercentage: 0,
+					progressColor: { 0: '#FF0000', 50: '#FFA500', 90: '#00DD00'}
+				});
 	});
-	$("#assessmentPeople").circliful({
-		animation: 1,
-		animationStep: 5,
-		backgroundColor: "#FF0000",
-		foregroundColor: "#00FF00"
-	});
-	$('#subjectivity').barfiller();
-	$('#polarity').barfiller();
+	$('#'+id+' .bar').each(function(){$(this).bar()});
 }
-var busy = false;
 $(document).ready(function(){
-	chrome.tabs.query({ active: true, currentWindow: true }, function callback(tabs) {
-		var url = "http://www.faktnews.org:5000/v4?search=" + tabs[0].url;
-		$.getJSON(url, function(data) {
-			setDOMInfo(data);
-		}).fail(function(jqXHR, textStatus, errorThrown) { console.log( "JSON Error" ); });
+	var viewing;
+	if(chrome.tabs)chrome.tabs.query({ active: true, currentWindow: true }, function callback(tabs) {
+		viewing = tabs[0].url
+		var url = "http://www.faktnews.org:5000/v4?search=" + viewing;
+		$.getJSON(url, function(data) { setDOMInfo(data) }).fail(function(jqXHR, textStatus, errorThrown) { $("#error").show(); });
 	});
-
-	$('#circles a').click(function(){
-		if(busy == false){
-			busy = true;
-			$('#circles').animate({ marginLeft: "100%", easing: "swing"} , 500);
-			$('.page').animate({ marginLeft: "0%", easing: "swing"} , 500, function(){resizeEvent(); animate(); busy = false;});
+	else $("#error").show(); 
+	$('a').click(function(){show($(this).attr("data-show"))});
+	$('input').click(function(event){
+		console.log('click '+viewing);
+		if(viewing){
+			var url = "http://www.faktnews.org:5000/vote/v1?url=" + viewing + "&trusted=" + ($(this).is("#yes")==true?'y':'n');
+			console.log(url);
+			$.getJSON(url, function(data) {}).fail(function(jqXHR, textStatus, errorThrown) { $("#error").show(); });
 		}
-	});
-	
-	$('#assessmentContent + a').click(function(){$('#content').show()});
-	$('#assessmentMajestic + a').click(function(){$('#majestic').show()});
-	$('#assessmentPeople + a').click(function(){$('#people').show()});
-	
-	$('.page a').click(function(){
-		if(busy == false){
-			busy = true;
-			$('#circles').animate({ marginLeft: "0%", easing: "swing"} , 500);
-			$('.page').animate({ marginLeft: "-100%", easing: "swing"} , 500,  function(){$(".page").hide();resizeEvent();animate();busy = false;});
-		}
-	});
-	$('#yes').click(function(event){
-		event.preventDefault();
-		chrome.tabs.query({ active: true, currentWindow: true }, function callback(tabs) {
-			var url = "http://www.faktnews.org:5000/vote/v1?url=" + tabs[0].url + "&trusted=y";
-			$.getJSON(url, function(data) {}).fail(function(jqXHR, textStatus, errorThrown) { console.log( "JSON Error" ); });
-		});
-	});
-	$('#no').click(function(event){
-		event.preventDefault();
-		chrome.tabs.query({ active: true, currentWindow: true }, function callback(tabs) {
-			var url = "http://www.faktnews.org:5000/vote/v1?url=" + tabs[0].url + "&trusted=n";
-			$.getJSON(url, function(data) {}).fail(function(jqXHR, textStatus, errorThrown) { console.log( "JSON Error" ); });
-		});
 	});
 });
