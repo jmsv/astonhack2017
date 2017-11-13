@@ -13,6 +13,8 @@
 		<script src="piechart.js"></script>
 	</head>
 	<body>
+		<div class="overlay" id="loading"><p>Loading stats please wait...</p></div>
+		<div class="overlay" id="error"><p>Hmmm looks like something went wrong!</p></div>
 		<div id="viewport"><div id="move">
 			<div class="page" id="circles"> 
 				<div class="circle popup">
@@ -41,12 +43,12 @@
 					<p>Our assessment of a web page's trustworthiness comes from an analysis of the content of the page. We check for poor grammar and analyse the language used.</p>
 					<div class="example" id="demo"></div>
 					<p>Polarity</p>
-					<div id="polarity" class="bar" data-percentage="50">
+					<div id="polarity" class="bar">
 						<span class="tip"></span>
 						<span class="fill"></span>
 					</div>
 					<p>Subjectivity</p>
-					<div id="subjectivity" class="bar" data-percentage="20">
+					<div id="subjectivity" class="bar">
 						<span class="tip"></span>
 						<span class="fill"></span>
 					</div>

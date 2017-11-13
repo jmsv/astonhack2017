@@ -7,7 +7,7 @@ function setDOMInfo(info) {
 	$("#assessmentCitations").attr("data-percent", info.CitationFlow||initial);
 	
 	$("#grade").text(info.Grade);
-	$("#topic").text(info.Topic||"Could not decide");
+	$("#topic").text(info.Topic);
 	
 	$("#betteridge").css("color",(info.Betteridge_legal==true)?"green":"red");
 	$("#betteridge").text((info.Betteridge_legal==true)?"Betteridge legal":"Betteridge illegal");
@@ -28,7 +28,8 @@ function setDOMInfo(info) {
 	$(".piechart-flatmin").on('mouseleave','.sector-s',hoverState);
 	$(".piechart-flatmin").on('click','.sector-s',clickState);
 	$(window).resize(resizeEvent);	
-	animate();
+	
+	$("#loading").hide();
 }
 (function ($) {
     $.fn.bar = function (options) {
@@ -43,7 +44,7 @@ function setDOMInfo(info) {
 		return this;
 	};
 })(jQuery);
-//$(".page").hide();
+
 function animate(){
 	$(".animate").empty();
 	$(".animate:not(#assessmentPeople)").circliful({
@@ -62,6 +63,7 @@ function animate(){
 }
 var busy = false;
 var viewing;
+$("#error").hide();
 $(document).ready(function(){
 	if(chrome.tabs)chrome.tabs.query({ active: true, currentWindow: true }, function callback(tabs) {
 		var viewing = tabs[0].url
@@ -70,22 +72,28 @@ $(document).ready(function(){
 			setDOMInfo(data);
 		}).fail(function(jqXHR, textStatus, errorThrown) { console.log( "JSON Error" ); });
 	});
-
+	else
+		$("#loading").hide();
+		
 	$('#circles a').click(function(){
 		if(busy == false){
 			busy = true;
+			
+			$("#move").addEventListener('transitionend', function() {
+				busy = false;
+			});
+			
 			$('#circles').animate({ marginLeft: "100%", easing: "swing"} , 500);
 			$('.page').animate({ marginLeft: "0%", easing: "swing"} , 500, function(){
-				resizeEvent(); 
 				animate();
-				busy = false;
+				
 			});
 		}
 	});
 	
-	//$('#assessmentContent + a').click(function(){$('#content').show()});
-	//$('#assessmentMajestic + a').click(function(){$('#majestic').show()});
-	//$('#assessmentPeople + a').click(function(){$('#people').show()});
+	$('#assessmentContent + a').click(function(){$('#content').show()});
+	$('#assessmentMajestic + a').click(function(){$('#majestic').show()});
+	$('#assessmentPeople + a').click(function(){$('#people').show()});
 	
 	$('.page a').click(function(){
 		if(busy == false){
@@ -93,7 +101,6 @@ $(document).ready(function(){
 			$('#circles').animate({ marginLeft: "0%", easing: "swing"} , 500);
 			$('.page').animate({ marginLeft: "-100%", easing: "swing"} , 500,  function(){
 				//$(".page").hide();
-				resizeEvent();
 				animate();
 				busy = false;
 			});
