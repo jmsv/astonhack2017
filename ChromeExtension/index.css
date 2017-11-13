@@ -76,6 +76,7 @@ body{
 	position: relative;
 	top: 50%;
 	transform: translateY(-50%);
+	margin: .5rem;
 }
 .popup{
 	background:#fff;
