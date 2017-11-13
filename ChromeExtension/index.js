@@ -35,7 +35,6 @@ function setDOMInfo(info) {
 (function ($) {
     $.fn.bar = function (options) {
 		var object = $(this);
-		console.log(object);
         var fill = object.find('.fill');
         var tip = object.find('.tip');
         var percentage = (object.attr('data-percent')) + "%";
@@ -69,22 +68,20 @@ function show(id){
 	});
 	$('#'+id+' .bar').each(function(){$(this).bar()});
 }
-var busy = false;
-var viewing;
 $(document).ready(function(){
+	var viewing;
 	if(chrome.tabs)chrome.tabs.query({ active: true, currentWindow: true }, function callback(tabs) {
-		var viewing = tabs[0].url
+		viewing = tabs[0].url
 		var url = "http://www.faktnews.org:5000/v4?search=" + viewing;
 		$.getJSON(url, function(data) { setDOMInfo(data) }).fail(function(jqXHR, textStatus, errorThrown) { $("#error").show(); });
 	});
 	else $("#error").show(); 
-	
 	$('a').click(function(){show($(this).attr("data-show"))});
-	
-	$('.people input').click(function(event){
-		event.preventDefault();
+	$('input').click(function(event){
+		console.log('click '+viewing);
 		if(viewing){
-			var url = "http://www.faktnews.org:5000/vote/v1?url=" + viewing + "&trusted=" + ($(this).is("#yes")?'y':'n');
+			var url = "http://www.faktnews.org:5000/vote/v1?url=" + viewing + "&trusted=" + ($(this).is("#yes")==true?'y':'n');
+			console.log(url);
 			$.getJSON(url, function(data) {}).fail(function(jqXHR, textStatus, errorThrown) { $("#error").show(); });
 		}
 	});
