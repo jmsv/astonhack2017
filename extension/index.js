@@ -47,7 +47,6 @@ function show(id){
 	var object = $('#'+id);
 	$('#move').css("left","-"+object.css("left"));
 	$('#move').css("top","-"+object.css("top"));
-	
 	$('#'+id+" .animate").each(function(){
 		if( $(this).is(':empty') )
 			if ($(this).is("#assessmentPeople"))
