@@ -198,5 +198,4 @@ def get_vote_stats():
     except:
         result = 0
 
-    result_dict = {'VoteStat': result}
-    return jsonify(result_dict), 200
+    return jsonify({'VoteStat': result}), 200
