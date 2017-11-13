@@ -154,7 +154,7 @@ def edit_votes(domain, trusted):
 
 
 @app.route("/vote/v1")
-def accept_vote():
+def accept_vote_v1():
     url = request.args.get('url')
     try:
         trusted_param = request.args.get('trusted').lower()[0]
@@ -174,6 +174,50 @@ def accept_vote():
 
     edit_votes(domain, trusted_param)
     return jsonify({'Status': "OK"}), 200
+
+
+@app.route("/vote/v2")
+def accept_vote_v2():
+    url = request.args.get('url')
+
+    try:
+        vote_stat = vote_stats(domain_from_url(url.replace('www.', '')))
+    except:
+        vote_stat = 0
+
+    try:
+        trusted_param = request.args.get('trusted').lower()[0]
+    except:
+        return jsonify({
+            "Status": "Error",
+            "VoteStat": vote_stat
+        }), 400
+    trusted = -1
+
+    if trusted_param == 'y':
+        trusted = 1
+    if trusted_param == 'n':
+        trusted = 0
+
+    if trusted == -1:
+        return jsonify({
+            "Status": "Error",
+            "VoteStat": vote_stat
+        }), 400
+
+    domain = domain_from_url(url).replace('www.', '')
+
+    edit_votes(domain, trusted_param)
+
+    try:
+        vote_stat = vote_stats(domain_from_url(url.replace('www.', '')))
+    except:
+        vote_stat = 0
+
+    return jsonify({
+        "Status": "OK",
+        "VoteStat": vote_stat
+    }), 200
 
 
 def vote_stats(domain):
