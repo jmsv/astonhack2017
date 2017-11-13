@@ -93,9 +93,20 @@ def get_stats_v3():
 
 @app.route("/v4")
 def get_stats_v4():
-    search = request.args.get('search')
-    if not search:
-        return 'Error', 400
+    try:
+        search = request.args.get('search')
+        if not search:
+            return "Error", 400
+    except:
+        return "Error", 400
+
+    add_http = True
+    if 'http' in search:
+        if search.index('http') == 0:
+            add_http = False
+    if add_http:
+        search = 'http://' + search
+
     maj_search = search[:]
     maj_res = majestic.get_stats(API_KEY, maj_search)
     if maj_res['TrustFlow'] <= maj_res['CitationFlow'] <= 0:
@@ -112,7 +123,12 @@ def get_stats_v4():
     except:
         response['VoteStat'] = 0
 
-    score_vals = [maj_res['TrustFlow'], response['CVC']]
+    score_vals = [maj_res['TrustFlow']]
+    try:
+        score_vals.append(response['CVC'])
+    except:
+        pass
+
     if response['VoteStat'] > 0:
         score_vals.append(response['VoteStat'])
     response['Grade'] = grade_from_values(score_vals)
