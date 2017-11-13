@@ -1,28 +1,27 @@
 function setDOMInfo(info) {
 	console.log(info);
-	var initial = 0;
+	var initial = 75;
 	
-	$("#assessmentMajestic").attr("data-percent", info.TrustFlow||initial);
-	$("#assessmentPeople").attr("data-percent", info.VoteStat||initial);
-	$("#assessmentCitations").attr("data-percent", info.CitationFlow||initial);
+	$("#assessmentMajestic").attr("data-percent", (info)?info.TrustFlow:initial);
+	$("#assessmentPeople").attr("data-percent", (info)?info.VoteStat:initial);
+	$("#assessmentCitations").attr("data-percent", (info)?info.CitationFlow:initial);
 	
-	$("#grade").text(info.Grade);
-	$("#topic").text(info.Topic);
+	$("#grade").text((info)?info.Grade:'C');
+	$("#topic").text((info)?info.Topic:'EVERYTHING :D');
 	
-	$("#betteridge").css("color",(info.Betteridge_legal==true)?"green":"red");
-	$("#betteridge").text((info.Betteridge_legal==true)?"Betteridge legal":"Betteridge illegal");
+	$("#betteridge").css("color",(info)?((info.Betteridge_legal==true)?"green":"red"):"blue");
+	$("#betteridge").text((info && info.Betteridge_legal==true)?"Betteridge legal":"Betteridge illegal");
 	
-	var grammar = info.Grammar;
-	$("#assessmentContent").attr("data-percent", info.CVC);
-	$("#subjectivity").attr("data-percent", info.Subjectivity);
-	$("#polarity").attr("data-percent", info.Polarity);
+	$("#assessmentContent").attr("data-percent", (info)?info.CVC:initial);
+	$("#subjectivity").attr("data-percent", (info)?info.Subjectivity:initial);
+	$("#polarity").attr("data-percent", (info)?info.Polarity:initial);
 	$(".example").piechart([
 		["", ""],
-		["Verb", grammar.Verb],
-		["Adjective", grammar.Adjective],
-		["Adverb", grammar.Adverb],
-		["Noun", grammar.Noun],
-		["Other",grammar.Other]
+		["Verb", (info)?info.Grammar.Verb:initial],
+		["Adjective", (info)?info.Grammar.Adjective:initial],
+		["Adverb", (info)?info.Grammar.Adverb:initial],
+		["Noun", (info)?info.Grammar.Noun:initial],
+		["Other",(info)?info.Grammar.Other:initial]
 	]);
 	$(".piechart-flatmin").on('mouseenter','.sector-s',hoverState);
 	$(".piechart-flatmin").on('mouseleave','.sector-s',hoverState);
@@ -75,7 +74,12 @@ $(document).ready(function(){
 		var url = "http://www.faktnews.org:5000/v4?search=" + viewing;
 		$.getJSON(url, function(data) { setDOMInfo(data) }).fail(function(jqXHR, textStatus, errorThrown) { $("#error").show(); });
 	});
-	else $("#error").show(); 
+	else{//'dev' mode
+		setDOMInfo(null);
+		$("#loading").hide();
+		$("#viewport").css("overflow","visible");
+		$("#move").css("position","static");
+	} 
 	$('a').click(function(){show($(this).attr("data-show"))});
 	$('input').click(function(event){
 		if(viewing){
