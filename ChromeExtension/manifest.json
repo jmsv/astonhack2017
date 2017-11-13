@@ -23,5 +23,5 @@
 		"48": "img/icon48.png",
 		"128": "img/icon128.png"
 	},
-	"permissions": ["tabs"]
+	"permissions": ["tabs", "<all_urls>" ]
 }
