@@ -159,7 +159,7 @@ def accept_vote():
     try:
         trusted_param = request.args.get('trusted').lower()[0]
     except:
-        return "Error", 400
+        return jsonify({'Status': "Error"}), 400
     trusted = -1
 
     if trusted_param == 'y':
@@ -168,12 +168,12 @@ def accept_vote():
         trusted = 0
 
     if trusted == -1:
-        return 'Error', 400
+        return jsonify({'Status': "Error"}), 400
 
     domain = domain_from_url(url).replace('www.', '')
 
     edit_votes(domain, trusted_param)
-    return "OK", 200
+    return jsonify({'Status': "OK"}), 200
 
 
 def vote_stats(domain):
@@ -197,4 +197,6 @@ def get_vote_stats():
         result = vote_stats(domain_from_url(search.replace('www.', '')))
     except:
         result = 0
-    return str(result), 200
+
+    result_dict = {'VoteStat': result}
+    return jsonify(result_dict), 200
