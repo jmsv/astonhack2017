@@ -140,7 +140,10 @@ def edit_votes(domain, trusted):
 @app.route("/vote/v1")
 def accept_vote():
     url = request.args.get('url')
-    trusted_param = request.args.get('trusted').lower()[0]
+    try:
+        trusted_param = request.args.get('trusted').lower()[0]
+    except:
+        return "Error", 400
     trusted = -1
 
     if trusted_param == 'y':
