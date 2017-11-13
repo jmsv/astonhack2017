@@ -56,7 +56,7 @@ function show(id){
 					animation: 1,
 					animationStep: 5,
 					backgroundColor: "#FF0000",
-					foregroundColor: "#00FF00"
+					foregroundColor: "#00DD00"
 				});
 			else 
 				$(this).circliful({
