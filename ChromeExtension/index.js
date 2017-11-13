@@ -2,9 +2,9 @@ function setDOMInfo(info) {
 	console.log(info);
 	var initial = 0;
 	
-	$("#assessmentMajestic").dataset.percentage = info.TrustFlow;
-	$("#assessmentPeople").dataset.percentage = info.VoteStat;
-	$("#assessmentCitations").dataset.percentage = info.CitationFlow;
+	$("#assessmentMajestic").attr("data-percent", info.TrustFlow||initial);
+	$("#assessmentPeople").attr("data-percent", info.VoteStat||initial);
+	$("#assessmentCitations").attr("data-percent", info.CitationFlow||initial);
 	
 	$("#grade").text(info.Grade);
 	$("#topic").text(info.Topic||"Could not decide");
@@ -13,9 +13,9 @@ function setDOMInfo(info) {
 	$("#betteridge").text((info.Betteridge_legal==true)?"Betteridge legal":"Betteridge illegal");
 	
 	var grammar = info.Grammar;
-	$("#assessmentContent").dataset.percentage = info.CVC;
-	$("#subjectivity .fill").dataset.percentage = info.Subjectivity;
-	$("#polarity .fill").dataset.percentage = info.Polarity;
+	$("#assessmentContent").attr("data-percent", info.CVC);
+	$("#subjectivity .fill").attr("data-percentage", info.Subjectivity);
+	$("#polarity .fill").attr("data-percentage", info.Polarity);
 	$(".example").piechart([
 		["", ""],
 		["Verb", grammar.Verb],
@@ -32,16 +32,14 @@ function setDOMInfo(info) {
 }
 (function ($) {
     $.fn.bar = function (options) {
-		console.log('animate 2');
 		var object = $(this);
 		console.log(object);
-		console.log(object.dataset);
-		var percentage = object.dataset.percentage;
         var fill = object.find('.fill');
         var tip = object.find('.tip');
-		fill.css(percentage, "width");
-		tip.css(percentage, "left");
-		tip.text(percentage + "%");
+        var percentage = (object.attr('data-percentage')||50) + "%";
+		fill.css("width", percentage);
+		tip.css("left", percentage);
+		tip.text(percentage);
 		return this;
 	};
 })(jQuery);
@@ -60,7 +58,7 @@ function animate(){
 		backgroundColor: "#FF0000",
 		foregroundColor: "#00FF00"
 	});
-	$( ".barfiller" ).each($(this).bar());
+	$('.bar').each(function(){$(this).bar()});
 }
 var busy = false;
 var viewing;
