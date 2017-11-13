@@ -14,8 +14,8 @@ function setDOMInfo(info) {
 	
 	var grammar = info.Grammar;
 	$("#assessmentContent").attr("data-percent", info.CVC);
-	$("#subjectivity .fill").attr("data-percentage", info.Subjectivity);
-	$("#polarity .fill").attr("data-percentage", info.Polarity);
+	$("#subjectivity").attr("data-percent", info.Subjectivity);
+	$("#polarity").attr("data-percent", info.Polarity);
 	$(".example").piechart([
 		["", ""],
 		["Verb", grammar.Verb],
@@ -30,6 +30,7 @@ function setDOMInfo(info) {
 	$(window).resize(resizeEvent);	
 	
 	$("#loading").hide();
+	show('circles');
 }
 (function ($) {
     $.fn.bar = function (options) {
@@ -37,85 +38,54 @@ function setDOMInfo(info) {
 		console.log(object);
         var fill = object.find('.fill');
         var tip = object.find('.tip');
-        var percentage = (object.attr('data-percentage')||50) + "%";
+        var percentage = (object.attr('data-percent')) + "%";
 		fill.css("width", percentage);
 		tip.css("left", percentage);
 		tip.text(percentage);
 		return this;
 	};
 })(jQuery);
-
-function animate(){
-	$(".animate").empty();
-	$(".animate:not(#assessmentPeople)").circliful({
-		animation: 1,
-		animationStep: 5,
-		multiPercentage: 0,
-		progressColor: { 0: '#FF0000', 50: '#FFA500', 90: '#00DD00'}
+function show(id){
+	var object = $('#'+id);
+	$('#move').css("left","-"+object.css("left"));
+	$('#move').css("top","-"+object.css("top"));
+	
+	$('#'+id+" .animate").each(function(){
+		if( $(this).is(':empty') )
+			if ($(this).is("#assessmentPeople"))
+				$(this).circliful({
+					animation: 1,
+					animationStep: 5,
+					backgroundColor: "#FF0000",
+					foregroundColor: "#00FF00"
+				});
+			else 
+				$(this).circliful({
+					animation: 1,
+					animationStep: 5,
+					multiPercentage: 0,
+					progressColor: { 0: '#FF0000', 50: '#FFA500', 90: '#00DD00'}
+				});
 	});
-	$("#assessmentPeople").circliful({
-		animation: 1,
-		animationStep: 5,
-		backgroundColor: "#FF0000",
-		foregroundColor: "#00FF00"
-	});
-	$('.bar').each(function(){$(this).bar()});
+	$('#'+id+' .bar').each(function(){$(this).bar()});
 }
 var busy = false;
 var viewing;
-$("#error").hide();
 $(document).ready(function(){
 	if(chrome.tabs)chrome.tabs.query({ active: true, currentWindow: true }, function callback(tabs) {
 		var viewing = tabs[0].url
 		var url = "http://www.faktnews.org:5000/v4?search=" + viewing;
-		$.getJSON(url, function(data) {
-			setDOMInfo(data);
-		}).fail(function(jqXHR, textStatus, errorThrown) { console.log( "JSON Error" ); });
+		$.getJSON(url, function(data) { setDOMInfo(data) }).fail(function(jqXHR, textStatus, errorThrown) { $("#error").show(); });
 	});
-	else
-		$("#loading").hide();
-		
-	$('#circles a').click(function(){
-		if(busy == false){
-			busy = true;
-			
-			$("#move").addEventListener('transitionend', function() {
-				busy = false;
-			});
-			
-			$('#circles').animate({ marginLeft: "100%", easing: "swing"} , 500);
-			$('.page').animate({ marginLeft: "0%", easing: "swing"} , 500, function(){
-				animate();
-				
-			});
-		}
-	});
+	else $("#error").show(); 
 	
-	$('#assessmentContent + a').click(function(){$('#content').show()});
-	$('#assessmentMajestic + a').click(function(){$('#majestic').show()});
-	$('#assessmentPeople + a').click(function(){$('#people').show()});
+	$('a').click(function(){show($(this).attr("data-show"))});
 	
-	$('.page a').click(function(){
-		if(busy == false){
-			busy = true;
-			$('#circles').animate({ marginLeft: "0%", easing: "swing"} , 500);
-			$('.page').animate({ marginLeft: "-100%", easing: "swing"} , 500,  function(){
-				//$(".page").hide();
-				animate();
-				busy = false;
-			});
-		}
-	});
-	$('#yes').click(function(event){
+	$('.people input').click(function(event){
+		event.preventDefault();
 		if(viewing){
-			var url = "http://www.faktnews.org:5000/vote/v1?url=" + viewing + "&trusted=y";
-			$.getJSON(url, function(data) {}).fail(function(jqXHR, textStatus, errorThrown) { console.log( "JSON Error" ); });
-		}
-	});
-	$('#no').click(function(event){
-		if(viewing){
-			var url = "http://www.faktnews.org:5000/vote/v1?url=" + viewing + "&trusted=n";
-			$.getJSON(url, function(data) {}).fail(function(jqXHR, textStatus, errorThrown) { console.log( "JSON Error" ); });
+			var url = "http://www.faktnews.org:5000/vote/v1?url=" + viewing + "&trusted=" + ($(this).is("#yes")?'y':'n');
+			$.getJSON(url, function(data) {}).fail(function(jqXHR, textStatus, errorThrown) { $("#error").show(); });
 		}
 	});
 });
