@@ -3,13 +3,11 @@
 	"name": "FaktNews",
 	"description": "Detects fake news",
 	"version": "0.2",
-	"content_scripts": [
-	  {
+	"content_scripts": [{
 		"matches": ["<all_urls>"],
 		"js": ["content.js"],
 		"run_at": "document_end"
-	  }
-	],
+	}],
 	"background": {
 		"scripts": ["background.js"],
 		"persistent": false
@@ -18,10 +16,10 @@
 		"default_title": "FaktNews",
 		"default_popup": "index.html"
 	},
-	"icons": { 	
+	"icons": {
 		"16": "img/icon16.png",
 		"48": "img/icon48.png",
 		"128": "img/icon128.png"
 	},
-	"permissions": ["tabs", "<all_urls>" ]
+	"permissions": ["tabs", "<all_urls>"]
 }

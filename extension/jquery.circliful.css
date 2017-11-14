@@ -9,7 +9,9 @@
     -moz-transform: rotate(-89deg) translateX(-190px);
 }
 
+
 /* full circle 25 empty 534 */
+
 .circliful .inner {
     fill: transparent;
     stroke: orange;
@@ -24,7 +26,6 @@
 
 .circliful {
     overflow: visible !important;
-
 }
 
 .svg-container {
