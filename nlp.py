@@ -148,7 +148,7 @@ def Betteridge_legal(url):
 def article_stats(url):
     article_stats = {}
     article = get_article(url)
-    gram_dict = get_grammar_census(BBC_chatbot_love)
+    gram_dict = get_grammar_census(url)
     gd_sorted = sorted(gram_dict.items(), key = operator.itemgetter(1), reverse = True)
     article_stats['Grammar'] = gd_sorted
     article_no_quotes = remove_quotes(article)
