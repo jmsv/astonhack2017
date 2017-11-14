@@ -1,2 +1,3 @@
+special-vendored-path/* linguist-vendored
 /extension/js/index.min.js linguist-vendored=false
 /extension/css/index.min.css linguist-vendored=false
