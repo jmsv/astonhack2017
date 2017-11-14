@@ -32,3 +32,11 @@ To install on Opera do the following:
 
 #### Edge
 While our extension is compatible with Edge, you have to publish it to the Windows Store which we are not going to do.
+
+## Software & libraries used 
+#### Frontend
+- Notepad++
+- GitHub Desktop
+- https://github.com/ericwenn/piechart
+- https://github.com/pguso/jquery-plugin-circliful
+
