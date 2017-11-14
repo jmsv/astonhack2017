@@ -82,7 +82,7 @@ $(document).ready(function(){
 	$('a').click(function(){show($(this).attr("data-show"))});
 	$('input').click(function(event){
 		if(viewing){
-			var url = "http://www.faktnews.org:5000/vote/v2?url=" + viewing + "&trusted=" + ($(this).is("#yes")==true?'y':'n');
+			var url = "http://www.faktnews.org:5000/vote/v2?url=" + encodeURIComponent(viewing) + "&trusted=" + ($(this).is("#yes")==true?'y':'n');
 			$.getJSON(url, function(data) {
 				var container = $('#assessmentPeople').parent();
 				$('#assessmentPeople').remove();
