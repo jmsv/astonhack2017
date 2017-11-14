@@ -1,17 +1,8 @@
 {
 	"manifest_version": 2,
 	"name": "FaktNews",
-	"description": "Detects fake news",
-	"version": "0.2",
-	"content_scripts": [{
-		"matches": ["<all_urls>"],
-		"js": ["content.js"],
-		"run_at": "document_end"
-	}],
-	"background": {
-		"scripts": ["background.js"],
-		"persistent": false
-	},
+	"description": "Analises the current webpage and grades its trustworthiness",
+	"version": "1.0",
 	"browser_action": {
 		"default_title": "FaktNews",
 		"default_popup": "index.html"
