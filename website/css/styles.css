@@ -19,7 +19,7 @@ body {
 }
 
 p {
-    font-size: 1.2em;
+    font-size: 1.1em;
 }
 
 img {
@@ -38,8 +38,8 @@ a {
 }
 
 .block {
-    padding-top: 3em;
-    padding-bottom: 3em;
+    padding-top: 2.5em;
+    padding-bottom: 2.5em;
 }
 
 .red-bg {
