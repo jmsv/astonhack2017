@@ -1,4 +1,2 @@
-*.min.css linguist-vendored=false
-*.min.js linguist-vendored=false
-*.min.css linguist-language=CSS
-*.min.js linguist-language=JavaScript
+/extension/js/index.min.js linguist-vendored=false
+/extension/css/index.min.css linguist-vendored=false
