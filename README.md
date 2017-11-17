@@ -4,7 +4,7 @@ For Aston University's 2017 Hackathon we <a href="https://devpost.com/software/f
 
 FaktNews grades the trustworthiness of the website you're currently viewing. For each website you visit, we average [Majestic's](https://majestic.com) trustworthiness value, our own measure, and the community's vote to give you an overall grade.
 
-![Example](devmode.png "Example data")
+![Example](website/img/devmode.png "Example data")
 
 ## Support
 
