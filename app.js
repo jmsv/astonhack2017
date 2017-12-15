@@ -1,6 +1,28 @@
 import requests
 import json
+import operator
+import re
+import sys
+import urllib
 
+import nltk
+import requests
+from bs4 import BeautifulSoup
+from textblob import TextBlob
+
+from flask import Flask, request, jsonify
+import os
+import json
+from article_analysis import nlp
+
+import majestic
+
+app = Flask(__name__)
+
+
+api_key_name = "MAJESTIC_API_KEY"
+API_KEY = os.environ[api_key_name]
+print("%s: %s" % (api_key_name, API_KEY))
 
 def get_json(url):
     r = requests.get(url)
@@ -34,17 +56,6 @@ def get_stats(key, search):
     }
 
     return response_data
-
-import operator
-import re
-import sys
-import urllib
-
-import nltk
-import requests
-from bs4 import BeautifulSoup
-from textblob import TextBlob
-
 
 def get_article(url):
     try:
@@ -168,21 +179,6 @@ if __name__ == '__main__':
 
 	
 	
-	from flask import Flask, request, jsonify
-import os
-import json
-from article_analysis import nlp
-
-import majestic
-
-app = Flask(__name__)
-
-
-api_key_name = "MAJESTIC_API_KEY"
-API_KEY = os.environ[api_key_name]
-print("%s: %s" % (api_key_name, API_KEY))
-
-
 def domain_from_url(url):
     try:
         domain = url.split('/')[2]
