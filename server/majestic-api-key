@@ -1,5 +1,0 @@
-# To load this environment variable, run `source majestic-api-key`
-# after replacing placeholder text with valid API key
-
-export MAJESTIC_API_KEY="replace-with-api-key"
-
