@@ -1,0 +1,24 @@
+{
+  "name": "faktnews",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app",
+	"test": "node test.js"
+  },
+  "description": "Analyses websites and gives an overall grade as to how trustworthy it is.",
+  "author": {
+    "name": "Jonathan Marsh"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "debug": "^2.6.9",
+    "express": "^4.16.2",
+    "html": "^1.0.0",
+    "morgan": "^1.9.0",
+    "serve-favicon": "^2.4.5",
+    "uuid4": "^1.0.0",
+    "ws": "^3.2.0"
+  }
+}
