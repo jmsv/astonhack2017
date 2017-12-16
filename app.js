@@ -1,24 +1,3 @@
-import requests
-import json
-import operator
-import re
-import sys
-import urllib
-
-import nltk
-import requests
-from bs4 import BeautifulSoup
-from textblob import TextBlob
-
-from flask import Flask, request, jsonify
-import os
-import json
-from article_analysis import nlp
-
-import majestic
-
-app = Flask(__name__)
-
 
 api_key_name = "MAJESTIC_API_KEY"
 API_KEY = os.environ[api_key_name]
@@ -38,11 +17,11 @@ def get_json(url):
 
 
 def get_stats(key, search):
-    url = "https://developer.majestic.com/api/json" +\
-          "?app_api_key=%s" +\
-          "&cmd=GetIndexItemInfo" +\
-          "&items=1" +\
-          "&item0=%s" +\
+    url = "https://developer.majestic.com/api/json" +
+          "?app_api_key=%s" +
+          "&cmd=GetIndexItemInfo" +
+          "&items=1" +
+          "&item0=%s" +
           "&datasource=fresh"
     url = url % (key, search)
 
@@ -211,52 +190,6 @@ def grade_from_values(values):
         return 'F'
     return 'U'
 
-
-@app.route("/hello")
-def hello():
-    return "Hello World!"
-
-
-@app.route("/v1")
-def get_stats_v1():
-    search = request.args.get('search')
-    if not search:
-        return 'Error', 400
-    return jsonify(majestic.get_stats(API_KEY, search))
-
-
-@app.route("/v2")
-def get_stats_v2():
-    search = request.args.get('search')
-    if not search:
-        return 'Error', 400
-    maj_res = majestic.get_stats(API_KEY, search)
-    try:
-        aa_res = nlp.article_stats(search)
-        response = {**maj_res, **aa_res}
-    except ValueError:
-        response = maj_res
-    return jsonify(response)
-
-
-@app.route("/v3")
-def get_stats_v3():
-    search = request.args.get('search')
-    if not search:
-        return 'Error', 400
-    maj_search = search[:]
-    maj_res = majestic.get_stats(API_KEY, maj_search)
-    if maj_res['TrustFlow'] <= maj_res['CitationFlow'] <= 0:
-        maj_search = domain_from_url(maj_search)
-        maj_res = majestic.get_stats(API_KEY, maj_search)
-    try:
-        aa_res = nlp.article_stats(search)
-        response = {**maj_res, **aa_res}
-    except ValueError:
-        response = maj_res
-    return jsonify(response)
-
-
 @app.route("/v4")
 def get_stats_v4():
     try:
@@ -317,30 +250,6 @@ def edit_votes(domain, trusted):
 
     with open("votes.json", "w") as jsonFile:
         json.dump(data, jsonFile)
-
-
-@app.route("/vote/v1")
-def accept_vote_v1():
-    url = request.args.get('url')
-    try:
-        trusted_param = request.args.get('trusted').lower()[0]
-    except:
-        return jsonify({'Status': "Error"}), 400
-    trusted = -1
-
-    if trusted_param == 'y':
-        trusted = 1
-    if trusted_param == 'n':
-        trusted = 0
-
-    if trusted == -1:
-        return jsonify({'Status': "Error"}), 400
-
-    domain = domain_from_url(url).replace('www.', '')
-
-    edit_votes(domain, trusted_param)
-    return jsonify({'Status': "OK"}), 200
-
 
 @app.route("/vote/v2")
 def accept_vote_v2():
