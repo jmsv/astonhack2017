@@ -37,6 +37,7 @@
     <Content Include="public\stylesheets\error.css" />
     <Content Include="public\stylesheets\index.css" />
     <Content Include="README.md" />
+    <Content Include="votes.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="app.js" />

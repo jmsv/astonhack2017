@@ -1,46 +1,99 @@
+'use strict';
+var listenOnPort = 8082,
+    debug = require('debug'),
+    path = require('path'),
+    favicon = require('serve-favicon'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    uuid = require('uuid4'),
+    express = require('express'),
+    app = express(),
+    http = require('http').Server(app),
+    request = require('request'),
+    fs = require("fs");
 
-api_key_name = "MAJESTIC_API_KEY"
-API_KEY = os.environ[api_key_name]
-print("%s: %s" % (api_key_name, API_KEY))
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(favicon(__dirname + '/public/favicon.ico'));
+if (app.get('env') === 'development') {
+    app.use(function (err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
+    });
+}
+app.get('/stats', function (req, res) {
 
-def get_json(url):
-    r = requests.get(url)
-    if r.status_code != 200:
-        raise Exception('Error getting JSON from URL')
-    try:
-        r_json = r.json()
-    except json.decoder.JSONDecodeError:
-        raise ValueError('API did not respond with valid JSON')
-    if r_json['Code'] != 'OK':
-        raise Exception('Error getting JSON from URL')
-    return r_json
-
-
-def get_stats(key, search):
-    url = "https://developer.majestic.com/api/json" +
-          "?app_api_key=%s" +
-          "&cmd=GetIndexItemInfo" +
-          "&items=1" +
-          "&item0=%s" +
-          "&datasource=fresh"
-    url = url % (key, search)
-
-    majestic_data = get_json(url)['DataTables']['Results']['Data'][0]
-
-    response_data = {
-        'CitationFlow': majestic_data['CitationFlow'],
-        'TrustFlow': majestic_data['TrustFlow'],
-        'Topic': majestic_data['TopicalTrustFlow_Topic_0'],
-        'TopicValue': majestic_data['TopicalTrustFlow_Value_0']
+});
+app.get('/vote', function (req, res) {
+    if (req.query.trusted == "y" || req.query.trusted == "n") {
+        var votes = require("./votes.json");
+        votes[req.get('host')][req.query.trusted]++;
+        fs.writeFile("filename.json", JSON.stringify(votes), "utf8", function (err) {
+            if (err) {
+                console.log(err);
+                res.send(false);
+            }
+            res.send(true);
+        });
+    } else res.send(false);
+});
+app.get('/votes', function (req, res) {
+    try{
+        res.json(require("./votes.json"));
+    } catch (e) {
+        console.log("Could not parse into JSON: " + data);
+        res.send(false);
     }
+});
+app.get('/', function (req, res) { res.sendFile(__dirname + '/index.html'); });
+app.get('*', function (req, res) { res.sendFile(__dirname + '/public/error.html'); });
+app.set('port', process.env.PORT || listenOnPort + 1);
+http.listen(app.get('port'));
 
-    return response_data
+API_KEY = process.env.API_KEY;
 
-def get_article(url):
+function get_stats(search) {
+    url = `https://developer.majestic.com/api/json?app_api_key=${API_KEY}&cmd=GetIndexItemInfo&items=1&item0=${search}&datasource=fresh`;
+    request.get(url, options, function (err, res, body) {
+        if (err) {
+            console.log("Get request failed: " + err);
+            return false;
+        }
+        if (res.statusCode !== 200) {
+            try {
+                data = JSON.parse(body);
+                if (data['Code'] != 'OK'){
+                    console.log("Error getting JSON from URL");
+                    return false;
+                }else {
+                    majestic_data = data['DataTables']['Results']['Data'][0];
+                    response_data = {
+                        'CitationFlow': majestic_data['CitationFlow'],
+                        'TrustFlow': majestic_data['TrustFlow'],
+                        'Topic': majestic_data['TopicalTrustFlow_Topic_0'],
+                        'TopicValue': majestic_data['TopicalTrustFlow_Value_0']
+                    }
+                    return response_data;
+                }
+            } catch (e) {
+                console.log("Could not parse into JSON: " + data);
+                return false;
+            }
+        }
+    });
+}
+function get_article(url) {
     try:
-        html = urllib.request.urlopen(url).read()
+    html = urllib.request.urlopen(url).read()
     except:
-        return ""
+    return ""
     soup = BeautifulSoup(html, 'lxml')
 
     for script in soup(["script", "style"]):
@@ -48,21 +101,21 @@ def get_article(url):
 
     text = soup.get_text()
     lines = (line.strip() for line in text.splitlines())
-    chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
-    text = '\n'.join(chunk for chunk in chunks if chunk)
-    cuttings = text.split('\n')
+        chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+            text = '\n'.join(chunk for chunk in chunks if chunk)
+                cuttings = text.split('\n')
 
     main_cuts = [cut for cut in cuttings if len(cut) > 100]
 
     article = '\n'.join(main_cuts)
     return article
-
+}
 punctuation = list('!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')
 punctuation.extend(['\'\'', '``'])
 
 def get_grammar_census(url):
     article_tokens = nltk.word_tokenize(get_article(url))
-    article_tagged = nltk.pos_tag(article_tokens)  # parts of speech
+    article_tagged = nltk.pos_tag(article_tokens)
     grammar = {}
     for word in article_tagged:
         if word[1] not in punctuation:
@@ -172,23 +225,20 @@ def domain_from_url(url):
     return domain
 
 
-def grade_from_values(values):
-    avg = int(sum(values) / float(len(values)))
-    if type(avg) != int:
-        return 'N/A'
-    if 85 < avg <= 100:
-        return 'A'
-    if 70 < avg <= 85:
-        return 'B'
-    if 55 < avg <= 70:
-        return 'C'
-    if 40 < avg <= 55:
-        return 'D'
-    if 25 < avg <= 40:
-        return 'E'
-    if 10 <= avg <= 25:
-        return 'F'
-    return 'U'
+function grade_from_values(values) {
+    avg = 0;
+    for (var item in values) avg += item;
+    avg /= values.length;
+    switch (avg) {
+        case (avg > 85): return 'A'; break;
+        case (avg > 70): return 'B'; break;
+        case (avg > 55): return 'C'; break;
+        case (avg > 40): return 'D'; break;
+        case (avg > 25): return 'E'; break;
+        case (avg > 85): return 'F'; break;
+        default: return 'U'; break;
+    }
+}
 
 @app.route("/v4")
 def get_stats_v4():
@@ -233,88 +283,3 @@ def get_stats_v4():
     response['Grade'] = grade_from_values(score_vals)
 
     return jsonify(response)
-
-
-def edit_votes(domain, trusted):
-    with open("votes.json", "r") as jsonFile:
-        data = json.load(jsonFile)
-
-    try:
-        json_domain = data[domain]
-    except Exception:
-        data[domain] = {
-            'y': 0,
-            'n': 0
-        }
-    data[domain][trusted] = int(data[domain][trusted] + 1)
-
-    with open("votes.json", "w") as jsonFile:
-        json.dump(data, jsonFile)
-
-@app.route("/vote/v2")
-def accept_vote_v2():
-    url = request.args.get('url')
-
-    try:
-        vote_stat = vote_stats(domain_from_url(url.replace('www.', '')))
-    except:
-        vote_stat = 0
-
-    try:
-        trusted_param = request.args.get('trusted').lower()[0]
-    except:
-        return jsonify({
-            "Status": "Error",
-            "VoteStat": vote_stat
-        }), 400
-    trusted = -1
-
-    if trusted_param == 'y':
-        trusted = 1
-    if trusted_param == 'n':
-        trusted = 0
-
-    if trusted == -1:
-        return jsonify({
-            "Status": "Error",
-            "VoteStat": vote_stat
-        }), 400
-
-    domain = domain_from_url(url).replace('www.', '')
-
-    edit_votes(domain, trusted_param)
-
-    try:
-        vote_stat = vote_stats(domain_from_url(url.replace('www.', '')))
-    except:
-        vote_stat = 0
-
-    return jsonify({
-        "Status": "OK",
-        "VoteStat": vote_stat
-    }), 200
-
-
-def vote_stats(domain):
-    with open("votes.json", "r") as jsonFile:
-        data = json.load(jsonFile)
-    try:
-        js_d = data[domain]
-    except:
-        return 0
-    score = js_d['y'] * 100.0 / (js_d['y'] + js_d['n'])
-    return int(score)
-
-
-@app.route("/vote-stats")
-def get_vote_stats():
-    try:
-        search = request.args.get('url')
-    except:
-        return "Error, endpoint requires URL param: 'url'", 400
-    try:
-        result = vote_stats(domain_from_url(search.replace('www.', '')))
-    except:
-        result = 0
-
-    return jsonify({'VoteStat': result}), 200
