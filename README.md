@@ -1,10 +1,10 @@
-[![FaktNews](website/img/logo-header.png "Logo")](http://faktnews.org)
+[![FaktNews](public/images/logo-header.png "Logo")](http://faktnews.org)
 
 For Aston University's 2017 Hackathon we <a href="https://devpost.com/software/faktnews">submitted</a> a browser extension called <a href="http://faktnews.org/">FaktNews</a>.
 
 FaktNews grades the trustworthiness of the website you're currently viewing. For each website you visit, we average [Majestic's](https://majestic.com) trustworthiness value, our own measure, and the community's vote to give you an overall grade.
 
-![Example](website/img/devmode.png "Example data")
+![Example](public/images/devmode.png "Example data")
 
 ## Support
 
@@ -17,7 +17,7 @@ To install on Chrome do the following:
 1. Go to `chrome://extensions`
 2. Enable `Developer mode`
 3. Click `Load unpacked extension...`
-4. Navigate to the `Extension` folder, and click the `Open` on the folder
+4. Navigate to the `Extension` folder, and click `Open` on the folder
 
 
 #### Firefox
@@ -35,7 +35,7 @@ To install on Opera do the following:
 1. Press `Ctrl-Shift-E` or naviagte to: `Menu > Extensions > Extensions`
 2. Click `Developer Mode`
 3. Click `Load unpacked extension...`
-4. Navigate to the `Extension` folder, and click the `OK` on the folder
+4. Navigate to the `Extension` folder, and click `OK` on the folder
 
 
 #### Edge
@@ -45,11 +45,6 @@ While our extension is compatible with Edge, you have to publish it to the Windo
 
 ## Libraries used
 
-### Frontend
-
-- [ericwenn/piechart](https://github.com/ericwenn/piechart)
-- [pguso/jquery-plugin-circliful](https://github.com/pguso/jquery-plugin-circliful)
-
 ### Backend
 
-- [Python](https://www.python.org) [Flask](http://flask.pocoo.org)
+- [Nodejs](https://nodejs.org/en/about/)
