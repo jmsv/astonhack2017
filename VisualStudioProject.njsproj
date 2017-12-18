@@ -29,19 +29,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="package.json" />
-    <Content Include="public\error.html" />
+    <Content Include="public\error.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="public\favicon.ico" />
     <Content Include="public\images\tna.pdn" />
     <Content Include="public\images\TNA.png" />
     <Content Include="public\index.html" />
-    <Content Include="public\stylesheets\error.css" />
     <Content Include="public\stylesheets\index.css" />
     <Content Include="README.md" />
     <Content Include="votes.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="app.js" />
-    <Compile Include="public\javascript\client.js" />
     <Compile Include="public\javascript\index.js" />
   </ItemGroup>
   <ItemGroup>

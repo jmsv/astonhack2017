@@ -6,7 +6,6 @@ var listenOnPort = 8082,
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
-    uuid = require('uuid4'),
     express = require('express'),
     app = express(),
     http = require('http').Server(app),
@@ -87,14 +86,15 @@ app.get('/stats', function (req, res) {
     for (var item in values) result.overall += item;
     result.overall /= values.length;
     switch (Math.floor(avg/15)) {
-        case (6): result.overall = 'A'; break;
-        case (5): result.overall = 'B'; break;
-        case (4): result.overall = 'C'; break;
-        case (3): result.overall = 'D'; break;
-        case (2): result.overall = 'E'; break;
+        case (0): result.overall = 'U'; break;
         case (1): result.overall = 'F'; break;
-        default: result.overall = 'U'; break;
+        case (2): result.overall = 'E'; break;
+        case (3): result.overall = 'D'; break;
+        case (4): result.overall = 'C'; break;
+        case (5): result.overall = 'B'; break;
+        default: result.overall = 'A'; break;
     }
+
     res.json(result);
 });
 app.get('/vote', function (req, res) {
@@ -109,16 +109,6 @@ app.get('/vote', function (req, res) {
             res.send(true);
         });
     } else res.send(false);
-});
-app.get('/votes', function (req, res) {
-    try{
-        var votes = require("./votes.json");
-        var score = votes[req.get('host')].y / (votes[req.get('host')].y + votes[req.get('host')].n);
-        res.send(score || 0);
-    } catch (e) {
-        console.log("Could not parse file into JSON");
-        res.send(false);
-    }
 });
 app.get('/', function (req, res) { res.sendFile(__dirname + '/index.html'); });
 app.get('*', function (req, res) { res.sendFile(__dirname + '/public/error.html'); });

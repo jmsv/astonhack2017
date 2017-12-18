@@ -1,12 +1,110 @@
+<!DOCTYPE html>
 <html>
 
 <head>
     <title>FaktNews</title>
-    <link rel="stylesheet" type="text/css" href="stylesheet/styles.css" />
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="css/circliful.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/piechart.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/index.css" rel="stylesheet" type="text/css" />
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/circliful.min.js"></script>
+    <script src="js/piechart.min.js"></script>
 </head>
 
 <body>
+    <div class="overlay" id="loading">
+        <p>Loading stats please wait...</p>
+    </div>
 
+    <div class="overlay" id="error">
+        <p>Hmmm looks like something went wrong :'(</p>
+    </div>
+
+    <div id="viewport">
+        <div id="move">
+            <div class="page" id="circles">
+                <div class="circle popup">
+                    <h3>Our Assessment</h3>
+                    <div id="assessmentContent" class="animate"></div>
+                    <a href="#" data-show="content">View more info</a>
+                </div>
+                <div class="circle popup">
+                    <h3>Majestic's Assessment</h3>
+                    <div id="assessmentMajestic" class="animate"></div>
+                    <a href="#" data-show="majestic">View more info</a>
+                </div>
+                <div class="circle popup">
+                    <h3>The People's Vote</h3>
+                    <div id="assessmentPeople" class="animate"></div>
+                    <a href="#" data-show="people">View more info</a>
+                </div>
+                <div class="circle popup">
+                    <h3>Overall Grade</h3>
+                    <h1 id="grade"></h1>
+                </div>
+            </div>
+
+            <div class="page" id="content">
+                <div class="wrapper popup">
+                    <p>
+                        Our assessment of a web page's trustworthiness comes from an analysis of the content of the page. We check for poor
+                        grammar and analyse the language used.
+                    </p>
+                    <div class="example" id="demo"></div>
+                    <p>Polarity</p>
+                    <div id="polarity" class="bar">
+                        <span class="tip"></span>
+                        <span class="fill"></span>
+                    </div>
+                    <p>Subjectivity</p>
+                    <div id="subjectivity" class="bar">
+                        <span class="tip"></span>
+                        <span class="fill"></span>
+                    </div>
+                    <p id="betteridge">Betteridge's Law</p>
+                    <a href="#" data-show="circles">Back</a>
+                </div>
+            </div>
+
+            <div class="page" id="majestic">
+                <div class="wrapper popup">
+                    <p>
+                        The main statistic comes from Majestic's Trustworthiness value (the value displayed on the main page). Below is the
+                        citations value which is commonly coupled with trustworthiness. If a website has high citations but low trust, this
+                        website is most likely fake news.
+                    </p>
+                    <div class="columns">
+                        <div class="column">
+                            <h3>Topic/Genre:</h3>
+                            <p id="topic"></p>
+                        </div>
+                        <div class="column">
+                            <h3>Citations</h3>
+                            <div id="assessmentCitations" class="animate"></div>
+                        </div>
+                    </div>
+                    <a href="#" data-show="circles">Back</a>
+                </div>
+            </div>
+
+            <div class="page" id="people">
+                <div class="wrapper popup">
+                    <p>
+                        This score comes from the average of people's opinion on whether the page is to be trusted or not. You can vote too,
+                        do you trust this page?
+                    </p>
+                    <form>
+                        <input type="button" id="yes" value="Yes">
+                        <input type="button" id="no" value="No">
+                    </form>
+                    <a href="#" data-show="circles">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/index.js"></script>
 </body>
 
 </html>
