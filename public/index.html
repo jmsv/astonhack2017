@@ -10,23 +10,29 @@
 </head>
 
 <body>
+    <form id="searchBar">
+        <input type="url" placeholder="URL" />
+        <input type="submit" value="Analyse" />
+        <br />
+        <small>Random information is displayed initially, enter a URL above to see how trustworthy it is!</small>
+    </form>
     <div class="page" id="main">
         <div class="panel popup">
             <h3>Our Assessment</h3>
             <div id="assessmentContent" class="circle">
-                <svg viewBox="0 0 126 126"><g><circle/><circle/><text x="63" y="63"></text></g></svg>
+                <svg viewBox="0 0 126 126"><g><circle /><circle /><text x="63" y="63"></text></g></svg>
             </div>
         </div>
         <div class="panel popup">
-            <h3>Majestic's Assessment</h3>
+            <h3>Majestic's Trust</h3>
             <div id="assessmentMajestic" class="circle">
-                <svg viewBox="0 0 126 126"><g><circle/><circle/><text x="63" y="63"></text></g></svg>
+                <svg viewBox="0 0 126 126"><g><circle /><circle /><text x="63" y="63"></text></g></svg>
             </div>
         </div>
         <div class="panel popup">
             <h3>The People's Vote</h3>
             <div id="assessmentPeople" class="circle">
-                <svg viewBox="0 0 126 126"><g><circle/><circle/><text x="63" y="63"></text></g></svg>
+                <svg viewBox="0 0 126 126"><g><circle /><circle /><text x="63" y="63"></text></g></svg>
             </div>
         </div>
         <div class="panel popup">
@@ -36,7 +42,7 @@
     </div>
 
     <div class="page">
-        <div class="wrapper popup">
+        <div class="popup">
             <p>
                 Our assessment of a web page's trustworthiness comes from an analysis of the content of the page. We check for poor
                 grammar and analyse the language used.
@@ -57,7 +63,7 @@
     </div>
 
     <div class="page">
-        <div class="wrapper popup">
+        <div class="popup">
             <p>
                 The main statistic comes from Majestic's Trustworthiness value (the value displayed on the main page). Below is the
                 citations value which is commonly coupled with trustworthiness. If a website has high citations but low trust, this
@@ -79,7 +85,7 @@
     </div>
 
     <div class="page">
-        <div class="wrapper popup">
+        <div class="popup">
             <p>
                 This score comes from the average of people's opinion on whether this website (in general, not specifically this page) is to be trusted or not.
                 You can vote too, do you trust this page?
@@ -90,7 +96,6 @@
             </form>
         </div>
     </div>
-
     <script src="javascript/index.js"></script>
 </body>
 

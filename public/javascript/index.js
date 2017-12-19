@@ -16,6 +16,18 @@
         fill.css("stroke-dashoffset", percentage);
         tip.text(object.attr('data-percent') + "%");
     };
+    $.fn.pie = function (options) {
+        var object = $(this), total = 0, current = 0, create = "<svg viewBox='0 0 132 132'><g>";
+        for (var item in options)
+            total += options[item];
+        for (var item in options) {
+            var angleSize = (options[item] / total) * 360;
+            create += `<circle stroke-dashoffset='${360 - angleSize}' style='transform: rotate(${current}deg);'/><text x='63' y='63'>${options[item]} ${item}</text>`;
+            current += angleSize;
+        }
+        create += "</g></svg>";
+        $(this).append($(create));
+    };
 })(jQuery);
 function setDOMInfo(info) {
     $("#assessmentMajestic").attr("data-percent", info.TrustFlow);
@@ -33,4 +45,5 @@ $(function () {
     $(".circle, .bar").each(function (index) { $(this).attr("data-percent", Math.floor(Math.random() * 100)); });
     $(".circle").each(function (index) { $(this).circle(); });
     $(".bar").each(function (index) { $(this).bar(); });
+    $("#grammar").pie({ "Verb": Math.floor(Math.random() * 100), "Noun": Math.floor(Math.random() * 100), "Adjective": Math.floor(Math.random() * 100)});
 });

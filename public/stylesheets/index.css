@@ -5,6 +5,44 @@ body {
     margin: 0;
 }
 
+#searchBar {
+    padding: 1rem;
+}
+
+    #searchBar input {
+        padding: 1rem 2rem;
+    }
+
+        #searchBar input[type="url"] {
+            border: 2px solid #ddd;
+            border-radius: .15rem;
+            width: 500px;
+            padding-left: 1rem;
+            font-size: 1rem;
+        }
+
+        #searchBar input[type="submit"] {
+            margin-top: 0;
+            border: 0;
+            border-bottom: .2rem solid #005661;
+            border-radius: .25rem;
+            background: #00838e;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            outline: none !important;
+        }
+
+            #searchBar input[type="submit"]:hover,
+            #searchBar input[type="submit"]:focus {
+                text-decoration: underline
+            }
+
+            #searchBar input[type="submit"]:active {
+                margin-top: .2rem;
+                border-bottom: 0;
+            }
+
 .overlay {
     background: rgba(0,0,0,.5);
     position: absolute;
@@ -44,23 +82,7 @@ body {
     float: left;
     width: 400px;
     height: 480px;
-}
-
-#circles {
-    left: 400px;
-}
-
-#content {
-    left: 0;
-}
-
-#majestic {
-    left: 800px;
-}
-
-#people {
-    top: 500px;
-    left: 400px;
+    margin: .5rem;
 }
 
 .page h3 {
@@ -68,13 +90,6 @@ body {
     text-decoration: underline;
     white-space: nowrap;
     text-align: center;
-}
-
-.wrapper {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    margin: .5rem;
 }
 
 .popup {
@@ -118,7 +133,7 @@ body {
         height: 100%;
         background: rgb(22,181,151);
         z-index: 1;
-        transition: width .3s ease-in-out;
+        transition: width 1s ease-out;
     }
 
     .bar .tip {
@@ -130,12 +145,11 @@ body {
         transform: translate(-50%,-50%);
         z-index: 2;
         background: #333;
-        transition: left .3s ease-in-out;
+        transition: left 1s ease-out;
     }
 
 
 .circle svg {
-    
 }
 
     .circle svg circle {
@@ -145,20 +159,20 @@ body {
         fill: none;
     }
 
-    .circle svg circle:nth-of-type(1) {
-        stroke: #e6e6e6;
-        stroke-width: 9;
-    }
+        .circle svg circle:nth-of-type(1) {
+            stroke: #e6e6e6;
+            stroke-width: 9;
+        }
 
-    .circle svg circle:nth-of-type(2) {
-        stroke: #f77a52;
-        stroke-width: 12;
-        stroke-dasharray: 360;
-        stroke-dashoffset: 360;
-        transform: rotate(-90deg);
-        transform-origin: 50% 50%;
-        transition: stroke-dashoffset 1s;
-    }
+        .circle svg circle:nth-of-type(2) {
+            stroke: #f77a52;
+            stroke-width: 12;
+            stroke-dasharray: 360;
+            stroke-dashoffset: 360;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 1s ease-out;
+        }
 
     .circle svg text {
         font-family: "Open Sans";
@@ -167,8 +181,31 @@ body {
         dominant-baseline: central;
     }
 
-a {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
+#grammar svg circle {
+    cx: 65;
+    cy: 65;
+    r: 57;
+    fill: none;
+    stroke-width: 16;
+    stroke-dasharray: 360;
+    transform-origin: 50% 50%;
+}
+
+    #grammar svg circle:nth-of-type(1) {stroke: #2ecc71;}
+    #grammar svg circle:nth-of-type(2) {stroke: #3498db;}
+    #grammar svg circle:nth-of-type(3) {stroke: #9b59b6;}
+    #grammar svg circle:nth-of-type(4) {stroke: #e74c3c;}
+    #grammar svg circle:nth-of-type(5) {stroke: #e67e22;}
+    #grammar svg circle:nth-of-type(6) {stroke: #34495e;}
+    #grammar svg circle:nth-of-type(7) {stroke: #8e44ad;}
+    #grammar svg circle:nth-of-type(8) {stroke: #27ae60;}
+
+#grammar svg text {
+    font-family: "Open Sans";
+    text-anchor: middle;
+    dominant-baseline: central;
+    display:none;
+}
+#grammar svg circle:hover + text {
+    display:block;
 }
