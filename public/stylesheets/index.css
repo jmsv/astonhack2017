@@ -40,27 +40,10 @@ body {
     border-bottom: .25rem solid #a20000;
 }
 
-#viewport, .page, body {
+.page {
+    float: left;
     width: 400px;
     height: 480px;
-    position: relative;
-}
-
-#viewport {
-    overflow: hidden;
-}
-
-#move {
-    position: absolute;
-    top: 0;
-    left: -400px;
-    transition: all 0.3s ease 0s;
-}
-
-.page {
-    position: absolute;
-    top: 0;
-    left: 0;
 }
 
 #circles {
@@ -81,7 +64,7 @@ body {
 }
 
 .page h3 {
-    margin: 0;
+    margin-top: 0;
     text-decoration: underline;
     white-space: nowrap;
     text-align: center;
@@ -102,24 +85,21 @@ body {
     box-sizing: content-box;
 }
 
+#main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: .5rem;
+    margin: .5rem;
+}
+
 #assessmentCitations {
     width: 200px;
 }
 
 #grade {
     text-align: center;
-    font-size: 76pt;
+    font-size: 80pt;
     margin: 0;
-    position: relative;
-    top: 10%;
-}
-
-.circle {
-    width: 150px;
-    height: 190px;
-    margin: .5rem;
-    float: left;
-    position: relative;
 }
 
 .bar {
@@ -151,6 +131,40 @@ body {
         z-index: 2;
         background: #333;
         transition: left .3s ease-in-out;
+    }
+
+
+.circle svg {
+    
+}
+
+    .circle svg circle {
+        cx: 63;
+        cy: 63;
+        r: 57;
+        fill: none;
+    }
+
+    .circle svg circle:nth-of-type(1) {
+        stroke: #e6e6e6;
+        stroke-width: 9;
+    }
+
+    .circle svg circle:nth-of-type(2) {
+        stroke: #f77a52;
+        stroke-width: 12;
+        stroke-dasharray: 360;
+        stroke-dashoffset: 360;
+        transform: rotate(-90deg);
+        transform-origin: 50% 50%;
+        transition: stroke-dashoffset 1s;
+    }
+
+    .circle svg text {
+        font-family: "Open Sans";
+        font-size: 20pt;
+        text-anchor: middle;
+        dominant-baseline: central;
     }
 
 a {

@@ -22,6 +22,7 @@
     "request": "^2.83.0",
     "serve-favicon": "^2.4.5",
     "unfluff": "^3.0.0",
+    "url": "^0.11.0",
     "wordpos": "^1.1.5"
   }
 }

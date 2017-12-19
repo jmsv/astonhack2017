@@ -15,7 +15,8 @@ var listenOnPort = 8082,
     extractor = require('unfluff'),
     emotional = require("emotional"),
     WordPOS = require('wordpos'),
-    wordpos = new WordPOS();
+    wordpos = new WordPOS(),
+    url = require('url');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -33,17 +34,16 @@ if (app.get('env') === 'development') {
     });
 }
 app.get('/stats', function (req, res) {
-    var domain = req.get("host"),
+    var url = new URL(decodeURIComponent(req.query.url)),
         result = {},
-        url = `http://developer.majestic.com/api/json`,
         options = {
             app_api_key: process.env.API_KEY,
             cmd: "GetIndexItemInfo",
             items: 1,
-            item0: domain,
+            item0: url.href,
             datasource: "fresh"
         };
-    request({ url: url, qs: options }, function (err, res, body) {
+    request({ url: `http://developer.majestic.com/api/json`, qs: options }, function (err, res, body) {
         if (err)
             console.log("Get request failed: " + err);
         if (res.statusCode !== 200)
@@ -82,7 +82,7 @@ app.get('/stats', function (req, res) {
         });
     }
 
-    var votes = require("./votes.json");
+    var votes = require("./votes.json"), domain = url.hostname;
     if (votes[domain]) result['Votes'] = votes[domain].y / (votes[domain].y + votes[domain].n);
 
     var values = [result['CitationFlow'] || 0, result['TrustFlow'] || 0, result['CVC'] || 0, result['Votes'] || 0];
@@ -106,8 +106,9 @@ app.get('/stats', function (req, res) {
 });
 app.get('/vote', function (req, res) { //many edits at once will be slow, use a variable and save every hour in case of crash
     if (req.query.trusted === "y" || req.query.trusted === "n") {
-        var votes = require("./votes.json");
-        votes[req.get('host')][req.query.trusted]++;
+        var votes = require("./votes.json"),
+            url = new URL(decodeURIComponent(req.query.url));
+        votes[url.hostname][req.query.trusted]++;
         fs.writeFile("filename.json", JSON.stringify(votes), "utf8", function (err) {
             if (err) {
                 console.log(err);
