@@ -1,4 +1,5 @@
 'use strict';
+require('dotenv-safe').load();
 var listenOnPort = 8082,
     debug = require('debug'),
     path = require('path'),
@@ -110,7 +111,7 @@ app.get('/vote', function (req, res) {
         });
     } else res.send(false);
 });
-app.get('/', function (req, res) { res.sendFile(__dirname + '/index.html'); });
+app.get('/', function (req, res) { res.sendFile(__dirname + '/public/index.html'); });
 app.get('*', function (req, res) { res.sendFile(__dirname + '/public/error.html'); });
 app.set('port', process.env.PORT || listenOnPort + 1);
 http.listen(app.get('port'));

@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="app.js" />
     <Compile Include="public\javascript\index.js" />
+    <Compile Include="public\javascript\jquery.min.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="public\" />

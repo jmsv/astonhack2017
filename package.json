@@ -14,6 +14,7 @@
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "debug": "^2.6.9",
+    "dotenv-safe": "^4.0.4",
     "emotional": "0.0.3",
     "express": "^4.16.2",
     "html": "^1.0.0",
