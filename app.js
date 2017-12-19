@@ -33,73 +33,79 @@ if (app.get('env') === 'development') {
     });
 }
 app.get('/stats', function (req, res) {
-    var domain = req.get("host"), result = {};
-    API_KEY = process.env.API_KEY;
-    url = `developer.majestic.com/api/json?app_api_key=${API_KEY}&cmd=GetIndexItemInfo&items=1&item0=${domain}&datasource=fresh`;
-    result.majestic = request.get(url, options, function (err, res, body) {
-        if (err) {
+    var domain = req.get("host"),
+        result = {},
+        url = `http://developer.majestic.com/api/json`,
+        options = {
+            app_api_key: process.env.API_KEY,
+            cmd: "GetIndexItemInfo",
+            items: 1,
+            item0: domain,
+            datasource: "fresh"
+        };
+    request({ url: url, qs: options }, function (err, res, body) {
+        if (err)
             console.log("Get request failed: " + err);
-            return false;
-        }
         if (res.statusCode !== 200)
             try {
                 data = JSON.parse(body);
-                if (data['Code'] != 'OK') {
+                if (data['Code'] !== 'OK')
                     console.log("Error getting JSON from URL");
-                    return false;
-                } else {
-                    majestic_data = data['DataTables']['Results']['Data'][0];
-                    response_data = {
-                        'CitationFlow': majestic_data['CitationFlow'],
-                        'TrustFlow': majestic_data['TrustFlow'],
-                        'Topic': majestic_data['TopicalTrustFlow_Topic_0'],
-                        'TopicValue': majestic_data['TopicalTrustFlow_Value_0']
-                    }
-                    return response_data;
+                else {
+                    var majestic_data = data['DataTables']['Results']['Data'][0];
+                    result['CitationFlow'] = majestic_data['CitationFlow'];
+                    result['TrustFlow'] = majestic_data['TrustFlow'];
+                    result['Topic'] = majestic_data['TopicalTrustFlow_Topic_0'];
+                    result['TopicValue'] = majestic_data['TopicalTrustFlow_Value_0'];
                 }
             } catch (e) {
                 console.log("Could not parse into JSON: " + data);
-                return false;
             }
     });
     
-    article = extractor.lazy(req.get("host"), 'en');
-    result['Betteridge_legal'] = article.softTitle.substring(article.softTitle.length - 1) == "?";
-
-    var grammar = wordpos.getPOS(article.text);
-    result['Grammar'] = { 'Noun': grammar.noun.length, 'Verb': grammar.verb.length, 'Adjective': grammar.adjective.length, 'Adverb': grammar.adverb.length, 'Other': grammar.rest.length }
-
-    emotional.load(function () {
-        var text = emotional.get(article.text);
-        result['Polarity'] = text.polarity;
-        result['Subjectivity'] = text.subjectivity;
-        var content_veracity_coefficient = 100 - (text.subjectivity / 2) - (text.polarity / 4);
-        if (!result['Betteridge_legal'])
-            content_veracity_coefficient /= 4;
-        result['CVC'] = round(content_veracity_coefficient, 2)
-    });    
+    var article = extractor.lazy(req.get("host"), 'en');
+    if (article) {
+        var title = article.softTitle.toString();
+        result['Betteridge_legal'] = title.substring(title.length - 1) !== "?";
+        
+        wordpos.getPOS(article.text(), function (res) {
+            result['Grammar'] = { 'Noun': res.nouns.length, 'Verb': res.verbs.length, 'Adjective': res.adjectives.length, 'Adverb': res.adverbs.length, 'Other': res.rest.length };
+        });
+        
+        emotional.load(function () {
+            var text = emotional.get(article.text());
+            result['Polarity'] = text.polarity;
+            result['Subjectivity'] = text.subjectivity;
+            result['CVC'] = 100 - text.subjectivity / 2 - text.polarity / 4;
+            if (!result['Betteridge_legal'])
+                result['CVC'] /= 4;
+        });
+    }
 
     var votes = require("./votes.json");
-    result['Votes'] = votes[domain].y / (votes[domain].y + votes[domain].n);
+    if (votes[domain]) result['Votes'] = votes[domain].y / (votes[domain].y + votes[domain].n);
 
-    var values = [result.majestic['CitationFlow'] || 0, result.majestic['TrustFlow'] || 0, result['CVC'] || 0, result['Votes'] || 0];
+    var values = [result['CitationFlow'] || 0, result['TrustFlow'] || 0, result['CVC'] || 0, result['Votes'] || 0];
+    
     result.overall = 0;
-    for (var item in values) result.overall += item;
-    result.overall /= values.length;
-    switch (Math.floor(avg/15)) {
-        case (0): result.overall = 'U'; break;
-        case (1): result.overall = 'F'; break;
-        case (2): result.overall = 'E'; break;
-        case (3): result.overall = 'D'; break;
-        case (4): result.overall = 'C'; break;
-        case (5): result.overall = 'B'; break;
+    for (var i in values)
+        result.overall += values[i];
+    result.overall /= 4;
+    
+    switch (Math.floor(result.overall/15)) {
+        case 0: result.overall = 'U'; break;
+        case 1: result.overall = 'F'; break;
+        case 2: result.overall = 'E'; break;
+        case 3: result.overall = 'D'; break;
+        case 4: result.overall = 'C'; break;
+        case 5: result.overall = 'B'; break;
         default: result.overall = 'A'; break;
     }
 
     res.json(result);
 });
-app.get('/vote', function (req, res) {
-    if (req.query.trusted == "y" || req.query.trusted == "n") {
+app.get('/vote', function (req, res) { //many edits at once will be slow, use a variable and save every hour in case of crash
+    if (req.query.trusted === "y" || req.query.trusted === "n") {
         var votes = require("./votes.json");
         votes[req.get('host')][req.query.trusted]++;
         fs.writeFile("filename.json", JSON.stringify(votes), "utf8", function (err) {

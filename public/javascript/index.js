@@ -3,23 +3,23 @@
         var object = $(this);
         var fill = object.find('.fill');
         var tip = object.find('.tip');
-        var percentage = (object.attr('data-percent')) + "%";
+        var percentage = object.attr('data-percent') + "%";
         fill.css("width", percentage);
         tip.css("left", percentage);
         tip.text(percentage);
         return this;
-    }
+    };
 })(jQuery);
 function setDOMInfo(info) {
     console.log(info);
     var initial = 75;
-    $("#assessmentMajestic").attr("data-percent", (info) ? info.TrustFlow : initial);
-    $("#assessmentPeople").attr("data-percent", (info) ? info.VoteStat : initial);
-    $("#assessmentCitations").attr("data-percent", (info) ? info.CitationFlow : initial);
-    $("#grade").text((info) ? info.Grade : 'C');
-    $("#topic").text((info) ? info.Topic : 'EVERYTHING :D');
-    $("#betteridge").css("color", (info) ? ((info.Betteridge_legal == !0) ? "green" : "red") : "blue");
-    $("#betteridge").text((info && info.Betteridge_legal == !0) ? "Betteridge legal" : "Betteridge illegal");
+    $("#assessmentMajestic").attr("data-percent", info ? info.TrustFlow : initial);
+    $("#assessmentPeople").attr("data-percent", info ? info.VoteStat : initial);
+    $("#assessmentCitations").attr("data-percent", info ? info.CitationFlow : initial);
+    $("#grade").text(info ? info.Grade : 'C');
+    $("#topic").text(info ? info.Topic : 'EVERYTHING :D');
+    $("#betteridge").css("color", (info) ? (info.Betteridge_legal === !0 ? "green" : "red") : "blue");
+    $("#betteridge").text((info && info.Betteridge_legal === !0) ? "Betteridge legal" : "Betteridge illegal");
     $("#assessmentContent").attr("data-percent", (info) ? info.CVC : initial);
     $("#subjectivity").attr("data-percent", (info) ? info.Subjectivity : initial);
     $("#polarity").attr("data-percent", (info) ? info.Polarity : initial);
@@ -36,7 +36,8 @@ function show(id) {
         if ($(this).is(':empty'))
             if ($(this).is("#assessmentPeople"))
                 $(this).circliful({ animation: 1, animationStep: 5, backgroundColor: "#FF0000", foregroundColor: "#00DD00" });
-            else $(this).circliful({ animation: 1, animationStep: 5, multiPercentage: 0, progressColor: { 0: '#FF0000', 50: '#FFA500', 90: '#00DD00' } })
+            else
+                $(this).circliful({ animation: 1, animationStep: 5, multiPercentage: 0, progressColor: { 0: '#FF0000', 50: '#FFA500', 90: '#00DD00' } });
     }); $('#' + id + ' .bar').each(function () { $(this).bar() })
 }
 $(document).ready(function () {
@@ -58,7 +59,7 @@ $(document).ready(function () {
     });
     $('input').click(function (event) {
         if (viewing) {
-            var url = "http://www.faktnews.org:5000/vote/v2?url=" + encodeURIComponent(viewing) + "&trusted=" + ($(this).is("#yes") == !0 ? 'y' : 'n');
+            var url = "http://www.faktnews.org:5000/vote/v2?url=" + encodeURIComponent(viewing) + "&trusted=" + ($(this).is("#yes") === !0 ? 'y' : 'n');
             $.getJSON(url, function (data) {
                 var container = $('#assessmentPeople').parent();
                 $('#assessmentPeople').remove(); container.append('<div id="assessmentPeople" class="animate"></div>');

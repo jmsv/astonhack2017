@@ -129,7 +129,6 @@ body {
     border: 1px solid #ccc;
     position: relative;
     box-shadow: inset 1px 4px 9px -6px rgba(0,0,0,.5);
-    -moz-box-shadow: inset 1px 4px 9px -6px rgba(0,0,0,.5);
 }
 
     .bar .fill {
