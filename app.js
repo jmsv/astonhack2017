@@ -101,22 +101,6 @@ app.get('/stats', function (req, res) {
     }
 
     function callback() {
-        var values = [result['CitationFlow'], result['TrustFlow'], result['CVC'], result['Votes']];
-
-        result["Grade"] = 0;
-        for (var i in values)
-            result["Grade"] += values[i];
-        result["Grade"] /= 4;
-
-        switch (Math.floor(result["Grade"] / 15)) {
-            case 0: result["Grade"] = 'U'; break;
-            case 1: result["Grade"] = 'F'; break;
-            case 2: result["Grade"] = 'E'; break;
-            case 3: result["Grade"] = 'D'; break;
-            case 4: result["Grade"] = 'C'; break;
-            case 5: result["Grade"] = 'B'; break;
-            default: result["Grade"] = 'A'; break;
-        }
         console.log(result);
         res.json(result);
     }
@@ -131,3 +115,9 @@ app.get('/', function (req, res) { res.sendFile(__dirname + '/public/index.html'
 app.get('*', function (req, res) { res.sendFile(__dirname + '/public/error.html'); });
 app.set('port', process.env.PORT || listenOnPort + 1);
 http.listen(app.get('port'));
+
+setInterval(function () {
+    fs.writeFile("./votes.json", JSON.stringify(votes), "utf8", function (err) {
+        if (err) console.log(err);
+    });
+}, 60 * 60 * 1000);

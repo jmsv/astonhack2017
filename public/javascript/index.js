@@ -3,7 +3,7 @@
         var object = $(this);
         var fill = object.find('.fill');
         var tip = object.find('.tip');
-        var percentage = object.attr('data-percent') + "%";
+        var percentage = object.attr('data-value') + "%";
         fill.css("width", percentage);
         tip.css("left", percentage);
         tip.text(percentage);
@@ -12,9 +12,9 @@
         var object = $(this);
         var fill = object.find('circle:nth-of-type(2)');
         var tip = object.find('text');
-        var percentage = 360 - object.attr('data-percent') / 100 * 360;
+        var percentage = 360 - object.attr('data-value') / 100 * 360;
         fill.css("stroke-dashoffset", percentage);
-        tip.text(object.attr('data-percent') + "%");
+        tip.text(object.attr('data-value') + "%");
     };
     $.fn.pie = function (options) {
         $(this).empty();
@@ -33,7 +33,7 @@
 })(jQuery);
 $(function () {
     $("#betteridge").attr('class', Math.random() * 100 > 50 ? "legal" : "");
-    $(".circle, .bar").each(function (index) { $(this).attr("data-percent", Math.floor(Math.random() * 100)); });
+    $(".circle, .bar").each(function (index) { $(this).attr("data-value", Math.floor(Math.random() * 100)); });
     $("#grammar").pie({ "Verbs": Math.floor(Math.random() * 100), "Nouns": Math.floor(Math.random() * 100), "Adjectives": Math.floor(Math.random() * 100), "Adverbs": Math.floor(Math.random() * 100), "Other": Math.floor(Math.random() * 100) });
     $(".circle").each(function (index) { $(this).circle(); });
     $(".bar").each(function (index) { $(this).bar(); });
@@ -45,15 +45,32 @@ $(function () {
             data: $("#searchBar").serialize(),
             success: function (info) {
                 console.log(info);
-                $("#assessmentMajestic").attr("data-percent", info.TrustFlow || -1);
-                $("#assessmentPeople").attr("data-percent", Math.floor(info.VotesFor / (info.VotesFor + info.VotesAgainst) * 100) || -1);
-                $("#assessmentCitations").attr("data-percent", info.CitationFlow || -1);
-                $("#grade").text(info.Grade || "X");
+                $("#assessmentMajestic").attr("data-value", info.TrustFlow || -1);
+                $("#assessmentPeople").attr("data-value", Math.floor(info.VotesFor / (info.VotesFor + info.VotesAgainst) * 100) || -1);
+                $("#assessmentCitations").attr("data-value", info.CitationFlow || -1);
+                ;
                 $("#topic").text(info.Topic || "Unknown");
                 $("#betteridge").attr('class', info.Betteridge ? "legal" : "");
-                $("#assessmentContent").attr("data-percent", info.CVC || -1);
-                $("#subjectivity").attr("data-percent", info.Subjectivity || -1);
-                $("#polarity").attr("data-percent", info.Polarity || -1);
+                $("#assessmentContent").attr("data-value", info.CVC || -1);
+                $("#subjectivity").attr("data-value", info.Subjectivity || -1);
+                $("#polarity").attr("data-value", info.Polarity || -1);
+
+                var values = [info['CitationFlow'], info['TrustFlow'], info['CVC'], info['Votes']];
+
+                var grade = 0;
+                for (var i in values) grade += values[i];
+                grade /= values.length;
+
+                switch (Math.floor(grade/ 15)) {
+                    case 0: $("#grade").text('U'); break;
+                    case 1: $("#grade").text('F'); break;
+                    case 2: $("#grade").text('E'); break;
+                    case 3: $("#grade").text('D'); break;
+                    case 4: $("#grade").text('C'); break;
+                    case 5: $("#grade").text('B'); break;
+                    default: $("#grade").text('A'); break;
+                }
+
                 $("#grammar").pie(info.Grammar || {"Error":1});
                 $(".circle").each(function (index) { $(this).circle(); });
                 $(".bar").each(function (index) { $(this).bar(); });
