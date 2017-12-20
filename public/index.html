@@ -10,8 +10,8 @@
 </head>
 
 <body>
-    <form id="searchBar">
-        <input type="url" placeholder="URL" />
+    <form id="searchBar" action="/stats" method="get">
+        <input id="url" name="url" type="url" placeholder="URL (e.g. http://www.example.org)" required/>
         <input type="submit" value="Analyse" />
         <br />
         <small>Random information is displayed initially, enter a URL above to see how trustworthy it is!</small>
@@ -88,7 +88,7 @@
         <div class="popup">
             <p>
                 This score comes from the average of people's opinion on whether this website (in general, not specifically this page) is to be trusted or not.
-                You can vote too, do you trust this page?
+                You can vote too, do you trust this website?
             </p>
             <form>
                 <input type="button" id="yes" value="Yes">
@@ -96,6 +96,8 @@
             </form>
         </div>
     </div>
+    
+    <small id="footer">Items with the values '-1', 'X', and 'Unknown' indicate errors. While our assessment uses Majestic's stats and The People's vote, it will ignore them if they provide bad data.</small>
     <script src="javascript/index.js"></script>
 </body>
 

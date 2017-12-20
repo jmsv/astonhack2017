@@ -148,10 +148,6 @@ body {
         transition: left 1s ease-out;
     }
 
-
-.circle svg {
-}
-
     .circle svg circle {
         cx: 63;
         cy: 63;
@@ -241,4 +237,11 @@ body {
 #betteridge.legal::after {
     content: "Betteridge legal";
     color: green;
+}
+
+#footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
 }

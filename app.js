@@ -1,6 +1,7 @@
 'use strict';
 require('dotenv-safe').load();
 var listenOnPort = 8082,
+    votes = require('./votes.json'),
     debug = require('debug'),
     path = require('path'),
     favicon = require('serve-favicon'),
@@ -12,7 +13,7 @@ var listenOnPort = 8082,
     http = require('http').Server(app),
     request = require('request'),
     fs = require("fs"),
-    extractor = require('unfluff'),
+    unfluff = require('unfluff'),
     emotional = require("emotional"),
     WordPOS = require('wordpos'),
     wordpos = new WordPOS(),
@@ -34,23 +35,24 @@ if (app.get('env') === 'development') {
     });
 }
 app.get('/stats', function (req, res) {
-    var url = new URL(decodeURIComponent(req.query.url)),
+    var uri = url.parse(decodeURIComponent(req.query.url)),
         result = {},
+        waiting = 4,
         options = {
             app_api_key: process.env.API_KEY,
             cmd: "GetIndexItemInfo",
             items: 1,
-            item0: url.href,
+            item0: uri.href,
             datasource: "fresh"
         };
     request({ url: `http://developer.majestic.com/api/json`, qs: options }, function (err, res, body) {
         if (err)
             console.log("Get request failed: " + err);
-        if (res.statusCode !== 200)
+        if (res.statusCode == 200)
             try {
                 data = JSON.parse(body);
                 if (data['Code'] !== 'OK')
-                    console.log("Error getting JSON from URL");
+                    console.log("Majestic returned non-OK status");
                 else {
                     var majestic_data = data['DataTables']['Results']['Data'][0];
                     result['CitationFlow'] = majestic_data['CitationFlow'];
@@ -59,64 +61,71 @@ app.get('/stats', function (req, res) {
                     result['TopicValue'] = majestic_data['TopicalTrustFlow_Value_0'];
                 }
             } catch (e) {
-                console.log("Could not parse into JSON: " + data);
+                console.log("Could not parse into JSON: " + body);
             }
+        if (--waiting == 0) callback();
     });
-    
-    var article = extractor.lazy(req.get("host"), 'en');
-    if (article) {
-        var title = article.softTitle.toString();
-        result['Betteridge_legal'] = title.substring(title.length - 1) !== "?";
-        
-        wordpos.getPOS(article.text(), function (res) {
-            result['Grammar'] = { 'Nouns': res.nouns.length, 'Verbs': res.verbs.length, 'Adjectives': res.adjectives.length, 'Adverbs': res.adverbs.length, 'Other': res.rest.length };
-        });
-        
-        emotional.load(function () {
-            var text = emotional.get(article.text());
-            result['Polarity'] = text.polarity;
-            result['Subjectivity'] = text.subjectivity;
-            result['CVC'] = 100 - text.subjectivity / 2 - text.polarity / 4;
-            if (!result['Betteridge_legal'])
-                result['CVC'] /= 4;
-        });
+
+    request({ method: 'GET', url: uri.href }, function (err, res, body) {
+        if (err)
+            console.log("Get request failed: " + err);
+        if (res.statusCode == 200) {
+            var article = unfluff(body, 'en');
+            if (article) {
+                var title = article.softTitle;
+                result['Betteridge'] = title.substring(title.length - 1) !== "?";
+
+                wordpos.getPOS(article.text, function (res) {
+                    result['Grammar'] = { 'Nouns': res.nouns.length, 'Verbs': res.verbs.length, 'Adjectives': res.adjectives.length, 'Adverbs': res.adverbs.length, 'Other': res.rest.length };
+                    if (--waiting == 0) callback();
+                });
+
+                emotional.load(function () {
+                    var text = emotional.get(article.text);
+                    result['Polarity'] = text.polarity * 100;
+                    result['Subjectivity'] = text.subjectivity * 100;
+                    result['CVC'] = 100 - result['Subjectivity'] / 2 - result['Polarity'] / 4;
+                    if (!result['Betteridge'])
+                        result['CVC'] /= 4;
+                    if (--waiting == 0) callback();
+                });
+            }
+        }
+        if (--waiting == 0) callback();
+    });
+
+    var votes = require("./votes.json"), domain = uri.hostname.replace(/^www\./, '');
+    if (votes[domain]) {
+        result['VotesFor'] = votes[domain].y;
+        result['VotesAgainst'] = votes[domain].n;
     }
 
-    var votes = require("./votes.json"), domain = url.hostname;
-    if (votes[domain]) result['Votes'] = votes[domain].y / (votes[domain].y + votes[domain].n);
+    function callback() {
+        var values = [result['CitationFlow'], result['TrustFlow'], result['CVC'], result['Votes']];
 
-    var values = [result['CitationFlow'] || 0, result['TrustFlow'] || 0, result['CVC'] || 0, result['Votes'] || 0];
-    
-    result.overall = 0;
-    for (var i in values)
-        result.overall += values[i];
-    result.overall /= 4;
-    
-    switch (Math.floor(result.overall/15)) {
-        case 0: result.overall = 'U'; break;
-        case 1: result.overall = 'F'; break;
-        case 2: result.overall = 'E'; break;
-        case 3: result.overall = 'D'; break;
-        case 4: result.overall = 'C'; break;
-        case 5: result.overall = 'B'; break;
-        default: result.overall = 'A'; break;
+        result["Grade"] = 0;
+        for (var i in values)
+            result["Grade"] += values[i];
+        result["Grade"] /= 4;
+
+        switch (Math.floor(result["Grade"] / 15)) {
+            case 0: result["Grade"] = 'U'; break;
+            case 1: result["Grade"] = 'F'; break;
+            case 2: result["Grade"] = 'E'; break;
+            case 3: result["Grade"] = 'D'; break;
+            case 4: result["Grade"] = 'C'; break;
+            case 5: result["Grade"] = 'B'; break;
+            default: result["Grade"] = 'A'; break;
+        }
+        console.log(result);
+        res.json(result);
     }
-
-    res.json(result);
 });
 app.get('/vote', function (req, res) { //many edits at once will be slow, use a variable and save every hour in case of crash
     if (req.query.trusted === "y" || req.query.trusted === "n") {
-        var votes = require("./votes.json"),
-            url = new URL(decodeURIComponent(req.query.url));
-        votes[url.hostname][req.query.trusted]++;
-        fs.writeFile("filename.json", JSON.stringify(votes), "utf8", function (err) {
-            if (err) {
-                console.log(err);
-                res.send(false);
-            }
-            res.send(true);
-        });
-    } else res.send(false);
+        var uri = url.parse(decodeURIComponent(req.query.url)).hostname.replace(/^www\./, '');
+        votes[uri][req.query.trusted]++;
+    } 
 });
 app.get('/', function (req, res) { res.sendFile(__dirname + '/public/index.html'); });
 app.get('*', function (req, res) { res.sendFile(__dirname + '/public/error.html'); });
