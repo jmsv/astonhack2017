@@ -17,7 +17,8 @@ var listenOnPort = 8082,
     emotional = require("emotional"),
     WordPOS = require('wordpos'),
     wordpos = new WordPOS(),
-    url = require('url');
+    url = require('url'),
+    debounce = require('debounce');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -105,10 +106,12 @@ app.get('/stats', function (req, res) {
         res.json(result);
     }
 });
-app.get('/vote', function (req, res) { //many edits at once will be slow, use a variable and save every hour in case of crash
+app.get('/vote', function (req, res) { 
     if (req.query.trusted === "y" || req.query.trusted === "n") {
         var uri = url.parse(decodeURIComponent(req.query.url)).hostname.replace(/^www\./, '');
         votes[uri][req.query.trusted]++;
+        res.json(votes[uri]);
+        debounce(save, 1000);
     } 
 });
 app.get('/', function (req, res) { res.sendFile(__dirname + '/public/index.html'); });
@@ -116,8 +119,8 @@ app.get('*', function (req, res) { res.sendFile(__dirname + '/public/error.html'
 app.set('port', process.env.PORT || listenOnPort + 1);
 http.listen(app.get('port'));
 
-setInterval(function () {
+function save() {
     fs.writeFile("./votes.json", JSON.stringify(votes), "utf8", function (err) {
         if (err) console.log(err);
     });
-}, 60 * 60 * 1000);
+}

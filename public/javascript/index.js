@@ -74,6 +74,21 @@ $(function () {
                 $("#grammar").pie(info.Grammar || {"Error":1});
                 $(".circle").each(function (index) { $(this).circle(); });
                 $(".bar").each(function (index) { $(this).bar(); });
+
+                $("#vote input[type=submit]").removeAttr("disabled");  
+            }
+        });
+        e.preventDefault();
+    });
+
+    $("#vote").submit(function (e) {
+        $.ajax({
+            type: "GET",
+            url: "/vote",
+            data: $("#searchBar").serialize() + "&" + $("#vote").serialize(),
+            success: function (info) {
+                console.log(info);
+                $("#vote input[type=submit]").attr("disabled", "disabled");
             }
         });
         e.preventDefault();
