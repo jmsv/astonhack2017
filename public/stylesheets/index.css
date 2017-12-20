@@ -189,6 +189,8 @@ body {
     stroke-width: 16;
     stroke-dasharray: 360;
     transform-origin: 50% 50%;
+    cursor:pointer;
+    outline:none;
 }
 
     #grammar svg circle:nth-of-type(1) {stroke: #2ecc71;}
@@ -205,7 +207,20 @@ body {
     text-anchor: middle;
     dominant-baseline: central;
     display:none;
+    background:white;
 }
-#grammar svg circle:hover + text {
-    display:block;
+#grammar svg circle:focus {
+stroke-width:6;
+}
+#grammar svg circle:focus + text {
+    display: block;
+}
+
+#betteridge::after {
+    content:"Betteridge illegal";
+    color:red;
+}
+#betteridge.legal::after {
+    content: "Betteridge legal";
+    color: green;
 }

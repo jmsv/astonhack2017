@@ -17,12 +17,14 @@
         tip.text(object.attr('data-percent') + "%");
     };
     $.fn.pie = function (options) {
+        $(this).empty();
         var object = $(this), total = 0, current = 0, create = "<svg viewBox='0 0 132 132'><g>";
         for (var item in options)
             total += options[item];
         for (var item in options) {
             var angleSize = (options[item] / total) * 360;
-            create += `<circle stroke-dashoffset='${360 - angleSize}' style='transform: rotate(${current}deg);'/><text x='63' y='63'>${options[item]} ${item}</text>`;
+
+            create += `<circle tabindex='0' stroke-dashoffset='${360 - angleSize}' style='transform: rotate(${current}deg);'/><text x='63' y='63'>${options[item]} ${item}</text>`;
             current += angleSize;
         }
         create += "</g></svg>";
@@ -35,15 +37,16 @@ function setDOMInfo(info) {
     $("#assessmentCitations").attr("data-percent", info.CitationFlow);
     $("#grade").text(info.Grade);
     $("#topic").text(info.Topic);
-    $("#betteridge").css("color", info.Betteridge_legal === true ? "green" : "red");
-    $("#betteridge").text(info.Betteridge_legal === true ? "Betteridge legal" : "Betteridge illegal");
+    $("#betteridge").attr('class', info.Betteridge_legal === true ? "legal" :"");
     $("#assessmentContent").attr("data-percent", info.CVC);
     $("#subjectivity").attr("data-percent", info.Subjectivity);
     $("#polarity").attr("data-percent", info.Polarity);
 }
 $(function () {
+    $("#betteridge").attr('class', Math.random() * 100 > 50 ? "legal" : "");
     $(".circle, .bar").each(function (index) { $(this).attr("data-percent", Math.floor(Math.random() * 100)); });
+    $("#grammar").pie({ "Verbs": Math.floor(Math.random() * 100), "Nouns": Math.floor(Math.random() * 100), "Adjectives": Math.floor(Math.random() * 100), "Adverbs": Math.floor(Math.random() * 100), "Other": Math.floor(Math.random() * 100) });
     $(".circle").each(function (index) { $(this).circle(); });
     $(".bar").each(function (index) { $(this).bar(); });
-    $("#grammar").pie({ "Verb": Math.floor(Math.random() * 100), "Noun": Math.floor(Math.random() * 100), "Adjective": Math.floor(Math.random() * 100)});
+    $("#grammar svg circle:nth-of-type(1)").focus();
 });

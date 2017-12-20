@@ -69,7 +69,7 @@ app.get('/stats', function (req, res) {
         result['Betteridge_legal'] = title.substring(title.length - 1) !== "?";
         
         wordpos.getPOS(article.text(), function (res) {
-            result['Grammar'] = { 'Noun': res.nouns.length, 'Verb': res.verbs.length, 'Adjective': res.adjectives.length, 'Adverb': res.adverbs.length, 'Other': res.rest.length };
+            result['Grammar'] = { 'Nouns': res.nouns.length, 'Verbs': res.verbs.length, 'Adjectives': res.adjectives.length, 'Adverbs': res.adverbs.length, 'Other': res.rest.length };
         });
         
         emotional.load(function () {
