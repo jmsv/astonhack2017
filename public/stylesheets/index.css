@@ -209,16 +209,34 @@ body {
     display:none;
     background:white;
 }
-#grammar svg circle:focus {
-stroke-width:6;
+    #grammar svg text + text {
+        font-size:5pt;
+    }
+#grammar svg circle:focus, 
+#grammar svg circle:last-of-type {
+    stroke-width: 6;
 }
-#grammar svg circle:focus + text {
-    display: block;
-}
-
+    #grammar svg circle:focus + text,
+    #grammar svg circle:last-of-type + text{
+        display: block;
+    }
+    #grammar svg circle:focus + text + text,
+    #grammar svg circle:last-of-type + text + text {
+        display: block;
+    }
+    #grammar svg circle:focus ~ circle:last-of-type {
+        stroke-width: 16!important;
+    }
+        #grammar svg circle:focus ~ circle:last-of-type + text {
+            display: none!important;
+        }
+        #grammar svg circle:focus ~ circle:last-of-type + text +text  {
+            display: none !important;
+        }
+    
 #betteridge::after {
-    content:"Betteridge illegal";
-    color:red;
+    content: "Betteridge illegal";
+    color: red;
 }
 #betteridge.legal::after {
     content: "Betteridge legal";

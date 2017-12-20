@@ -23,8 +23,8 @@
             total += options[item];
         for (var item in options) {
             var angleSize = (options[item] / total) * 360;
-
-            create += `<circle tabindex='0' stroke-dashoffset='${360 - angleSize}' style='transform: rotate(${current}deg);'/><text x='63' y='63'>${options[item]} ${item}</text>`;
+            var rounded = Math.floor(options[item] / total * 100);
+            create += `<circle tabindex='0' stroke-dashoffset='${360 - angleSize}' style='transform: rotate(${current}deg);'/><text x='63' y='63'>${options[item]} ${item} </text><text x='63' y='73'>(~${rounded}%)</text>`;
             current += angleSize;
         }
         create += "</g></svg>";
@@ -46,7 +46,7 @@ $(function () {
     $("#betteridge").attr('class', Math.random() * 100 > 50 ? "legal" : "");
     $(".circle, .bar").each(function (index) { $(this).attr("data-percent", Math.floor(Math.random() * 100)); });
     $("#grammar").pie({ "Verbs": Math.floor(Math.random() * 100), "Nouns": Math.floor(Math.random() * 100), "Adjectives": Math.floor(Math.random() * 100), "Adverbs": Math.floor(Math.random() * 100), "Other": Math.floor(Math.random() * 100) });
+
     $(".circle").each(function (index) { $(this).circle(); });
     $(".bar").each(function (index) { $(this).bar(); });
-    $("#grammar svg circle:nth-of-type(1)").focus();
 });
