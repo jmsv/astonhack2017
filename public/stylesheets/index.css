@@ -125,6 +125,24 @@ body {
     position: relative;
     box-shadow: inset 1px 4px 9px -6px rgba(0,0,0,.5);
 }
+    .bar::before,
+    .bar::after {
+        height: 0;
+        display: block;
+    }
+
+    .bar::before {
+        position: relative;
+        top: -1rem;
+        content: attr(data-min);
+    }
+
+    .bar::after {
+        content: attr(data-max);
+        position: relative;
+        top: -2rem;
+        left: 100%;
+    }
 
     .bar .fill {
         display: block;
@@ -237,11 +255,4 @@ body {
 #betteridge.legal::after {
     content: "Betteridge legal";
     color: green;
-}
-
-#footer {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    left: 0;
 }

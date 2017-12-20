@@ -35,6 +35,11 @@ if (app.get('env') === 'development') {
         });
     });
 }
+function save() {
+    fs.writeFile("./votes.json", JSON.stringify(votes), "utf8", function (err) {
+        if (err) console.log(err);
+    });
+}
 app.get('/stats', function (req, res) {
     var uri = url.parse(decodeURIComponent(req.query.url)),
         result = {},
@@ -83,9 +88,9 @@ app.get('/stats', function (req, res) {
 
                 emotional.load(function () {
                     var text = emotional.get(article.text);
-                    result['Polarity'] = text.polarity * 100;
-                    result['Subjectivity'] = text.subjectivity * 100;
-                    result['CVC'] = 100 - result['Subjectivity'] / 2 - result['Polarity'] / 4;
+                    result['Polarity'] = text.polarity;
+                    result['Subjectivity'] = text.subjectivity;
+                    result['CVC'] = 100 - text.subjectivity * 50 - text.polarity * 25;
                     if (!result['Betteridge'])
                         result['CVC'] /= 4;
                     if (--waiting == 0) callback();
@@ -102,7 +107,6 @@ app.get('/stats', function (req, res) {
     }
 
     function callback() {
-        console.log(result);
         res.json(result);
     }
 });
@@ -116,11 +120,5 @@ app.get('/vote', function (req, res) {
 });
 app.get('/', function (req, res) { res.sendFile(__dirname + '/public/index.html'); });
 app.get('*', function (req, res) { res.sendFile(__dirname + '/public/error.html'); });
-app.set('port', process.env.PORT || listenOnPort + 1);
+app.set('port', process.env.PORT || listenOnPort);
 http.listen(app.get('port'));
-
-function save() {
-    fs.writeFile("./votes.json", JSON.stringify(votes), "utf8", function (err) {
-        if (err) console.log(err);
-    });
-}

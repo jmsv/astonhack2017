@@ -49,12 +49,12 @@
             </p>
             <div id="grammar" class="pie"></div>
             <p>Polarity</p>
-            <div id="polarity" class="bar">
+            <div id="polarity" class="bar" data-min="-1" data-max="1">
                 <span class="tip"></span>
                 <span class="fill"></span>
             </div>
             <p>Subjectivity</p>
-            <div id="subjectivity" class="bar">
+            <div id="subjectivity" class="bar" data-min="0" data-max="1">
                 <span class="tip"></span>
                 <span class="fill"></span>
             </div>
@@ -98,7 +98,6 @@
         </div>
     </div>
     
-    <small id="footer">Items with the values '-1', 'X', and 'Unknown' indicate errors. While our assessment uses Majestic's stats and The People's vote, it will ignore them if they provide bad data.</small>
     <script src="javascript/index.js"></script>
 </body>
 
