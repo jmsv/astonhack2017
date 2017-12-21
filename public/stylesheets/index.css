@@ -154,7 +154,6 @@ body {
         height: 100%;
         background: rgb(22,181,151);
         z-index: 1;
-        transition: width 1s ease-out;
     }
 
     .bar .tip {
@@ -166,7 +165,7 @@ body {
         transform: translate(-50%,-50%);
         z-index: 2;
         background: #333;
-        transition: left 1s ease-out, background .5s;
+        transition: background .25s;
     }
 
 .circle svg circle {

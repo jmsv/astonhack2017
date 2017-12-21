@@ -4,12 +4,13 @@
             tip = $(this).find('.tip');
         if ($(this).attr('data-value') !== "Error") {
             var value = new Number($(this).attr('data-value')).toPrecision(3),
-                max = new Number($(this).attr("data-max") || 100),
-                min = new Number($(this).attr("data-min") || 0),
-                percentage = 100 * (value - min) / (max - min) + "%";
-            fill.css("width", percentage);
-            tip.css("left", percentage);
+                max = new Number($(this).attr("data-max")) || 100,
+                min = new Number($(this).attr("data-min")) || 0,
+                origin = 100 * ((new Number($(this).attr("data-origin")) - min) || -min) / (max - min),
+                width = Math.abs(100 * value / (max - min));
             tip.text(value);
+            fill.css({ "left": origin + "%" }).animate({ "width": width + "%", "left": (value < 0 ? origin - width : origin) + "%" }, 1000);
+            tip.css({ "left": origin + "%" }).animate({ "left": (value < 0 ? origin - width : origin + width) + "%" }, 1000);
         } else {
             fill.css("width", 0);
             tip.css("left", "50%");
