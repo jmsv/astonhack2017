@@ -101,7 +101,8 @@ body {
     border-radius: 5px;
     border: 1px solid #ddd;
     padding: 1rem;
-    box-sizing: content-box;
+    box-sizing: border-box;
+    max-height: 100%;
 }
 
 #main {
@@ -219,10 +220,15 @@ body {
     dominant-baseline: central;
 }
 
+#ourAssessment {
+    overflow-y: auto;
+    overflow-x:hidden;
+}
+
 #grammar {
     margin: auto;
-    width:246px;
 }
+
 .pie svg circle {
     cx: 65;
     cy: 65;
