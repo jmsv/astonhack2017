@@ -124,6 +124,10 @@ body {
     position: relative;
     box-shadow: inset 1px 4px 9px -6px rgba(0,0,0,.5);
 }
+    .bar:hover .tip {
+        background: #33333380;
+    }
+
     .bar::before,
     .bar::after {
         height: 0;
@@ -162,7 +166,7 @@ body {
         transform: translate(-50%,-50%);
         z-index: 2;
         background: #333;
-        transition: left 1s ease-out;
+        transition: left 1s ease-out, background .5s;
     }
 
 .circle svg circle {
@@ -193,9 +197,10 @@ body {
     }
 
 @keyframes color_change {
-    25% {stroke: #f10000;}
+    20% {stroke: #f10000;}
     65% {stroke: #f0e400;}
     90% {stroke: #049b0e;}
+    100% {stroke: #049b0e;}
 }
 
 .circle svg text {
