@@ -33,8 +33,7 @@ body {
             outline: none !important;
         }
 
-            #searchBar input[type="submit"]:hover,
-            #searchBar input[type="submit"]:focus {
+            #searchBar input[type="submit"]:hover {
                 text-decoration: underline
             }
 
@@ -195,56 +194,60 @@ body {
         dominant-baseline: central;
     }
 
-#grammar svg circle {
+#grammar {
+    margin: auto;
+    width:246px;
+}
+.pie svg circle {
     cx: 65;
     cy: 65;
     r: 57;
     fill: none;
-    stroke-width: 16;
+    stroke-width: 10;
     stroke-dasharray: 360;
     transform-origin: 50% 50%;
-    cursor:pointer;
-    outline:none;
+    cursor: pointer;
+    outline: none;
 }
 
-    #grammar svg circle:nth-of-type(1) {stroke: #2ecc71;}
-    #grammar svg circle:nth-of-type(2) {stroke: #3498db;}
-    #grammar svg circle:nth-of-type(3) {stroke: #9b59b6;}
-    #grammar svg circle:nth-of-type(4) {stroke: #e74c3c;}
-    #grammar svg circle:nth-of-type(5) {stroke: #e67e22;}
-    #grammar svg circle:nth-of-type(6) {stroke: #34495e;}
-    #grammar svg circle:nth-of-type(7) {stroke: #8e44ad;}
-    #grammar svg circle:nth-of-type(8) {stroke: #27ae60;}
+    .pie svg circle:nth-of-type(1) {stroke: #2ecc71;}
+    .pie svg circle:nth-of-type(2) {stroke: #3498db;}
+    .pie svg circle:nth-of-type(3) {stroke: #9b59b6;}
+    .pie svg circle:nth-of-type(4) {stroke: #e74c3c;}
+    .pie svg circle:nth-of-type(5) {stroke: #e67e22;}
+    .pie svg circle:nth-of-type(6) {stroke: #34495e;}
+    .pie svg circle:nth-of-type(7) {stroke: #8e44ad;}
+    .pie svg circle:nth-of-type(8) {stroke: #27ae60;}
 
-#grammar svg text {
+.pie svg text {
     font-family: "Open Sans";
     text-anchor: middle;
     dominant-baseline: central;
-    display:none;
-    background:white;
+    display: none;
+    background: white;
 }
-    #grammar svg text + text {
+    .pie svg text + text {
         font-size:5pt;
     }
-#grammar svg circle:focus, 
-#grammar svg circle:last-of-type {
-    stroke-width: 6;
+.pie svg circle:focus, 
+.pie svg circle:last-of-type {
+    stroke-width: 14;
 }
-    #grammar svg circle:focus + text,
-    #grammar svg circle:last-of-type + text{
+    .pie svg circle:focus + text,
+    .pie svg circle:last-of-type + text{
         display: block;
     }
-    #grammar svg circle:focus + text + text,
-    #grammar svg circle:last-of-type + text + text {
+    .pie svg circle:focus + text + text,
+    .pie svg circle:last-of-type + text + text {
         display: block;
     }
-    #grammar svg circle:focus ~ circle:last-of-type {
-        stroke-width: 16!important;
+    .pie svg circle:focus ~ circle:last-of-type {
+        stroke-width: 10!important;
     }
-        #grammar svg circle:focus ~ circle:last-of-type + text {
+        .pie svg circle:focus ~ circle:last-of-type + text {
             display: none!important;
         }
-        #grammar svg circle:focus ~ circle:last-of-type + text +text  {
+        .pie svg circle:focus ~ circle:last-of-type + text +text  {
             display: none !important;
         }
     
@@ -255,4 +258,12 @@ body {
 #betteridge.legal::after {
     content: "Betteridge legal";
     color: green;
+}
+
+#assessmentPeople svg circle:nth-of-type(1) {
+    stroke: #f10000;
+}
+
+#assessmentPeople svg circle:nth-of-type(2) {
+    stroke: green;
 }

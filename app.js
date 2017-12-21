@@ -90,9 +90,6 @@ app.get('/stats', function (req, res) {
                     var text = emotional.get(article.text);
                     result['Polarity'] = text.polarity;
                     result['Subjectivity'] = text.subjectivity;
-                    result['CVC'] = 100 - text.subjectivity * 50 - text.polarity * 25;
-                    if (!result['Betteridge'])
-                        result['CVC'] /= 4;
                     if (--waiting == 0) callback();
                 });
             }
