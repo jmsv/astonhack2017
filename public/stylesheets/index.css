@@ -283,7 +283,7 @@ body {
 }
 #betteridge.legal::after {
     content: "Betteridge legal";
-    color: green;
+    color: #049b0e;
 }
 
 #assessmentPeople svg circle:nth-of-type(1) {
@@ -291,5 +291,5 @@ body {
 }
 
 #assessmentPeople svg circle:nth-of-type(2) {
-    stroke: green;
+    stroke: #049b0e;
 }
