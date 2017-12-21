@@ -26,6 +26,8 @@
                 percentage = 360 - 360 * value / (max - min);
             fill.css("stroke-dashoffset", percentage);
             tip.text(value + "%");
+            fill.css("animation-iteration-count", value / (max - min));
+            fill.css("animation-play-state", "running");
         } else {
             fill.css("stroke-dashoffset", 360);
             tip.text("Error");
