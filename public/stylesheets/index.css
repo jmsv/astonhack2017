@@ -24,20 +24,25 @@ body {
         #searchBar input[type="submit"] {
             margin-top: 0;
             border: 0;
+            background: #00838e;
             border-bottom: .2rem solid #005661;
             border-radius: .25rem;
-            background: #00838e;
             color: white;
             font-size: 1rem;
             cursor: pointer;
             outline: none !important;
         }
-
-            #searchBar input[type="submit"]:hover {
+            #searchBar input[type="submit"]:disabled {
+                background: #8c8c8c;
+                margin-top: .2rem;
+                border-bottom: 0;
+                cursor: default;
+            }
+            #searchBar input[type="submit"]:not(:disabled):hover {
                 text-decoration: underline
             }
 
-            #searchBar input[type="submit"]:active {
+            #searchBar input[type="submit"]:not(:disabled):active {
                 margin-top: .2rem;
                 border-bottom: 0;
             }
@@ -112,8 +117,14 @@ body {
 
 #grade {
     text-align: center;
-    font-size: 80pt;
+    font-size: 9rem;
+    line-height: 8rem;
     margin: 0;
+}
+
+#percentage {
+    text-align: center;
+    -webkit-margin-before: 0;
 }
 
 .bar {
@@ -187,7 +198,6 @@ body {
         stroke-dashoffset: 360;
         transform: rotate(-90deg);
         transform-origin: 50% 50%;
-        transition: stroke-dashoffset 1s ease-out;
         animation-name: color_change;
         animation-duration: 1s;
         animation-iteration-count: 1;
@@ -240,9 +250,10 @@ body {
     dominant-baseline: central;
     display: none;
     background: white;
+    font-size: 12pt;
 }
     .pie svg text + text {
-        font-size:5pt;
+        font-size:7pt;
     }
 .pie svg circle:focus, 
 .pie svg circle:last-of-type {

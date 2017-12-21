@@ -11,7 +11,7 @@
 
 <body>
     <form id="searchBar" action="/stats" method="get">
-        <input id="url" name="url" type="url" placeholder="URL (e.g. http://www.example.org)" required/>
+        <input id="url" name="url" type="url" placeholder="URL (e.g. http://www.example.org)" onfocus="this.value = ''" required/>
         <input type="submit" value="Analyse" />
         <br />
         <small>Random information is displayed initially, enter a URL above to see how trustworthy it is!</small>
@@ -19,15 +19,11 @@
     <div class="page" id="main">
         <div class="panel popup">
             <h3>Our Assessment</h3>
-            <div id="assessmentContent" class="circle">
-                <svg viewBox="0 0 126 126"><g><circle /><circle /><text x="63" y="63"></text></g></svg>
-            </div>
+            <div id="assessmentContent" class="circle"></div>
         </div>
         <div class="panel popup">
             <h3>Majestic's Trust</h3>
-            <div id="assessmentMajestic" class="circle">
-                <svg viewBox="0 0 126 126"><g><circle /><circle /><text x="63" y="63"></text></g></svg>
-            </div>
+            <div id="assessmentMajestic" class="circle"></div>
         </div>
         <div class="panel popup">
             <h3>The People's Vote</h3>
@@ -36,6 +32,7 @@
         <div class="panel popup">
             <h3>Overall Grade</h3>
             <h1 id="grade">E</h1>
+            <p id="percentage">70%</p>
         </div>
     </div>
 
@@ -47,15 +44,9 @@
             </p>
             <div id="grammar" class="pie"></div>
             <p>Polarity</p>
-            <div id="polarity" class="bar" data-min="-1" data-max="1">
-                <span class="tip"></span>
-                <span class="fill"></span>
-            </div>
+            <div id="polarity" class="bar" data-min="-1" data-max="1"></div>
             <p>Subjectivity</p>
-            <div id="subjectivity" class="bar" data-min="0" data-max="1">
-                <span class="tip"></span>
-                <span class="fill"></span>
-            </div>
+            <div id="subjectivity" class="bar" data-min="0" data-max="1"></div>
             <p id="betteridge"></p>
         </div>
     </div>
@@ -74,9 +65,7 @@
                 </div>
                 <div class="column">
                     <h3>Citations</h3>
-                    <div id="assessmentCitations" class="circle">
-                        <svg viewBox="0 0 126 126"><g><circle /><circle /><text x="63" y="63"></text></g></svg>
-                    </div>
+                    <div id="assessmentCitations" class="circle"></div>
                 </div>
             </div>
         </div>

@@ -35,11 +35,11 @@ if (app.get('env') === 'development') {
         });
     });
 }
-function save() {
+var save = function () {
     fs.writeFile("./votes.json", JSON.stringify(votes), "utf8", function (err) {
         if (err) console.log(err);
     });
-}
+};
 app.get('/stats', function (req, res) {
     var uri = url.parse(decodeURIComponent(req.query.url)),
         result = {},
@@ -54,7 +54,7 @@ app.get('/stats', function (req, res) {
     request({ url: `http://developer.majestic.com/api/json`, qs: options }, function (err, res, body) {
         if (err)
             console.log("Get request failed: " + err);
-        if (res.statusCode == 200)
+        if (res.statusCode === 200)
             try {
                 data = JSON.parse(body);
                 if (data['Code'] !== 'OK')
@@ -69,13 +69,13 @@ app.get('/stats', function (req, res) {
             } catch (e) {
                 console.log("Could not parse into JSON: " + body);
             }
-        if (--waiting == 0) callback();
+        if (--waiting === 0) callback();
     });
 
     request({ method: 'GET', url: uri.href }, function (err, res, body) {
         if (err)
             console.log("Get request failed: " + err);
-        if (res.statusCode == 200) {
+        if (res.statusCode === 200) {
             var article = unfluff(body, 'en');
             if (article) {
                 var title = article.softTitle;
@@ -83,21 +83,21 @@ app.get('/stats', function (req, res) {
 
                 wordpos.getPOS(article.text, function (res) {
                     result['Grammar'] = { 'Nouns': res.nouns.length, 'Verbs': res.verbs.length, 'Adjectives': res.adjectives.length, 'Adverbs': res.adverbs.length, 'Other': res.rest.length };
-                    if (--waiting == 0) callback();
+                    if (--waiting === 0) callback();
                 });
 
                 emotional.load(function () {
                     var text = emotional.get(article.text);
                     result['Polarity'] = text.polarity;
                     result['Subjectivity'] = text.subjectivity;
-                    if (--waiting == 0) callback();
+                    if (--waiting === 0) callback();
                 });
             }
         }
-        if (--waiting == 0) callback();
+        if (--waiting === 0) callback();
     });
 
-    var votes = require("./votes.json"), domain = uri.hostname.replace(/^www\./, '');
+    var domain = uri.hostname.replace(/^www\./, '');
     if (votes[domain]) {
         result['VotesFor'] = votes[domain].y;
         result['VotesAgainst'] = votes[domain].n;
@@ -110,6 +110,7 @@ app.get('/stats', function (req, res) {
 app.get('/vote', function (req, res) { 
     if (req.query.trusted === "y" || req.query.trusted === "n") {
         var uri = url.parse(decodeURIComponent(req.query.url)).hostname.replace(/^www\./, '');
+        if (!votes[uri]) votes[uri] = { "y": 0, "n": 0 };
         votes[uri][req.query.trusted]++;
         res.json(votes[uri]);
         debounce(save, 1000);
