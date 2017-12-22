@@ -1,10 +1,8 @@
 [![FaktNews](public/images/logo-header.png "Logo")](http://faktnews.org)
 
-For Aston University's 2017 Hackathon we <a href="https://devpost.com/software/faktnews">submitted</a> a browser extension called <a href="http://faktnews.org/">FaktNews</a>.
+For Aston University's 2017 Hackathon we <a href="https://devpost.com/software/faktnews">submitted</a> a browser extension called <a href="http://faktnews.org/">FaktNews</a>. FaktNews grades the trustworthiness of the website you're currently viewing. For each website you visit, we average [Majestic's](https://majestic.com) trustworthiness and citation values, our own measure, and the community's vote to give you an overall grade.
 
-FaktNews grades the trustworthiness of the website you're currently viewing. For each website you visit, we average [Majestic's](https://majestic.com) trustworthiness value, our own measure, and the community's vote to give you an overall grade.
-
-![Example](public/images/devmode.png "Example data")
+This repository is a refinement of our work: it's ~325% faster, the GUI has been revamped, and has [a website](http://jonmarsh.tech:8083/) where you can run queries outside the extension. Another benefit is that you can run this in parallel with other [Nodejs apps](https://nodejs.org/en/about/) as it only listens to 1 specific port on the server.
 
 ## Support
 
@@ -40,11 +38,4 @@ To install on Opera do the following:
 
 #### Edge
 
-While our extension is compatible with Edge, you have to publish it to the Windows Store which we are not going to do.
-
-
-## Libraries used
-
-### Backend
-
-- [Nodejs](https://nodejs.org/en/about/)
+While the extension is compatible with Edge, it is not going to be implemented as Edge Extensions must be published on the Windows Store.
