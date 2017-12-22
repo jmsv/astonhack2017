@@ -79,9 +79,13 @@ app.get('/stats', function (req, res) {
             if (res.statusCode === 200) {
                 var article = unfluff(body, 'en');
                 if (article) {
-                    var title = article.softTitle;
+                    var title = article.softTitle, words = article.text.split(" "), count = {};
+                    for (var word in words)
+                        count[word]++;
+                    result["WordCountCoeff"] = count.length / 10;
+                    if (result["WordCountCoeff"] > 25) result["WordCountCoeff"] = 25;
                     result['Betteridge'] = title.substring(title.length - 1) !== "?";
-
+                    result["WordCountCoeff"] = article.text
                     wordpos.getPOS(article.text, function (res) {
                         result['Grammar'] = { 'Nouns': res.nouns.length, 'Verbs': res.verbs.length, 'Adjectives': res.adjectives.length, 'Adverbs': res.adverbs.length, 'Other': res.rest.length };
                         if (--waiting === 0) callback();

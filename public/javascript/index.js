@@ -63,7 +63,7 @@ function set(info) {
     $("#subjectivity").attr("data-value", info["Subjectivity"] || "Error");
     $("#polarity").attr("data-value", info["Polarity"] || "Error");
 
-    info['CVC'] = 100 - (info["Subjectivity"] || 0) * 50 - (Math.abs(info["Polarity"]) || 0) * 25;
+    info['CVC'] = 100 - 50 * (info["Subjectivity"] || 0) - 25 * (Math.abs(info["Polarity"]) || 0) - (25 - info["WordCountCoeff"]);
     if (!info['Betteridge']) info['CVC'] /= 4;
     $("#assessmentContent").attr("data-value", info["CVC"] || "Error");
 
@@ -104,6 +104,7 @@ $(function () {
         Betteridge: Math.random() > 0.5,
         Subjectivity: Math.random(),
         Polarity: Math.random() * 2 - 1,
+        WordCountCoeff: Math.floor(Math.random() * 25),
         Grammar: { "Verbs":  rand(), "Nouns":  rand(), "Adjectives":  rand(), "Adverbs":  rand(), "Other":  rand() }
     });
     
