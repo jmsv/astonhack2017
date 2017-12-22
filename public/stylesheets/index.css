@@ -227,7 +227,11 @@ body {
 
 #grammar {
     margin: auto;
+    text-align: center;
 }
+    #grammar svg {
+        width:85%;
+    }
 
 .pie svg circle {
     cx: 65;

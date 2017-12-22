@@ -17,8 +17,7 @@ var listenOnPort = 8082,
     emotional = require("emotional"),
     WordPOS = require('wordpos'),
     wordpos = new WordPOS(),
-    url = require('url'),
-    debounce = require('debounce');
+    url = require('url');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -35,11 +34,6 @@ if (app.get('env') === 'development') {
         });
     });
 }
-var save = function () {
-    fs.writeFile("./votes.json", JSON.stringify(votes), "utf8", function (err) {
-        if (err) console.log(err);
-    });
-};
 app.get('/stats', function (req, res) {
     if (req.query.url) {
         var uri = url.parse(decodeURIComponent(req.query.url)),
@@ -82,10 +76,9 @@ app.get('/stats', function (req, res) {
                     var title = article.softTitle, words = article.text.split(" "), count = {};
                     for (var word in words)
                         count[word]++;
-                    result["WordCountCoeff"] = count.length / 10;
+                    result["WordCountCoeff"] = Object.keys(count).length / 10;
                     if (result["WordCountCoeff"] > 25) result["WordCountCoeff"] = 25;
                     result['Betteridge'] = title.substring(title.length - 1) !== "?";
-                    result["WordCountCoeff"] = article.text
                     wordpos.getPOS(article.text, function (res) {
                         result['Grammar'] = { 'Nouns': res.nouns.length, 'Verbs': res.verbs.length, 'Adjectives': res.adjectives.length, 'Adverbs': res.adverbs.length, 'Other': res.rest.length };
                         if (--waiting === 0) callback();
@@ -117,10 +110,13 @@ app.get('/vote', function (req, res) {
     if (req.query.trusted && req.query.url) {
         if (req.query.trusted === "y" || req.query.trusted === "n") {
             var uri = url.parse(decodeURIComponent(req.query.url)).hostname.replace(/^www\./, '');
+            console.log(req.query.trusted, " vote for ", uri)
             if (!votes[uri]) votes[uri] = { "y": 0, "n": 0 };
             votes[uri][req.query.trusted]++;
             res.json(votes[uri]);
-            debounce(save, 1000);
+            fs.writeFile("./votes.json", JSON.stringify(votes), "utf8", function (err) {
+                if (err) console.log(err);
+            });
         }
     } else res.json({ Error: "Parameter missing" });
 });

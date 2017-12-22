@@ -54,7 +54,8 @@
         $(this).append($(create));
     };
 })(jQuery);
-function set(info) {
+var info = {};
+function set() {
     $("#assessmentMajestic").attr("data-value", info["TrustFlow"] || "Error");
    
     $("#assessmentCitations").attr("data-value", info["CitationFlow"] || "Error");
@@ -63,7 +64,7 @@ function set(info) {
     $("#subjectivity").attr("data-value", info["Subjectivity"] || "Error");
     $("#polarity").attr("data-value", info["Polarity"] || "Error");
 
-    info['CVC'] = 100 - 50 * (info["Subjectivity"] || 0) - 25 * (Math.abs(info["Polarity"]) || 0) - (25 - info["WordCountCoeff"]);
+    info['CVC'] = 75 - 50 * (info["Subjectivity"] || 0) - 25 * (Math.abs(info["Polarity"]) || 0) + (info["WordCountCoeff"] || 0);
     if (!info['Betteridge']) info['CVC'] /= 4;
     $("#assessmentContent").attr("data-value", info["CVC"] || "Error");
 
@@ -87,7 +88,9 @@ function set(info) {
         default: $("#grade").text('A'); break;
     }
 
-    $("#assessmentPeople").pie(info["VotesAgainst"] ? { "No": info["VotesAgainst"], "Yes": info["VotesFor"] } : { "Votes": 0 });
+    if (info["VotesAgainst"] || info["VotesFor"]) $("#assessmentPeople").pie({ "No": info["VotesAgainst"], "Yes": info["VotesFor"] });
+    else $("#assessmentPeople").pie({ "No Votes": 1 });
+
     $("#grammar").pie(info.Grammar || { "Error": 1 });
     $(".circle").each(function (index) { $(this).circle(); });
     $(".bar").each(function (index) { $(this).bar(); });   
@@ -96,7 +99,7 @@ function set(info) {
 }
 $(function () {
     function rand() { return Math.floor(Math.random() * 100); }
-    set({
+    info = {
         TrustFlow: rand(),
         VotesFor:  rand(),
         VotesAgainst:  rand(),
@@ -106,7 +109,8 @@ $(function () {
         Polarity: Math.random() * 2 - 1,
         WordCountCoeff: Math.floor(Math.random() * 25),
         Grammar: { "Verbs":  rand(), "Nouns":  rand(), "Adjectives":  rand(), "Adverbs":  rand(), "Other":  rand() }
-    });
+    };
+    set();
     
     $("#searchBar").submit(function (e) {
         $("#searchBar input[type=submit]").attr("disabled", "disabled"); 
@@ -114,10 +118,12 @@ $(function () {
             type: "GET",
             url: "/stats",
             data: $("#searchBar").serialize(),
-            success: function (info) {
-                set(info);
+            success: function (data) {
+                info = data;
+                set();
                 $("#searchBar input[type=submit]").removeAttr("disabled"); 
                 $("#vote input[type=submit]").removeAttr("disabled"); 
+                $('#vote')[0].reset();
             }
         });
         e.preventDefault();
@@ -128,8 +134,10 @@ $(function () {
             type: "GET",
             url: "/vote",
             data: $("#searchBar").serialize() + "&" + $("#vote").serialize(),
-            success: function (info) {
-                $("#assessmentPeople").pie({ "No": info["n"], "Yes": info["y"] } || { "Error": 1 });
+            success: function (votes) {
+                info["VotesFor"] = votes["y"];
+                info["VotesAgainst"] = votes["n"];
+                set();
                 $("#vote input[type=submit]").attr("disabled", "disabled");
             }
         });
