@@ -35,6 +35,9 @@ if (app.get('env') === 'development') {
     });
 }
 app.get('/stats', function (req, res) {
+    function callback() {
+        res.json(result);
+    }
     if (req.query.url) {
         var uri = url.parse(decodeURIComponent(req.query.url)),
             result = {},
@@ -100,17 +103,13 @@ app.get('/stats', function (req, res) {
             result['VotesFor'] = votes[domain].y;
             result['VotesAgainst'] = votes[domain].n;
         }
-
-        function callback() {
-            res.json(result);
-        }
     } else res.json({ Error:"URI Parameter missing"});
 });
 app.get('/vote', function (req, res) { 
     if (req.query.trusted && req.query.url) {
         if (req.query.trusted === "y" || req.query.trusted === "n") {
             var uri = url.parse(decodeURIComponent(req.query.url)).hostname.replace(/^www\./, '');
-            console.log(req.query.trusted, " vote for ", uri)
+            console.log(req.query.trusted, " vote for ", uri);
             if (!votes[uri]) votes[uri] = { "y": 0, "n": 0 };
             votes[uri][req.query.trusted]++;
             res.json(votes[uri]);

@@ -30,7 +30,7 @@ body {
             color: white;
             font-size: 1rem;
             cursor: pointer;
-            outline: none !important;
+            outline: none;
         }
             #searchBar input[type="submit"]:disabled {
                 background: #8c8c8c;
@@ -46,41 +46,6 @@ body {
                 margin-top: .2rem;
                 border-bottom: 0;
             }
-
-.overlay {
-    background: rgba(0,0,0,.5);
-    position: absolute;
-    z-index: 2;
-    height: 100%;
-    width: 100%;
-}
-
-#error {
-    display: none;
-}
-
-.overlay p {
-    color: white;
-    padding: 1rem;
-    text-shadow: 0 1px 2px rgba(0,0,0,.5);
-    text-align: center;
-    font-size: 1rem;
-    position: relative;
-    width: 100%;
-    top: 50%;
-    margin: 0;
-    transform: translateY(-50%);
-}
-
-#loading p {
-    background: #00a1ff;
-    border-bottom: .25rem solid #0190c7;
-}
-
-#error p {
-    background: #f10000;
-    border-bottom: .25rem solid #a20000;
-}
 
 .page {
     float: left;
@@ -107,7 +72,7 @@ body {
 
 #main {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 50% 50%;
     grid-gap: .5rem;
     margin: .5rem;
 }
@@ -125,7 +90,7 @@ body {
 
 #percentage {
     text-align: center;
-    -webkit-margin-before: 0;
+    margin: 0;
 }
 
 .bar {
@@ -137,7 +102,8 @@ body {
     box-shadow: inset 1px 4px 9px -6px rgba(0,0,0,.5);
 }
     .bar:hover .tip {
-        background: #33333380;
+        background: transparent;
+        background: rgba(50,50,50,.5);
     }
 
     .bar::before,
@@ -176,20 +142,17 @@ body {
         left: 0;
         transform: translate(-50%,-50%);
         z-index: 2;
-        background: #333;
+        background: rgb(50,50,50);
         transition: background .25s;
     }
 
 .circle svg circle {
-    cx: 63;
-    cy: 63;
-    r: 57;
     fill: none;
 }
 
     .circle svg circle:nth-of-type(1) {
         stroke: #e6e6e6;
-        stroke-width: 9;
+        stroke-width: 8;
     }
 
     .circle svg circle:nth-of-type(2) {
@@ -216,8 +179,6 @@ body {
 .circle svg text {
     font-family: "Open Sans";
     font-size: 20pt;
-    text-anchor: middle;
-    dominant-baseline: central;
 }
 
 #ourAssessment {
@@ -234,12 +195,8 @@ body {
     }
 
 .pie svg circle {
-    cx: 65;
-    cy: 65;
-    r: 57;
     fill: none;
     stroke-width: 10;
-    stroke-dasharray: 360;
     transform-origin: 50% 50%;
     cursor: pointer;
     outline: none;
@@ -256,8 +213,6 @@ body {
 
 .pie svg text {
     font-family: "Open Sans";
-    text-anchor: middle;
-    dominant-baseline: central;
     display: none;
     background: white;
     font-size: 12pt;
@@ -278,13 +233,13 @@ body {
         display: block;
     }
     .pie svg circle:focus ~ circle:last-of-type {
-        stroke-width: 10!important;
+        stroke-width: 10;
     }
         .pie svg circle:focus ~ circle:last-of-type + text {
-            display: none!important;
+            display: none;
         }
         .pie svg circle:focus ~ circle:last-of-type + text +text  {
-            display: none !important;
+            display: none;
         }
     
 #betteridge::after {

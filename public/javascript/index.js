@@ -19,7 +19,15 @@
         }
     };
     $.fn.circle = function (options) {
-        $(this).empty().append($('<svg viewBox="0 0 126 126"><g><circle/><circle/><text x="63"y="63"></text></g></svg>'));
+        var circle = `
+            <svg viewBox="0 0 112 112">
+                <g>
+                    <circle cx="50%" cy="50%" r="50" />
+                    <circle cx="50%" cy="50%" r="50" />
+                    <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central"></text>
+                </g>
+            </svg>`;
+        $(this).empty().append($(circle));
         var fill = $(this).find('circle:nth-of-type(2)'),
             tip = $(this).find('text');
         if ($(this).attr('data-value') !== "Error") {
@@ -39,16 +47,16 @@
     };
     $.fn.pie = function (options) {
         $(this).empty();
-        var object = $(this), total = 0, current = 0, create = "<svg viewBox='0 0 132 132'><g>";
+        var object = $(this), total = 0, current = 0, create = "<svg viewBox='0 0 114 114'><g>";
         for (var i in options)
             total += options[i];
         for (var item in options) {
-            var angleSize = options[item] / total * 360;
+            var degrees = 2 * 50 * Math.PI, angleSize = degrees * options[item] / total;
             var rounded = new Number(100 * options[item] / total).toPrecision(3);
-            create += `<circle tabindex='0' stroke-dashoffset='${360 - angleSize}' style='transform: rotate(${current}deg);'/>
-                       <text x='63' y='63'>${options[item]} ${item} </text>
-                       <text x='63' y='78'>(~${rounded}%)</text>`;
-            current += angleSize;
+            create += `<circle cx="50%" cy="50%" r="50" tabindex='0' stroke-dasharray='${degrees}' stroke-dashoffset='${degrees - angleSize}' style='transform: rotate(${current*360}deg);'/>
+                       <text x='50%' y='50%' text-anchor="middle" dominant-baseline="central">${options[item]} ${item} </text>
+                       <text x='50%' y='50%' text-anchor="middle" dominant-baseline="central" dy="16">(~${rounded}%)</text>`;
+            current += angleSize/degrees;
         }
         create += "</g></svg>";
         $(this).append($(create));
