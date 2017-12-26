@@ -1,8 +1,8 @@
-[![FaktNews](public/images/logo-header.svg "Logo")](http://faktnews.org)
+[![FaktNews](public/images/logo-header.svg "Logo")](http://jonmarsh.tech)
 
-For Aston University's 2017 Hackathon we <a href="https://devpost.com/software/faktnews">submitted</a> a browser extension called <a href="http://faktnews.org/">FaktNews</a>. FaktNews grades the trustworthiness of the website you're currently viewing. For each website you visit, we average [Majestic's](https://majestic.com) trustworthiness and citation values, our own measure, and the community's vote to give you an overall grade.
+For Aston University's 2017 Hackathon we <a href="https://devpost.com/software/faktnews">submitted</a> a browser extension called [FaktNews](http://jonmarsh.tech). FaktNews grades the trustworthiness of the website you're currently viewing. For each website you visit, we average [Majestic's](https://majestic.com) trustworthiness and citation values, our own measure, and the community's vote to give you an overall grade.
 
-This repository is a refinement of our work: it's ~325% faster, the GUI has been revamped, and has [a website](http://jonmarsh.tech:8083/) where you can run queries outside the extension. Another benefit is that you can run this in parallel with other [Nodejs apps](https://nodejs.org/en/about/) as it only listens to 1 specific port on the server.
+This repository is a refinement of [our work](https://github.com/jamesevickery/astonhack2017): it's ~325% faster, the GUI has been revamped, and has [a website](http://jonmarsh.tech) where you can run queries outside the extension. Another benefit is that you can run this in parallel with other [Nodejs apps](https://nodejs.org/en/about/) as it only listens to 1 specific port on the server.
 
 ## Support
 
