@@ -31,17 +31,19 @@
         var fill = $(this).find('circle:nth-of-type(2)'),
             tip = $(this).find('text');
         if ($(this).attr('data-value') !== "Error") {
-            var value = new Number($(this).attr('data-value')).toPrecision(3),
+            var degrees = 2 * 50 * Math.PI,
+                value = new Number($(this).attr('data-value')).toPrecision(3),
                 max = new Number($(this).attr("data-max") || 100),
                 min = new Number($(this).attr("data-min") || 0),
-                percentage = 360 - 360 * value / (max - min);
-            
-            fill.animate({ "stroke-dashoffset": percentage }, 1000);
+                percentage = value / (max - min);
+
+            fill.css("stroke-dasharray", degrees);
+            fill.animate({ "stroke-dashoffset": degrees * (1 - percentage) }, 1000);
             tip.text(value + "%");
-            fill.css("animation-iteration-count", value / (max - min));
+            fill.css("animation-iteration-count", percentage);
             fill.css("animation-play-state", "running");
         } else {
-            fill.css("stroke-dashoffset", 360);
+            fill.css("stroke-dashoffset", degrees);
             tip.text("Error");
         }
     };
