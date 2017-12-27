@@ -75,7 +75,7 @@ function set() {
     $("#polarity").attr("data-value", info["Polarity"] || "Error");
 
     info['CVC'] = 75 - 50 * (info["Subjectivity"] || 0) - 25 * (Math.abs(info["Polarity"]) || 0) + (info["WordCountCoeff"] || 0);
-    if (!info['Betteridge']) info['CVC'] /= 4;
+    if (!info['Betteridge']) info['CVC'] /= 2;
     $("#assessmentContent").attr("data-value", info["CVC"] || "Error");
 
     var values = [info['CitationFlow'], info['TrustFlow'], info['CVC'], 100 * info['VotesFor'] / (info['VotesFor'] + info['VotesAgainst'])];
