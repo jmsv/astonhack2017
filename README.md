@@ -40,4 +40,4 @@ To install on Opera do the following:
 
 While the extension is compatible with Edge, it is not going to be implemented as Edge Extensions must be published on the Windows Store.
 
-<sup><sub>**NB:** SVG CSS rotation is not working (as of end 2017) in Edge. This means that the Pie Chart sections will overlap, and the Circlular progression bars will start on the positive horizontal axis. [View this webpage to check support.](https://developer.microsoft.com/en-us/microsoft-edge/platform/status/supportcsstransformsonsvg/)</sup></sub>
+<sup><sub>**NB:** SVG CSS rotation is not working (as of end 2017) in Edge. This means that the Pie Chart sections will overlap, and the Circlular progression bars will start on the horizontal axis. [View this webpage to check support.](https://developer.microsoft.com/en-us/microsoft-edge/platform/status/supportcsstransformsonsvg/)</sup></sub>
