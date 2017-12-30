@@ -40,6 +40,12 @@ body {
     border-bottom: .25rem solid #a20000;
 }
 
+a {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
 #viewport, .page, body {
     width: 400px;
     height: 480px;
@@ -114,48 +120,19 @@ body {
     top: 10%;
 }
 
-.circle {
-    width: 150px;
-    height: 190px;
-    margin: .5rem;
-    float: left;
-    position: relative;
+#betteridge::after {
+    content: "Betteridge illegal";
+    color: red;
+}
+#betteridge.legal::after {
+    content: "Betteridge legal";
+    color: #049b0e;
 }
 
-.bar {
-    width: 100%;
-    height: 1rem;
-    background: #fcfcfc;
-    border: 1px solid #ccc;
-    position: relative;
-    box-shadow: inset 1px 4px 9px -6px rgba(0,0,0,.5);
-    -moz-box-shadow: inset 1px 4px 9px -6px rgba(0,0,0,.5);
+#assessmentPeople svg circle:nth-of-type(1) {
+    stroke: #f10000;
 }
 
-    .bar .fill {
-        display: block;
-        position: relative;
-        width: 0;
-        height: 100%;
-        background: rgb(22,181,151);
-        z-index: 1;
-        transition: width .3s ease-in-out;
-    }
-
-    .bar .tip {
-        padding: 2px 4px;
-        color: #fff;
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translate(-50%,-50%);
-        z-index: 2;
-        background: #333;
-        transition: left .3s ease-in-out;
-    }
-
-a {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
+#assessmentPeople svg circle:nth-of-type(2) {
+    stroke: #049b0e;
 }

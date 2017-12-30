@@ -42,50 +42,48 @@ function set() {
 
     console.log(info);
 }
-$(function () {
-    function rand() { return Math.floor(Math.random() * 100); }
-    info = {
-        TrustFlow: rand(),
-        VotesFor:  rand(),
-        VotesAgainst:  rand(),
-        CitationFlow:  rand(),
-        Betteridge: Math.random() > 0.5,
-        Subjectivity: Math.random(),
-        Polarity: Math.random() * 2 - 1,
-        WordCountCoeff: Math.floor(Math.random() * 25),
-        Grammar: { "Verbs":  rand(), "Nouns":  rand(), "Adjectives":  rand(), "Adverbs":  rand(), "Other":  rand() }
-    };
-    set();
-    
-    $("#searchBar").submit(function (e) {
-        $("#searchBar input[type=submit]").attr("disabled", "disabled"); 
-        $.ajax({
-            type: "GET",
-            url: "/stats",
-            data: $("#searchBar").serialize(),
-            success: function (data) {
-                info = data;
-                set();
-                $("#searchBar input[type=submit]").removeAttr("disabled"); 
-                $("#vote input[type=submit]").removeAttr("disabled"); 
-                $('#vote')[0].reset();
-            }
-        });
-        e.preventDefault();
-    });
 
-    $("#vote").submit(function (e) {
-        $.ajax({
-            type: "GET",
-            url: "/vote",
-            data: $("#searchBar").serialize() + "&" + $("#vote").serialize(),
-            success: function (votes) {
-                info["VotesFor"] = votes["y"];
-                info["VotesAgainst"] = votes["n"];
-                set();
-                $("#vote input[type=submit]").attr("disabled", "disabled");
-            }
+function show(id) {
+    var object = $('#' + id); $('#move').css("left", "-" + object.css("left")); $('#move').css("top", "-" + object.css("top")); $('#' + id + " .animate").each(function () {
+        if ($(this).is(':empty'))
+            if ($(this).is("#assessmentPeople"))
+                $(this).circliful({ animation: 1, animationStep: 5, backgroundColor: "#FF0000", foregroundColor: "#00DD00" }); else $(this).circliful({ animation: 1, animationStep: 5, multiPercentage: 0, progressColor: { 0: '#FF0000', 50: '#FFA500', 90: '#00DD00' } })
+    }); $('#' + id + ' .bar').each(function () { $(this).bar() })
+}
+$(document).ready(function () {
+    if (chrome.tabs){
+		$('a').click(function () { show($(this).attr("data-show")) });
+        chrome.tabs.query({ active: !0, currentWindow: !0 }, function callback(tabs) {
+			$.ajax({
+				type: "GET",
+				url: "http://www.jonmarsh.tech:8082/stats",
+				data: {"url": encodeURIComponent(tabs[0].url)},
+				success: function (data) {
+					info = data;
+					set();
+					$("#searchBar input[type=submit]").removeAttr("disabled"); 
+					$("#vote input[type=submit]").removeAttr("disabled"); 
+					$('#vote')[0].reset();
+				},
+				fail: function (jqXHR, textStatus, errorThrown) { 
+					$("#error").show();
+				};
+			});
+			e.preventDefault();
         });
-        e.preventDefault();
-    });
-});
+		$("#vote").submit(function (e) {
+			$.ajax({
+				type: "GET",
+				url: "http://www.jonmarsh.tech:8082/vote",
+				data: $("#searchBar").serialize() + "&" + $("#vote").serialize(),
+				success: function (votes) {
+					info["VotesFor"] = votes["y"];
+					info["VotesAgainst"] = votes["n"];
+					set();
+					$("#vote input[type=submit]").attr("disabled", "disabled");
+				}
+			});
+			e.preventDefault();
+		});
+	}
+})

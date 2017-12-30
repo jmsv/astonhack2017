@@ -93,93 +93,6 @@ body {
     margin: 0;
 }
 
-.bar {
-    width: 100%;
-    height: 1rem;
-    background: #fcfcfc;
-    border: 1px solid #ccc;
-    position: relative;
-    box-shadow: inset 1px 4px 9px -6px rgba(0,0,0,.5);
-}
-    .bar:hover .tip {
-        background: rgba(50,50,50,.5);
-    }
-
-    .bar::before,
-    .bar::after {
-        height: 0;
-        display: block;
-    }
-
-    .bar::before {
-        position: relative;
-        top: -1rem;
-        content: attr(data-min);
-    }
-
-    .bar::after {
-        content: attr(data-max);
-        position: relative;
-        top: -2rem;
-        left: 100%;
-    }
-
-    .bar .fill {
-        display: block;
-        position: relative;
-        width: 0;
-        height: 100%;
-        background: rgb(22,181,151);
-        z-index: 1;
-    }
-
-    .bar .tip {
-        padding: 2px 4px;
-        color: #fff;
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translate(-50%,-50%);
-        z-index: 2;
-        background: rgb(50,50,50);
-        transition: background .25s;
-    }
-
-.circle svg circle {
-    fill: none;
-}
-
-    .circle svg circle:nth-of-type(1) {
-        stroke: #e6e6e6;
-        stroke-width: 8;
-    }
-
-    .circle svg circle:nth-of-type(2) {
-        stroke: #f10000;
-        stroke-width: 12;
-        stroke-dasharray: 314.159px;
-        stroke-dashoffset: 314.159px;
-        transform: rotate(-90deg);
-        transform-origin: 50% 50%;
-        animation-name: color_change;
-        animation-duration: 1s;
-        animation-iteration-count: 1;
-        animation-play-state: paused;
-        animation-fill-mode: forwards;
-    }
-
-@keyframes color_change {
-    20% {stroke: #f10000;}
-    65% {stroke: #f0e400;}
-    90% {stroke: #049b0e;}
-    100% {stroke: #049b0e;}
-}
-
-.circle svg text {
-    font-family: "Open Sans";
-    font-size: 20pt;
-}
-
 #ourAssessment {
     overflow-y: auto;
     overflow-x:hidden;
@@ -193,54 +106,7 @@ body {
         width:85%;
     }
 
-.pie svg circle {
-    fill: none;
-    stroke-width: 10;
-    transform-origin: 50% 50%;
-    cursor: pointer;
-    outline: none;
-}
-
-    .pie svg circle:nth-of-type(1) {stroke: #2ecc71;}
-    .pie svg circle:nth-of-type(2) {stroke: #3498db;}
-    .pie svg circle:nth-of-type(3) {stroke: #9b59b6;}
-    .pie svg circle:nth-of-type(4) {stroke: #e74c3c;}
-    .pie svg circle:nth-of-type(5) {stroke: #e67e22;}
-    .pie svg circle:nth-of-type(6) {stroke: #34495e;}
-    .pie svg circle:nth-of-type(7) {stroke: #8e44ad;}
-    .pie svg circle:nth-of-type(8) {stroke: #27ae60;}
-
-.pie svg text {
-    font-family: "Open Sans";
-    display: none;
-    background: white;
-    font-size: 12pt;
-}
-    .pie svg text + text {
-        font-size:7pt;
-    }
-.pie svg circle:focus, 
-.pie svg circle:last-of-type {
-    stroke-width: 14;
-}
-    .pie svg circle:focus + text,
-    .pie svg circle:last-of-type + text{
-        display: block;
-    }
-    .pie svg circle:focus + text + text,
-    .pie svg circle:last-of-type + text + text {
-        display: block;
-    }
-    .pie svg circle:focus ~ circle:last-of-type {
-        stroke-width: 10;
-    }
-        .pie svg circle:focus ~ circle:last-of-type + text {
-            display: none;
-        }
-        .pie svg circle:focus ~ circle:last-of-type + text +text  {
-            display: none;
-        }
-    
+   
 #betteridge::after {
     content: "Betteridge illegal";
     color: red;

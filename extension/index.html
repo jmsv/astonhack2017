@@ -5,12 +5,8 @@
 	<title>FaktNews</title>
 	<meta charset="utf-8">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-	<link href="css/circliful.min.css" rel="stylesheet" type="text/css" />
-	<link href="css/piechart.min.css" rel="stylesheet" type="text/css" />
-	<link href="css/index.css" rel="stylesheet" type="text/css" />
-	<script src="js/jquery-3.2.1.min.js"></script>
-	<script src="js/circliful.min.js"></script>
-	<script src="js/piechart.min.js"></script>
+	<link href="index.css" rel="stylesheet" type="text/css"/>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -27,17 +23,17 @@
 			<div class="page" id="circles">
 				<div class="circle popup">
 					<h3>Our Assessment</h3>
-					<div id="assessmentContent" class="animate"></div>
+					<div id="assessmentContent" class="circle"></div>
 					<a href="#" data-show="content">View more info</a>
 				</div>
 				<div class="circle popup">
 					<h3>Majestic's Assessment</h3>
-					<div id="assessmentMajestic" class="animate"></div>
+					<div id="assessmentMajestic" class="circle"></div>
 					<a href="#" data-show="majestic">View more info</a>
 				</div>
 				<div class="circle popup">
 					<h3>The People's Vote</h3>
-					<div id="assessmentPeople" class="animate"></div>
+					<div id="assessmentPeople" class="pie"></div>
 					<a href="#" data-show="people">View more info</a>
 				</div>
 				<div class="circle popup">
@@ -48,26 +44,23 @@
 
 			<div class="page" id="content">
 				<div class="wrapper popup">
-					<p>Our assessment of a web page's trustworthiness comes from an analysis of the content of the page. We check for poor
-						grammar and analyse the language used.</p>
-					<div class="example" id="demo"></div>
-					<p>Polarity</p>
-					<div id="polarity" class="bar">
-						<span class="tip"></span>
-						<span class="fill"></span>
-					</div>
-					<p>Subjectivity</p>
-					<div id="subjectivity" class="bar">
-						<span class="tip"></span>
-						<span class="fill"></span>
-					</div>
-					<p id="betteridge">Betteridge's Law</p>
 					<a href="#" data-show="circles">Back</a>
+					<div id="grammar" class="pie"></div>
+					<p>Polarity</p>
+					<div id="polarity" class="bar" data-min="-1" data-max="1"></div>
+					<p>Subjectivity</p>
+					<div id="subjectivity" class="bar" data-min="0" data-max="1"></div>
+					<p id="betteridge"></p>
+					<p>
+						Our assessment comes from an analysis of the language used on the page.<br/>
+						<code>75 - 50 * Subjectivity - 25 * abs(Polarity) + word count / 10 (Where word count above 250 is treated as 250)</code><br /> If it doesn't follows Betteridge's Law then this value is halved.
+					</p>
 				</div>
 			</div>
 
 			<div class="page" id="majestic">
 				<div class="wrapper popup">
+					<a href="#" data-show="circles">Back</a>
 					<p>The main statistic comes from Majestic's Trustworthiness value (the value displayed on the main page). Below is the
 						citations value which is commonly coupled with trustworthiness. If a website has high citations but low trust, this
 						website is most likely fake news.</p>
@@ -78,27 +71,29 @@
 						</div>
 						<div class="column">
 							<h3>Citations</h3>
-							<div id="assessmentCitations" class="animate"></div>
+							<div id="assessmentCitations" class="circle"></div>
 						</div>
 					</div>
-					<a href="#" data-show="circles">Back</a>
 				</div>
 			</div>
 
 			<div class="page" id="people">
+				<a href="#" data-show="circles">Back</a>
 				<div class="wrapper popup">
-					<p>This score comes from the average of people's opinion on whether the page is to be trusted or not. You can vote too,
-						do you trust this page?</p>
-					<form>
-						<input type="button" id="yes" value="Yes">
-						<input type="button" id="no" value="No">
+					<p>
+						This score comes from the average of people's opinion on whether this website (in general, not specifically this page) is to be trusted or not.
+						You can vote too, do you trust this website?
+					</p>
+					<form id="vote">
+						<input type="radio" name="trusted" value="y" checked> Yes<br/>
+						<input type="radio" name="trusted" value="n"> No<br/>
+						<input type="submit" value="Vote" disabled/>
 					</form>
-					<a href="#" data-show="circles">Back</a>
 				</div>
 			</div>
 		</div>
 	</div>
-	<script src="js/index.js"></script>
+	<script src="index.js"></script>
 </body>
 
 </html>
