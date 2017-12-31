@@ -8,7 +8,9 @@
 		"default_popup": "index.html"
 	},
 	"icons": {
-		"128": "icon/icon.svg"
+		"16": "icon.svg",
+		"48": "icon.svg",
+		"128": "icon.svg"
 	},
 	"permissions": ["tabs", "<all_urls>"]
 }

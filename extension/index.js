@@ -61,15 +61,12 @@ $(document).ready(function () {
 				success: function (data) {
 					info = data;
 					set();
-					$("#searchBar input[type=submit]").removeAttr("disabled"); 
-					$("#vote input[type=submit]").removeAttr("disabled"); 
-					$('#vote')[0].reset();
+					$("#loading").hide();
 				},
 				fail: function (jqXHR, textStatus, errorThrown) { 
 					$("#error").show();
-				};
+				}
 			});
-			e.preventDefault();
         });
 		$("#vote").submit(function (e) {
 			$.ajax({
@@ -81,6 +78,9 @@ $(document).ready(function () {
 					info["VotesAgainst"] = votes["n"];
 					set();
 					$("#vote input[type=submit]").attr("disabled", "disabled");
+				},
+				fail: function (jqXHR, textStatus, errorThrown) { 
+					$("#error").show();
 				}
 			});
 			e.preventDefault();

@@ -13,10 +13,6 @@ body {
     width: 100%;
 }
 
-#error {
-    display: none;
-}
-
 .overlay p {
     color: white;
     padding: 1rem;
@@ -35,18 +31,18 @@ body {
     border-bottom: .25rem solid #0190c7;
 }
 
-#error p {
-    background: #f10000;
-    border-bottom: .25rem solid #a20000;
+#error {
+    display: none;
 }
 
-a {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-}
+	#error p {
+		background: #f10000;
+		border-bottom: .25rem solid #a20000;
+	}
 
-#viewport, .page, body {
+#viewport, 
+.page, 
+body {
     width: 400px;
     height: 480px;
     position: relative;
@@ -67,10 +63,22 @@ a {
     position: absolute;
     top: 0;
     left: 0;
+	box-sizing: border-box;
+    padding: .5rem;
 }
+
+	.page h3 {
+		margin: 0;
+		text-decoration: underline;
+		white-space: nowrap;
+		text-align: center;
+	}
 
 #circles {
     left: 400px;
+	display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: .5rem;
 }
 
 #content {
@@ -81,17 +89,20 @@ a {
     left: 800px;
 }
 
+#grammar {
+    margin: auto;
+    text-align: center;
+}
+    #grammar svg {
+        width:85%;
+    }
+
 #people {
     top: 500px;
     left: 400px;
 }
 
-.page h3 {
-    margin: 0;
-    text-decoration: underline;
-    white-space: nowrap;
-    text-align: center;
-}
+
 
 .wrapper {
     position: relative;

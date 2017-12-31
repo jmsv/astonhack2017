@@ -5,8 +5,10 @@
 	<title>FaktNews</title>
 	<meta charset="utf-8">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-	<link href="index.css" rel="stylesheet" type="text/css"/>
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+	<link href="widgets.css" rel="stylesheet"/>
+	<link href="index.css" rel="stylesheet"/>
+	<script src="jquery.min.js"></script>
+	<script src="widgets.js"></script>
 </head>
 
 <body>
@@ -21,22 +23,22 @@
 	<div id="viewport">
 		<div id="move">
 			<div class="page" id="circles">
-				<div class="circle popup">
+				<div class="popup">
 					<h3>Our Assessment</h3>
 					<div id="assessmentContent" class="circle"></div>
 					<a href="#" data-show="content">View more info</a>
 				</div>
-				<div class="circle popup">
+				<div class="popup">
 					<h3>Majestic's Assessment</h3>
 					<div id="assessmentMajestic" class="circle"></div>
 					<a href="#" data-show="majestic">View more info</a>
 				</div>
-				<div class="circle popup">
+				<div class="popup">
 					<h3>The People's Vote</h3>
 					<div id="assessmentPeople" class="pie"></div>
 					<a href="#" data-show="people">View more info</a>
 				</div>
-				<div class="circle popup">
+				<div class="popup">
 					<h3>Overall Grade</h3>
 					<h1 id="grade"></h1>
 				</div>
@@ -87,7 +89,7 @@
 					<form id="vote">
 						<input type="radio" name="trusted" value="y" checked> Yes<br/>
 						<input type="radio" name="trusted" value="n"> No<br/>
-						<input type="submit" value="Vote" disabled/>
+						<input type="submit" value="Vote"/>
 					</form>
 				</div>
 			</div>
