@@ -30,7 +30,7 @@ To install on FireFox do the following:
 #### Opera
 
 To install on Opera do the following:
-1. Press `Ctrl-Shift-E` or naviagte to: `Menu > Extensions > Extensions`
+1. Press `Ctrl-Shift-E` or navigate to: `Menu > Extensions > Extensions`
 2. Click `Developer Mode`
 3. Click `Load unpacked extension...`
 4. Navigate to the `Extension` folder, and click `OK` on the folder
