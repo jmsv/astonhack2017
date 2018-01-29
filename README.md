@@ -1,4 +1,4 @@
-[![FaktNews](public/images/logo-header.svg "Logo")](http://jonmarsh.tech)
+[![FaktNews](logo-header.svg "Logo")](http://jonmarsh.tech)
 
 For Aston University's 2017 Hackathon we <a href="https://devpost.com/software/faktnews">submitted</a> a browser extension called [FaktNews](http://jonmarsh.tech). FaktNews grades the trustworthiness of the website you're currently viewing. For each website you visit, we average [Majestic's](https://majestic.com) trustworthiness and citation values, our own measure, and the community's vote to give you an overall grade.
 
