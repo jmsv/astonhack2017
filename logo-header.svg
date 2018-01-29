@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">
+	<defs>
+		<mask id="textMask">
+			<text x="42%" y="70%" fill="#fff" font-size="110pt">NEWS</text>
+		</mask>
+		<filter id="innerShadow">
+			<feGaussianBlur in="SourceGraphic" stdDeviation="1"/>
+			<feOffset dx="1" dy="1"/>
+		</filter>
+		<filter id="shadow">
+			<feGaussianBlur in="SourceGraphic" stdDeviation="1"/>
+			<feOffset dx="1" dy="1"/>
+		</filter>
+	</defs>
+	<g fill="#d40000" font-family="Norasi">
+		<rect x="40%" y="10%" width="60%" height="80%" transform="skewX(-15)" />
+		<rect x="7%" y="70%" width="40%" height="20%"  transform="skewX(-15)" />
+		<text x="5%" y="55%" font-size="70pt" fill="#666" style="filter: url(#shadow)">FAKT</text>
+		<text x="5%" y="55%" font-size="70pt">FAKT</text>
+		<g mask="url(#textMask)">
+			<rect x="42%" y="10%" fill="#222" width="60%" height="80%" />
+			<text x="42%" y="70%" fill="#fff" font-size="110pt" style="filter: url(#innerShadow)">NEWS</text>
+		</g>
+	</g>
+</svg>
