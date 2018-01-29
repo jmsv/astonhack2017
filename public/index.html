@@ -5,8 +5,10 @@
     <title>FaktNews</title>
     <meta charset="utf-8">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+	<link href="stylesheets/widgets.css" rel="stylesheet" type="text/css"/>
 	<link href="stylesheets/index.css" rel="stylesheet" type="text/css"/>
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+	<script src="javascript/widgets.js"></script>
 </head>
 
 <body>
@@ -40,9 +42,9 @@
         <div class="popup" id="ourAssessment">
             <div id="grammar" class="pie"></div>
             <p>Polarity</p>
-            <div id="polarity" class="bar" data-min="-1" data-max="1"></div>
+            <div id="polarity" class="horizontal" data-min="-1" data-max="1"></div>
             <p>Subjectivity</p>
-            <div id="subjectivity" class="bar" data-min="0" data-max="1"></div>
+            <div id="subjectivity" class="horizontal" data-min="0" data-max="1"></div>
             <p id="betteridge"></p>
             <p>
                 Our assessment comes from an analysis of the language used on the page.<br/>

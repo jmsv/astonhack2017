@@ -29,26 +29,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include=".env" />
+    <Content Include=".env.example" />
     <Content Include="package.json" />
     <Content Include="public\error.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="public\favicon.ico" />
-    <Content Include="public\images\tna.pdn" />
-    <Content Include="public\images\TNA.png" />
     <Content Include="public\index.html" />
     <Content Include="public\stylesheets\index.css" />
+    <Content Include="public\stylesheets\widgets.css" />
     <Content Include="README.md" />
     <Content Include="votes.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="app.js" />
     <Compile Include="public\javascript\index.js" />
-    <Compile Include="public\javascript\jquery.min.js" />
+    <Compile Include="public\javascript\widgets.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="public\" />
-    <Folder Include="public\images\" />
     <Folder Include="public\javascript\" />
     <Folder Include="public\stylesheets\" />
   </ItemGroup>

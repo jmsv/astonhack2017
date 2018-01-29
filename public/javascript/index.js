@@ -38,7 +38,7 @@ function set() {
 
     $("#grammar").pie(info.Grammar || { "Error": 1 });
     $(".circle").each(function (index) { $(this).circle(); });
-    $(".bar").each(function (index) { $(this).bar(); });   
+    $(".horizontal").each(function (index) { $(this).horizontal(); });   
 
     console.log(info);
 }
