@@ -3,23 +3,30 @@
 		<mask id="textMask">
 			<text x="42%" y="70%" fill="#fff" font-size="110pt">NEWS</text>
 		</mask>
-		<filter id="innerShadow">
-			<feGaussianBlur in="SourceGraphic" stdDeviation="1"/>
-			<feOffset dx="1" dy="1"/>
-		</filter>
+		<mask id="barMask">
+			<rect id="bar" x="10%" y="79%" width="87%" height="4%" fill="#fff"/>
+		</mask>
 		<filter id="shadow">
 			<feGaussianBlur in="SourceGraphic" stdDeviation="1"/>
 			<feOffset dx="1" dy="1"/>
 		</filter>
 	</defs>
 	<g fill="#d40000" font-family="Norasi">
-		<rect x="40%" y="10%" width="60%" height="80%" transform="skewX(-15)" />
-		<rect x="7%" y="70%" width="40%" height="20%"  transform="skewX(-15)" />
-		<text x="5%" y="55%" font-size="70pt" fill="#666" style="filter: url(#shadow)">FAKT</text>
-		<text x="5%" y="55%" font-size="70pt">FAKT</text>
+		<g transform="skewX(-15)">
+			<rect x="40%" y="10%" width="60%" height="80%"/>
+			<rect x="07%" y="70%" width="40%" height="20%"/>
+		</g>
+		<g font-size="70pt">
+			<text x="5%" y="55%" fill="#666" style="filter:url(#shadow)">FAKT</text>
+			<text x="5%" y="55%" >FAKT</text>
+		</g>
 		<g mask="url(#textMask)">
-			<rect x="42%" y="10%" fill="#222" width="60%" height="80%" />
-			<text x="42%" y="70%" fill="#fff" font-size="110pt" style="filter: url(#innerShadow)">NEWS</text>
+			<rect fill="#666" width="100%" height="100%"/>
+			<text x="42%" y="70%" fill="#fff" font-size="110pt" style="filter: url(#shadow)">NEWS</text>
+		</g>
+		<g mask="url(#barMask)" transform="skewX(-15)">
+			<rect fill="#666" width="100%" height="100%"/>
+			<rect id="bar" x="10%" y="79%" width="87%" height="4%" fill="#fff" style="filter: url(#shadow)"/>
 		</g>
 	</g>
 </svg>
